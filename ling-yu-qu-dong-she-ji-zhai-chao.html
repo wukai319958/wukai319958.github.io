@@ -1,0 +1,1535 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="《领域驱动设计》摘抄（一）, WK Blog">
+    <meta name="description" content="分离领域
+
+将各层关联起来摘抄 P:46
+各层之间是松散连接的，层与层的依赖关系只能是单向的。上层可以直接使用或操作下层元素，方法是通过调用下层元素的公共接口，保持对下层元素的引用（至少是暂时的），以及采用常规的交互手段。而如果下层元素需要">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>《领域驱动设计》摘抄（一） | WK Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">WK Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">WK Blog</div>
+        <div class="logo-desc">
+            
+            Hi~我是吴恺，这是我的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/wukai319958" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/wukai319958" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('http://blog-images-wk.test.upcdn.net/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        《领域驱动设计》摘抄（一）
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/领域驱动设计/" target="_blank">
+                                <span class="chip bg-color">领域驱动设计</span>
+                            </a>
+                        
+                            <a href="/tags/DDD/" target="_blank">
+                                <span class="chip bg-color">DDD</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/DDD/" class="post-category" target="_blank">
+                                DDD
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-12-19
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        5.4k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        19 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="分离领域"><a href="#分离领域" class="headerlink" title="分离领域"></a>分离领域</h2><p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E5%88%86%E5%B1%82%E6%A8%A1%E5%9E%8B.png" alt="分层模型"></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_%E8%81%8C%E8%B4%A3.png" alt="各层职责"></p>
+<h3 id="将各层关联起来"><a href="#将各层关联起来" class="headerlink" title="将各层关联起来"></a>将各层关联起来</h3><p><em><code>摘抄 P:46</code></em></p>
+<p>各层之间是松散连接的，层与层的依赖关系只能是单向的。<strong>上层可以直接使用或操作下层元素</strong>，方法是通过调用下层元素的<strong>公共接口</strong>，保持对下层元素的引用（至少是暂时的），以及采用常规的交互手段。而如果下层元素需要与上层元素进行通信（不只是回应直接查询），则需要采用另一种通信机制，使用架构模式来连接上下层，如<strong>回调模式或者Observers模式</strong>。</p>
+<p style="color:red;font-weight:800">需要解决：如何实现使用回调模式或者Observers模式使下层结构调用上层结构？</p>
+*`摘抄 P:48`*
+
+<p>领域模型是一系列的集合。“领域层”则是领域模型以及所有与其直接相关的设计元素的表现，它由业务逻辑的设计和实现组成。<strong>将领域实现独立出来是领域驱动设计的前提</strong>。</p>
+<p style="color:blue;font-weight:800">思考：把领域隔离出来的最大好处就是可以真正专注于领域设计，而不用考虑其它方面。</p>
+*`摘抄 P:49`*
+
+<p>领域驱动设计只有应用在大型项目上才能产生最大的收益，不是所有的项目都是大型项目，也不是所有的团队都能掌握那些技巧。</p>
+<p><code>SMART UI</code>是DDD的反模式，它会在用户界面中实现所有的逻辑规则，并在其中嵌入业务规则…这种模式适合只需要提供简单的功能，以数据输入和显示为主，设计业务规则很少，团队中没有高级对象建模师。</p>
+<p style="color:blue;font-weight:800">思考：要根据实际情况选择是否使用DDD,简单的项目引入DDD只会使项目变得复杂。</p>
+
+
+<h2 id="软件中所表示的模型"><a href="#软件中所表示的模型" class="headerlink" title="软件中所表示的模型"></a>软件中所表示的模型</h2><p><em><code>摘抄 P:51</code></em></p>
+<p>模型表示的三种模式：<code>Entity</code>、<code>Value Object</code>和<code>Service</code></p>
+<p><code>Entity</code>与<code>Value Object</code>之间的根本区别在于：<code>Entity</code>中的对象是用来表示某种具有<strong>连续性</strong>和<strong>标识</strong>的事物的（可以跟踪它所经历的不同状态、甚至可以跨不同的实现跟踪它）而<code>Value Object</code>是用于描述某个事物的某种<strong>状态属性</strong>的。</p>
+<p>领域中还有一些方面<strong>适合用动作或操作</strong>来表示，这比用对象表示更加清楚。这些方面最好用<code>Service</code>来表示，而不应把操作的责任强加到<code>Entity</code>或者<code>Value Object</code>上，尽管这样做稍微违背了面向对象的建模传统。<strong><code>Service</code>是应客户端请求来完成某事</strong>，在软件的技术层中有很多<code>Service</code>。在领域中也可以使用<code>Service</code>，<strong>当软件必须实现的某项无状态的活动进行建模时</strong>，就可以将活动作为一项<code>Service</code>。</p>
+<p style="color:blue;font-weight:800">思考：明确地选择这两种模式中的一个来定义对象，有利于减少歧义，并帮我们做出特定的选择，这样才能得到健壮的设计。</p>
+*`摘抄 P:53`*
+
+<p>限定多对多关联的遍历方向可以有效地将其实现简化为一对多关联，从而得到一个简单得多的设计，</p>
+<p style="color:red;font-weight:800">需要解决：如何限定？？</p>
+
+
+
+<h3 id="模式：Entity（又称为Reference-Object引用对象）"><a href="#模式：Entity（又称为Reference-Object引用对象）" class="headerlink" title="模式：Entity（又称为Reference Object引用对象）"></a>模式：Entity（又称为Reference Object引用对象）</h3><p><em><code>摘抄 P:57、58</code></em></p>
+<p>很多对象不是通过它们的属性定义的，而是通过<strong>连续性和标识</strong>定义的。</p>
+<p>一个人（继续使用非技术示例）有一个标识，这个标识会陪伴他走完一生（甚至死后）。这个人的物理属性会发生变化，最后消失。他的名字可能改变，财务关系也会发生变化，<strong>没有哪个属性是一生不变的，但标识却是永久的</strong>。我跟我5岁时是同一个人吗？ 这种听上去像是纯哲学的问题在探索有效的领域模型时非常重要。稍微变换一下问题的角度：<strong>应用程序的用户是否关心现在的我和5岁时的我是不是同一个人？</strong></p>
+<p>一些对象主要不是由它们的属性定义的。它们实际上表示了一条“标识线”（A Thread of Identity），<strong>这条线跨越时间，而且常常经历多种不同的表示</strong>。有时，这样的对象必须与另一个具有不同属性的对象相匹配。而有时一个对象必须与具有相同属性的另一个对象区分开。错误的标识可能会破坏数据。</p>
+<p>主要由标识定义的对象被称作<code>ENTITY</code>。<code>ENTITY</code>（实体）有特殊的建模和设计思路。它们具有生命周期，<strong>这期间它们的形式和内容可能发生根本改变，但必须保持一种内在的连续性</strong>。</p>
+<p>为了有效地跟踪这些对象，<strong>必须定义它们的标识</strong>。它们的类定义、职责、属性和关联必须由其标识来决定，而不依赖于其所具有的属性。</p>
+<p style="color:blue;font-weight:800">
+    思考：ENTITY 可以是任何事物，只要满足两个条件即可：</p>
+
+<ol>
+<li>它在整个生命周期中具有连续性</li>
+<li>它的区别并不是由那些对用户非常重要的属性决定的</li>
+</ol>
+<p><em><code>摘抄 P:59</code></em></p>
+<p>现实世界中的同一个事物在领域模型中可能需要表示为ENTITY ，也可能不需要表示为ENTITY 。</p>
+<p style="color:blue;font-weight:800">思考：一个事物是否为Entity应该是由上下文来决定的。</p>
+*`摘抄 P:61`*
+
+<p>当对象属性没办法形成真正唯一键时，另一种经常用到的解决方案是为每个实例附加一个在类中唯一的符号（如一个数字或字符串）。一旦这个ID符号被创建并存储为E NTITY 的一个属性，必须将它指定为不可变的。</p>
+<p>ID通常是由系统自动生成的。生成算法必须确保ID在系统中是唯一的。</p>
+<p style="color:blue;font-weight:800">思考：将GUID作为Entity的唯一标识。</p>
+
+
+
+<h3 id="模式：Value-Object"><a href="#模式：Value-Object" class="headerlink" title="模式：Value Object"></a>模式：Value Object</h3><p><em><code>摘抄 P:62</code></em></p>
+<p>很多对象没有概念上的标识，它们描述了一个事务的<strong>某种特征</strong>。</p>
+<p>用于描述领域的某个方面而本身没有概念标识的对象称为<code>VALUE OBJECT</code> （值对象）。</p>
+<p><code>VALUE OBJECT</code> 被实例化之后用来表示一些设计元素，对于这些设计元素，<strong>我们只关心它们是什么，而不</strong><br><strong>关心它们是谁。</strong></p>
+<p><em><code>摘抄 P:63</code></em></p>
+<p>如何判定一个对象是Value Object还是Entity：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_ValueObject.png" alt="Value Object"></p>
+<p><em><code>摘抄 P:63</code></em></p>
+<p>VALUE OBJECT 可以是其他对象的集合。</p>
+<p>VALUE OBJECT 甚至可以引用ENTITY。</p>
+<p>VALUE OBJECT 经常作为参数在对象之间传递消息。它们常常是临时对象，在一次操作中被创建，然后丢弃。</p>
+<p>VALUE OBJECT 可以用作 NTITY （以及其他VALUE ）的属性。我们可以把一个人建模为一个具有标识的ENTITY ，但这个人的名字是一个VALUE 。</p>
+<p><em><code>摘抄 P:64</code></em></p>
+<p>当我们<strong>只关心一个模型元素的属性时</strong>，应把它归类为VALUE OBJECT 。我们应该使这个模型元素能够表示出其属性的意义，并为它提供相关功能。<strong>VALUE OBJECT 应该是不可变的</strong>。不要为它分配任何标识，而且不要把它设计成像ENTITY 那么复杂。</p>
+<p style="color:blue;font-weight:800">思考：Value Object应该是不可变的，如果属性的值发生改变，我们应该使用一个不同的VALUE OBJECT ，而不是修改现有的VALUE OBJECT 。</p>
+<p style="color:blue;font-weight:800">通过复制和共享值对象可以优化系统性能。</p>
+
+
+<p><em><code>摘抄 P:66</code></em></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_ValueObject%E4%B8%8D%E5%8F%AF%E5%8F%98%E6%80%A7.png" alt="何时允许可变"></p>
+<p style="color:blue;font-weight:800">思考：定义VALUE OBJECT 并将其指定为不可变的是一条一般规则，这样做是为了避免在模型中产生不必要的约束，从而让开发人员可以单纯地从技术上优化性能。</p>
+
+
+
+<h3 id="模式：Service"><a href="#模式：Service" class="headerlink" title="模式：Service"></a>模式：Service</h3><p><em><code>摘抄 P:67</code></em></p>
+<p>有时，对象不是一个事物。在某些情况下，最清楚、最实用的设计会包含一些<strong>特殊的操作</strong>，这些操作从概念上讲不属于任何对象。与其把它们强制地归于哪一类，不如顺其自然地在模型中引入一种新的元素，这就是<strong>SERVICE</strong> （服务）。</p>
+<p><em><code>摘抄 P:68</code></em></p>
+<p>SERVICE 是作为接口提供的一种操作，它在模型中是独立的，它不像ENTITY 和VALUE OBJECT那样具有封装的状态。<br>所谓SERVICE ，它强调的是与其他对象的关系。与ENTITY 和VALUE OBJECT 不同，它只是定义了<strong>能够为客户做什么。</strong></p>
+<p>好的S ERVICE 有以下<strong>3个</strong>特征。<br>(1) 与领域概念相关的操作不是ENTITY 或V ALUE OBJECT 的一个自然组成部分。<br>(2) 接口是根据领域模型的其他元素定义的。<br>(3) 操作是<strong>无状态</strong>的。</p>
+<p>这里所说的无状态是指<strong>任何客户都可以使用某个SERVICE 的任何实例</strong>，而不必关心该实例的历史状态。</p>
+<p style="color:blue;font-weight:800">思考：当领域中的某个重要的过程或转换操作不是ENTITY或VALUE OBJECT的自然职责时，应该在模型中添加一个作为独立接口的操作，并将其声明为SERVICE。</p>
+*`摘抄 P:69`*
+
+<p>很多领域或应用层SERVICE 是在ENTITY 和V ALUE OBJECT 的基础上建立起来的，它们的行为类似于<strong>将领域的一些潜在功能组织起来以执行某种任务的脚本。</strong></p>
+<p><em><code>摘抄 P:70</code></em></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_%E5%88%92%E5%88%86Service.png" alt="划分Service"></p>
+<p style="color:blue;font-weight:800">思考：领域层的Service涉及业务规则，并且是无状态的</p>
+明智地引入领域层服务有助于在应用层和领域层之间保持一条明确的界限。防止领域知识和业务逻辑蔓延到应用程或者用户层界面代码当中。
+
+
+
+<h3 id="模式：Module（也称为Package）"><a href="#模式：Module（也称为Package）" class="headerlink" title="模式：Module（也称为Package）"></a>模式：Module（也称为Package）</h3><p><em><code>摘抄 P:72</code></em></p>
+<p>像领域驱动设计中的其他元素一样，MODULE 是一种表达机制。MODULE 的选择应该取决于被划分到模块中的对象的意义。<br>你将一些类放到MODULE 中时，相当于告诉下一位看到你的设计的开发人员要把这些类放在一起考虑。如果说模型讲述了一个故事，那么MODULE 就是这个故事的各个章节。</p>
+<h2 id="领域对象的生命周期"><a href="#领域对象的生命周期" class="headerlink" title="领域对象的生命周期"></a>领域对象的生命周期</h2><p><em><code>摘抄 P:80</code></em></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_%E9%A2%86%E5%9F%9F%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F.png" alt="领域对象的生命周期"></p>
+<p>管理领域对象时面临诸多的挑战，稍有不慎就会偏离<code>MODEL -DRIVEN DESIGN</code>的轨道。</p>
+<p>主要的挑战有以下两类。<br>(1) 在整个生命周期中维护完整性。<br>(2) 防止模型陷入管理生命周期复杂性造成的困境当中。</p>
+<h3 id="模式-：Aggregate"><a href="#模式-：Aggregate" class="headerlink" title="模式 ：Aggregate"></a>模式 ：Aggregate</h3><p><em><code>摘抄 P:82</code></em></p>
+<p>首先，我们需要用一个<strong>抽象</strong>来封装模型中的引用。<code>AGGREGATE</code>就是一组相关对象的<strong>集合</strong>，我们把它作为数据修改的<strong>单元</strong>。每个<code>AGGREGATE</code>都有一个<code>根（root）</code>和一个<code>边界（boundary）</code>。 </p>
+<p>边界定义了<code>AGGREGATE</code>的内部都有什么。</p>
+<p>根则是<code>AGGREGATE</code>所包含的一个<strong>特定</strong><code>ENTITY。</code></p>
+<p>对<code>AGGREGATE</code>而言，<strong>外部对象只可以引用根</strong>，而边界内部的对象之间则可以互相引用。除根以外的其他<code>ENTITY</code>都有本地标识，但这些标识只在<code>AGGREGATE</code>内部才需要加以区别，<strong>因为外部对象除了根<code>ENTITY</code>之外看不到其他对象。</strong></p>
+<p style="color:blue;font-weight:800">思考：解释开发的时候该如何定义Aggregate。</p>
+
+
+
+<p><em><code>摘抄 P:83-84</code></em></p>
+<h3 id="※Aggregate的一组固定规则："><a href="#※Aggregate的一组固定规则：" class="headerlink" title="※Aggregate的一组固定规则："></a><strong>※Aggregate的一组固定规则：</strong></h3><ul>
+<li>根<code>ENTITY</code> 具有全局标识，它最终负责检查固定规则。</li>
+<li>边界内的<code>ENTITY</code> 具有本地标识，这些标识只在<code>AGGREGATE</code> 内部才是唯一的。</li>
+<li><code>AGGREGATE</code> 外部的对象不能引用除根<code>ENTITY</code>之外的任何内部对象。根<code>ENTITY</code>可以把对内部<code>ENTITY</code> 的引用传递给它们，但这些对象只能临时使用这些引用，而不能保持引用。</li>
+<li>根可以把一个<code>VALUE OBJECT</code>的副本传递给另一个对象，而不必关心它发生什么变化，因为它只是一个<code>VALUE</code> ，不再与<code>AGGREGATE</code> 有任何关联。 </li>
+<li>只有<code>AGGREGATE</code>的根才能直接通过数据库查询获取。所有其他对象必须通过<strong>遍历关联</strong>来发现。</li>
+<li><code>AGGREGATE</code> 内部的对象可以保持对其他<code>AGGREGATE</code> 根的引用。</li>
+<li>删除操作必须一次删除<code>AGGREGATE</code>边界之内的所有对象。（利用垃圾收集机制，这很容易做到。由于除根以外的其他对象都没有外部引用，因此删除了根以后，其他对象均会被回收）</li>
+<li>当提交对<code>AGGREGATE</code>边界内部的任何对象的修改时，整个<code>AGGREGATE</code> 的所有固定规则都必须被满足</li>
+</ul>
+<p style="color:red;font-weight:800">问题：在代码中该如何体现？</p>
+
+
+
+<h3 id="模式-：Factory"><a href="#模式-：Factory" class="headerlink" title="模式 ：Factory"></a>模式 ：Factory</h3><p><em><code>摘抄 P:89</code></em></p>
+<p>当创建一个对象或创建整个<code>AGGREGATE</code> 时，如果创建工作很复杂，或者暴露了过多的内部结构，则可以使用<code>FACTORY</code>进行封装。 </p>
+<h3 id="Factory的两种情况"><a href="#Factory的两种情况" class="headerlink" title="Factory的两种情况"></a>Factory的两种情况</h3><p><em><code>摘抄 P:90</code></em></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_Factory.png" alt="与Factory的基本交互"></p>
+<p><em><code>摘抄 P:91</code></em></p>
+<p>应该将创建复杂对象的实例和<code>AGGREGATE</code>的职责转移给<strong>单独的对象</strong>，这个对象本身可能没有承担领域模型中的职责，但它仍是领域设计的一部分。提供一个封装所有复杂装配操作的接口，而且这个接口<strong>不需要客户引用</strong>要被实例化的对象的具体类。在创建<code>AGGREGATE</code>时要把它作为一个整体，并确保它满足固定规则。</p>
+<p><em><code>摘抄 P:92</code></em></p>
+<p>如果需要向一个已存在的AGGREGATE 添加元素，可以在AGGREGATE 的根上创建一个<strong>FACTORY METHOD</strong></p>
+<p>如下图所示：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_Factory_FactoryMethod.png" alt></p>
+<p>另一个示例是在一个对象上使用<code>FACTORY METHOD</code>，这个对象与生成另一个对象密切相关，但它<strong>并不拥有</strong>所生成的对象。<br>如下图所示：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_Factory_NotContainEntity.png" alt="创建不属于自己的Entity"></p>
+<p><code>FACTORY METHOD</code> 生成一个<code>ENTITY</code> ，但这个<code>ENTITY</code> 并不属于<code>FACTORY</code>所在的<code>AGGREGATE</code>，<code>Trade Order</code>不属于<code>Brokerage Account</code>所在的<code>AGGREGATE</code> ，因为它从一开始就与交易执行应用程序进行交互，所以把它放在<code>Brokerage Account</code>中只会碍事。尽管如此，让<code>Brokerage Account</code>负责控制<code>Trade Order</code>的创建却是很自然的事情。</p>
+<p style="color:blue;font-weight:800">思考：Factory的两种模式，一种是在根上添加创建Aggregate内部对象的Create方法，另一种是创建另一个密切对象，但是创建出的对象并不包含在根内部。这样的好处可以避免客户和具体类之间的耦合。</p>
+
+
+
+<p><em><code>摘抄 P:93</code></em></p>
+<p>当有些细节需要隐藏（无论要隐藏的是具体实现还是构造的复杂性）而又找不到合适的地方来隐藏它们时，必须创建一个<strong>专用的</strong><code>FACTORY</code>对象或<code>SERVICE</code></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_Factory_Duli.png" alt="independent factory"></p>
+<p style="color:blue;font-weight:800">思考：如果AGGREGATE 内部的某个对象需要一个FACTORY ，而这个FACTORY 又不适合在AGGREGATE 根上创建，那么应该构建一个独立的FACTORY 。</p>
+
+
+
+<p><em><code>摘抄 P:93</code></em></p>
+<h3 id="有些情况下只需要使用构造函数"><a href="#有些情况下只需要使用构造函数" class="headerlink" title="有些情况下只需要使用构造函数"></a>有些情况下只需要使用构造函数</h3><ul>
+<li>该类没有通过接口实现多态性</li>
+<li>构造并不复杂</li>
+<li>客户可以访问对象的所有属性，因此向客户公开的构造函数中没有嵌套的对象创建</li>
+<li>公共构造函数必须遵守与FACTORY 相同的规则：它必须是原子操作，而且要满足被创建对象的所有固定规则。</li>
+</ul>
+<h3 id="接口的设计"><a href="#接口的设计" class="headerlink" title="接口的设计"></a>接口的设计</h3><ul>
+<li>每个操作都必须是原子的（必须在一次与Factory的交互中把创建对象所需的信息传递给Factory，同时需要确定创建失败时应该执行什么操作）</li>
+<li>Factory将与其参数发生耦合（耦合程度取决于对参数的处理）</li>
+</ul>
+<h3 id="重建已存储对象的Factory"><a href="#重建已存储对象的Factory" class="headerlink" title="重建已存储对象的Factory"></a>重建已存储对象的Factory</h3><p><em><code>摘抄 P:95</code></em></p>
+<p>重建对象的FACTORY 与用于创建对象的FACTORY 很类似，主要有以下两点不同：</p>
+<ol>
+<li><strong>用于重建对象的ENTITY  FACTORY 不分配新的跟踪ID</strong>。如果重新分配ID，将丢失与先前对象的连续性。因此，在重建对象的FACTORY 中，<strong>标识属性必须是输入参数的一部分。</strong></li>
+<li><strong>当固定规则未被满足时，重建对象的FACTORY 采用不同的方式进行处理</strong><ul>
+<li>使用ORM技术重建对象</li>
+</ul>
+</li>
+</ol>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_Factory_OrmFactory.png" alt="对象映射技术重建对象"></p>
+<p style="color:blue;font-weight:800">思考：FACTORY 通常不表示模型的任何部分，但它们是领域设计的一部分，能够使对象更明确地表示出模型,FACTORY 封装了对象创建和重建时的生命周期转换</p>
+
+
+
+<h3 id="模式：REPOSITOR"><a href="#模式：REPOSITOR" class="headerlink" title="模式：REPOSITOR"></a>模式：REPOSITOR</h3><p><em><code>摘抄 P:99</code></em></p>
+<h3 id="为什么需要Repository？"><a href="#为什么需要Repository？" class="headerlink" title="为什么需要Repository？"></a>为什么需要Repository？</h3><p><strong>客户需要一种有效的方式来获取对已存在的领域对象的引用</strong>。如果基础设施提供了这方面的便利，那么开发人员可能会增加很多可遍历的关联，这会使模型变得非常混乱。另一方面，开发人员可能使用查询从数据库中提取他们所需的数据，或是直接提取具体的对象，而不是通过<code>AGGREGATE</code> 的根来得到这些对象。这样就导致领域逻辑进入查询和客户代码中，而<code>ENTITY</code> 和<code>VALUE OBJECT</code> 则变成单纯的数据容器。采用大多数处理数据库访问的技术复杂性很快就会使客户代码变得混乱，这将导致开发人员简化领域层，最终使模型变得无关紧要。<br><strong>除了通过根来遍历查找对象这种方法以外，禁止用其他方法对AGGREGATE内部的任何对象进行访问</strong></p>
+<p style="color:blue;font-weight:800">思考：如果完全按照领域模型的角度，完全通过遍历对象的方法来获取所有关联的对象。这种模型会过于错综复杂。对象嵌套的层级或者关联的层级非常深。例如通过 Customer.order.product.price 层层遍历来获取当时客户订单的商品的价格。那如果完全按照数据库模型的角度，模型中的对象不需要完全连接起来，对象关系网就能保持在一个可控范围。但是这又会回到之前传统开发模式中，零散的使用各个 DAO 从各个表抽取数据自行拼凑出我们想要的模型。这里就会出现一个问题，Customer 类需要保持客户所有已订的 Order，还是通过 CustomerID 在数据库中查找 Order 列表呢？</p>
+
+
+<p><em><code>摘抄 P:100</code></em></p>
+<p><code>REPOSITORY</code> 将某种类型的所有对象表示为一个概念集合（通常是模拟的）。它的行为类似于集合<code>collection</code>，只是具有更复杂的<strong>查询功能</strong>。</p>
+<p>在添加或删除相应类型的对象时，<code>REPOSITORY</code>的后台机制<strong>负责将对象添加到数据库中，或从数据库中删除对象</strong>。这个定义将一组紧密相关的职责集中在一起，这些职责提供了对<code>AGGREGATE</code> 根的整个生命周期的全程访问。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_Repository_01.png" alt="使用Repository为客户执行删除"></p>
+<h3 id="如何实现Repository？"><a href="#如何实现Repository？" class="headerlink" title="如何实现Repository？"></a>如何实现Repository？</h3><p><em><code>摘抄 P:100</code></em></p>
+<ul>
+<li>通过一个众所周知的<strong>全局接口</strong>来提供访问。</li>
+<li>为<strong>每种</strong>需要全局访问的对象类型<strong>创建一个对象</strong>，这个对象相当于该类型的所有对象在内存中的一个集合的“替身”</li>
+<li>提供添加和删除对象的方法，用这些方法来封装在数据存储中实际插入或删除数据的操作</li>
+<li>提供根据具体条件来挑选对象的方法，并返回属性值满足查询条件的对象或对象集合（所返回的对象是完全实例化的），从而将实际的存储和查询技术封装起来。</li>
+<li>只为那些确实需要直接访问的<code>AGGREGATE根</code>提供<code>REPOSITORY</code></li>
+<li>让客户始终聚焦于模型，而将<strong>所有对象的存储和访问</strong>操作交给<code>REPOSITORY</code> 来完成</li>
+</ul>
+<p><em><code>摘抄 P:102</code></em></p>
+<p>基于SPECIFICATION （规格）的查询是将REPOSITORY 通用化的好办法。客户可以使用规格来描<br>述（也就是指定）它需要什么，而不必关心如何获得结果。在这个过程中，可以创建一个对象来<br>实际执行筛选操作。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_Repository_02.png" alt="基于SPECIFICATION的Repository框架"></p>
+<p style="color:red;font-weight:800">问题：基于Specification的Repository框架如何实现？</p>
+
+
+<p><em><code>摘抄 P:103</code></em></p>
+<p>根据所使用的持久化技术和基础设施不同，REPOSITORY 的实现也将有很大的变化。将存储、检索和查询机制<strong>封装起来</strong>是REPOSITORY 实现的最基本的特性：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_Repository_03.png" alt="Repository将底层数据存储封装起来"></p>
+<p style="color:blue;font-weight:800">思考：通过Repository我们将底层数据存储封装起来，这样可以很容易的更换数据框架，而不影响现有实现。</p>
+
+
+
+
+<h3 id="实现Repository的注意事项"><a href="#实现Repository的注意事项" class="headerlink" title="实现Repository的注意事项"></a>实现Repository的注意事项</h3><ul>
+<li><strong>对类型进行抽象</strong>。并不是每个类都需要有一个Repository，类型可以是一个结构层次的父类，（例如TradeOrder可以是Order）。类型也可以是个接口，也可以是个具体类。</li>
+<li><strong>充分利用与客户解耦的优点</strong>。我们可以很容易地更改R EPOSITORY 的实现，但如果客户直接调用底层机制，我们就很难修改其实现。也可以利用<strong>解耦</strong>来优化性能，因为这样就可以使用<strong>不同的</strong>查询技术，或在内存中缓存对象，可以<strong>随时自由地切换持久化策略</strong>。</li>
+<li><strong>将事务的控制权留给客户</strong>。如果REPOSITORY 不插手事务控制，那么事务管理就会简单得多。</li>
+</ul>
+<h3 id="REPOSITORY-与FACTORY-的关系"><a href="#REPOSITORY-与FACTORY-的关系" class="headerlink" title="REPOSITORY 与FACTORY 的关系"></a>REPOSITORY 与FACTORY 的关系</h3><p><em><code>摘抄 P:105</code></em></p>
+<p><code>FACTORY</code> 负责处理对象生命周期的<strong>开始</strong>，而<code>REPOSITORY</code>帮助管理生命周期的<strong>中间和结束。</strong></p>
+<p><code>FACTORY</code> 负责制造新对象，而<code>REPOSITORY</code>负责查找已有对象。</p>
+<p><code>Factory</code>和<code>Repository</code>职责分离：<code>Factory</code>创建新对象之后把它添加到<code>Repository</code>中</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/DDD_Repository_04.png" alt="职责分离"></p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">谢谢老板请我喝冰可乐~(●'◡'●)</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《《领域驱动设计》摘抄（一）》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/ling-yu-qu-dong-she-ji-zhai-chao.html" property="cc:attributionName"
+               rel="cc:attributionURL">
+                Wukai
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '4af46122409e8ebb4420',
+        clientSecret: '1b65d78a643c349cb27f5ecb6075a151283642c3',
+        repo: 'wukai319958.github.io',
+        owner: 'wukai319958',
+        admin: "wukai319958",
+        id: '2019-12-19T22-03-36',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments input[type=text],
+    #vcomments input[type=email],
+    #vcomments input[type=url],
+    #vcomments textarea {
+        box-sizing: border-box;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #42b983;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div id="vcomments" class="card-content"></div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XCkrwz5GdyiKyKNkxHxMLkNk-gzGzoHsz',
+        appKey: 'qCRVHNOrU0OtJh9gK12GQYei',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '没有github账号的朋友可以在这里留言哦~(●&#39;◡&#39;●)'
+    });
+</script>
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/ling-yu-qu-dong-she-ji-zhai-chao-er.html">
+                    <div class="card-image">
+                        
+                        <img src="http://blog-images-wk.test.upcdn.net/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1.jpg" class="responsive-img" alt="《领域驱动设计》摘抄（二）">
+                        
+                        <span class="card-title">《领域驱动设计》摘抄（二）</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            《领域驱动设计》：基于Java语言的一个扩展的DDD示例
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-12-28
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/DDD/" class="post-category" target="_blank">
+                                    DDD
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/领域驱动设计/" target="_blank">
+                        <span class="chip bg-color">领域驱动设计</span>
+                    </a>
+                    
+                    <a href="/tags/DDD/" target="_blank">
+                        <span class="chip bg-color">DDD</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/asp.net-core-wu.html">
+                    <div class="card-image">
+                        
+                        <img src="http://blog-images-wk.test.upcdn.net/asp.net%20core.png" class="responsive-img" alt="ASP.NET Core 入门(五)">
+                        
+                        <span class="card-title">ASP.NET Core 入门(五)</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            ASP.NET Core之日志（Logging）
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-12-09
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/ASP-NET-Core/" class="post-category" target="_blank">
+                                    ASP.NET Core
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Core入门/" target="_blank">
+                        <span class="chip bg-color">Core入门</span>
+                    </a>
+                    
+                    <a href="/tags/Logging/" target="_blank">
+                        <span class="chip bg-color">Logging</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: WK Blog<br />'
+            + '作者: Wu Kai<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+           &copy;2019 吴恺
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">102.3k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv" style='display:none'>
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv" style='display:none'>
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+				
+                
+            
+			<br>
+				<span id="sitetime"></span>
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/wukai319958" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:wukai5813@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=945546895" class="tooltipped" data-tooltip="QQ联系我: 945546895" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+<script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        var t1 = Date.UTC(2019, 09, 07, 00, 00, 00); //北京时间2018-2-13 00:00:00 
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime(); 
+	
+	<!-- var myDate=new Date(); -->
+	<!-- document.getElementById("thisYear").innerHTML=myDate.getFullYear(); -->
+	
+	
+	
+    $(document).ready(function () {
+        var int = setInterval(fixCount, 50); // 50ms周期检测函数 
+        var pvcountOffset = 0; // 初始化首次数据 
+        var uvcountOffset = 0;
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int); // 停止检测 
+            }
+        }
+    });
+
+
+</script>
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script>!function(e){var r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function t(){for(var c=0;c<r.length;c++)t=r[c],void 0,0<=(n=t.getBoundingClientRect()).top&&0<=n.left&&n.top<=(e.innerHeight||document.documentElement.clientHeight)&&function(){var t,n,e,i,o=r[c];t=o,n=function(){r=r.filter(function(t){return o!==t})},e=new Image,i=t.getAttribute("data-original"),e.onload=function(){t.src=i,n&&n()},e.src=i}();var t,n}t(),e.addEventListener("scroll",function(){!function(t,n){clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(n)},500)}(t,e)})}(this);</script></body>
+</html>

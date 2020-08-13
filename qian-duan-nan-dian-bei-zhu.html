@@ -1,0 +1,1821 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="前端难点总结并扩展, WK Blog">
+    <meta name="description" content="前端难点总结并扩展文本是对以下博客的搬运总结，推荐去原博客查看👇：
+王福朋博客
+一.JavaScript中的对象1.1 值类型和引用类型       function show(x) {
+            console.log(t">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>前端难点总结并扩展 | WK Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">WK Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">WK Blog</div>
+        <div class="logo-desc">
+            
+            Hi~我是吴恺，这是我的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/wukai319958" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/wukai319958" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        前端难点总结并扩展
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/闭包/" target="_blank">
+                                <span class="chip bg-color">闭包</span>
+                            </a>
+                        
+                            <a href="/tags/原型链/" target="_blank">
+                                <span class="chip bg-color">原型链</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Javascript/" class="post-category" target="_blank">
+                                Javascript
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-10-01
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        8.4k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        30 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="前端难点总结并扩展"><a href="#前端难点总结并扩展" class="headerlink" title="前端难点总结并扩展"></a>前端难点总结并扩展</h1><p>文本是对以下博客的搬运总结，推荐去原博客查看👇：</p>
+<p><a href="https://www.cnblogs.com/wangfupeng1988/p/3977924.html" target="_blank" rel="noopener">王福朋博客</a></p>
+<h2 id="一-JavaScript中的对象"><a href="#一-JavaScript中的对象" class="headerlink" title="一.JavaScript中的对象"></a>一.JavaScript中的对象</h2><h3 id="1-1-值类型和引用类型"><a href="#1-1-值类型和引用类型" class="headerlink" title="1.1 值类型和引用类型"></a>1.1 值类型和引用类型</h3><pre class="line-numbers language-javascript"><code class="language-javascript">       <span class="token keyword">function</span> <span class="token function">show</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment" spellcheck="true">// undefined</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// number</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token string">'abc'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// string</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// boolean</span>
+
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//function</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//object</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token punctuation">{</span> a<span class="token punctuation">:</span> <span class="token number">10</span><span class="token punctuation">,</span> b<span class="token punctuation">:</span> <span class="token number">20</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//object</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//object</span>
+            console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> <span class="token keyword">new</span> <span class="token class-name">Number</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">//object</span>
+        <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>简单值类型：</strong></p>
+<ul>
+<li><code>undefined</code></li>
+<li><code>number</code></li>
+<li><code>string</code></li>
+<li><code>boolean</code></li>
+<li><code>null</code></li>
+</ul>
+<p><strong>引用类型：</strong></p>
+<ul>
+<li>函数<code>function</code></li>
+<li>数组 <code>[ ]</code></li>
+<li>对象 <code>{ }</code></li>
+<li><code>new</code> Number(10)</li>
+</ul>
+<h3 id="1-2-null和undefined区分"><a href="#1-2-null和undefined区分" class="headerlink" title="1.2 null和undefined区分"></a>1.2 null和undefined区分</h3><p><strong>❗需要注意的是</strong></p>
+<p><strong>1. null到底是不是对象？</strong></p>
+<blockquote>
+<p>null不是object,typeof null返回object是因为.在js中，因为底层是用二进制编码的，所以如果前三位是000的话,用 typeof 的话就会返回object,而null的编码是全部都是0，所以也会被返回object ,所以这其实是js的一个bug而已。</p>
+</blockquote>
+<p><strong>2.</strong> <strong>null和undefined的区别？</strong></p>
+<blockquote>
+<p>undefined表示变量声明但未初始化时的值，<br>null表示准备用来保存对象，还没有真正保存对象的值。从逻辑角度看，null值表示一个空对象指针。</p>
+<p>任何时候都不建议显式的设置一个变量为undefined，但是如果保存对象的变量还没有真正保存对象，应该设置成null。<br>实际上，undefined值是派生自null值的，ECMAScript标准规定对二者进行相等性测试要返回true，即<br>alert(null==undefined); // true</p>
+</blockquote>
+<h3 id="1-3-何为对象？"><a href="#1-3-何为对象？" class="headerlink" title="1.3 何为对象？"></a>1.3 何为对象？</h3><blockquote>
+<p>在JavaScript中，数组、函数、对象都是对象</p>
+</blockquote>
+<p>在Java/C#等语言中的对象都是<code>new</code>出来的，而且对象包含字段、方法和属性，规定的很严格，但是JavaScript中的对象很随意：数组是一个对象，函数是对象，对象也是对象。<strong>对象里的一切都是属性，就算方法也是一种属性</strong>，因为它的属性使用<strong>键值对</strong>来表示。</p>
+<table>
+<thead>
+<tr>
+<th>语言</th>
+<th>产生方法</th>
+<th>对象包含</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Java</td>
+<td>new</td>
+<td>字段、方法、属性</td>
+</tr>
+<tr>
+<td>JavaScript</td>
+<td>[]、function、{}</td>
+<td>属性</td>
+</tr>
+</tbody></table>
+<p>总结来说，对象就是：<strong>若干属性的集合</strong></p>
+<h4 id="1-3-1-对象可以随意扩展属性"><a href="#1-3-1-对象可以随意扩展属性" class="headerlink" title="1.3.1 对象可以随意扩展属性"></a>1.3.1 对象可以随意扩展属性</h4><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">//自定义对象obj</span>
+<span class="token keyword">var</span> obj<span class="token operator">=</span><span class="token punctuation">{</span>
+     <span class="token comment" spellcheck="true">//属性a是数值</span>
+    a<span class="token punctuation">:</span><span class="token number">10</span><span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">//属性b是函数</span>
+    b<span class="token punctuation">:</span><span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">alert</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token comment" spellcheck="true">//属性c是对象</span>
+    c<span class="token punctuation">:</span><span class="token punctuation">{</span>
+        name<span class="token punctuation">:</span><span class="token string">'wk'</span><span class="token punctuation">,</span>
+        age<span class="token punctuation">:</span><span class="token string">'18'</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="1-3-2-函数和数组如何定义属性"><a href="#1-3-2-函数和数组如何定义属性" class="headerlink" title="1.3.2 函数和数组如何定义属性"></a>1.3.2 函数和数组如何定义属性</h4><p>函数定义属性和<code>{  }</code>不同，需要以<strong>赋值</strong>的形式定义属性。</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">var</span> fn<span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token function">alert</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+fn<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+fn<span class="token punctuation">.</span>b <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">alert</span><span class="token punctuation">(</span><span class="token number">123</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+fn<span class="token punctuation">.</span>c <span class="token operator">=</span> <span class="token punctuation">{</span>
+    name<span class="token punctuation">:</span><span class="token string">'wk'</span><span class="token punctuation">,</span>
+    age<span class="token punctuation">:</span><span class="token string">'18'</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">typeof</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//function</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在<code>Jquery</code>中 <code>$</code>即为一个函数，它也是用这种方式扩展属性的。</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">typeof</span> $<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// function</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="1-4-总结"><a href="#1-4-总结" class="headerlink" title="1.4 总结"></a>1.4 总结</h3><ol>
+<li>在JavaScript中，为值类型的有：number、undefined、null、string、Boolean</li>
+<li>引用类型有：数组[ ]、对象{}、函数function、new Number(10)</li>
+<li>函数和数组可以使用赋值的办法扩展属性。</li>
+</ol>
+<p><span style="color:red;font-weight:800;">一切（引用类型）都是对象，对象是属性的集合</span></p>
+<h2 id="二-JavaScript中函数和对象的关系"><a href="#二-JavaScript中函数和对象的关系" class="headerlink" title="二.JavaScript中函数和对象的关系"></a>二.JavaScript中函数和对象的关系</h2><blockquote>
+<p>函数是对象的一种，可以使用<code>instanceof</code>函数判断</p>
+</blockquote>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">var</span> fn <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>fn <span class="token keyword">instanceof</span> <span class="token class-name">Object</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>但是，函数和对象之间<strong>不仅仅是包含和被包含的关系</strong>，它们之间的关系比较复杂，甚至有一点鸡生蛋蛋生鸡的逻辑，咱们这一节就缕一缕。</p>
+<h3 id="2-1-对象都是通过函数创建的"><a href="#2-1-对象都是通过函数创建的" class="headerlink" title="2.1 对象都是通过函数创建的"></a>2.1 对象都是通过函数创建的</h3><pre class="line-numbers language-javascript"><code class="language-javascript">        <span class="token keyword">function</span> <span class="token function">Fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'wk'</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>age <span class="token operator">=</span> <span class="token number">18</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">var</span> fn1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">typeof</span> FN <span class="token comment" spellcheck="true">//function</span>
+        <span class="token keyword">typeof</span> fn1 <span class="token comment" spellcheck="true">//object</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面的这个例子很简单，它能说明：<strong>对象可以通过函数来创建</strong>。对！也只能说明这一点。</p>
+<h4 id="2-1-1-JavaScript创建数组和对象的语法糖"><a href="#2-1-1-JavaScript创建数组和对象的语法糖" class="headerlink" title="2.1.1  JavaScript创建数组和对象的语法糖"></a>2.1.1  JavaScript创建数组和对象的语法糖</h4><p>我们在JavaScript中创建数组和对象一般都是像下面这样的👇：</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span> a<span class="token punctuation">:</span> <span class="token number">10</span><span class="token punctuation">,</span> b<span class="token punctuation">:</span> <span class="token number">20</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">var</span> arr <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">'x'</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">]</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>看起来好像是没有通过函数创建，但是其实这都是javascript的语法糖，以上创建方式本质上是这样的：</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript">        <span class="token keyword">var</span> obj <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        obj<span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+        obj<span class="token punctuation">.</span>b <span class="token operator">=</span> <span class="token number">20</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">var</span> arr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        arr<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+        arr<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'x'</span><span class="token punctuation">;</span>
+        arr<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>所以，可以很负责任的说——对象都是通过函数来创建的。</strong></p>
+<h3 id="2-2-总结"><a href="#2-2-总结" class="headerlink" title="2.2 总结"></a>2.2 总结</h3><ul>
+<li><p><span style="color:red;font-weight:800;">对象都是通过函数来创建的</span></p>
+</li>
+<li><p><strong>对象是函数创建的，而函数却又是一种对象</strong></p>
+</li>
+</ul>
+<h2 id="三-prototype原型"><a href="#三-prototype原型" class="headerlink" title="三.prototype原型"></a>三.prototype原型</h2><h3 id="3-1-介绍"><a href="#3-1-介绍" class="headerlink" title="3.1 介绍"></a>3.1 介绍</h3><p>之前我们对函数进行了属性赋值，而<strong>prototype</strong>是JavaScript给函数的一个<strong>默认属性</strong>，每一个函数都有一个属性叫做prototype。</p>
+<p>并且！<strong>prototype的属性值是一个对象</strong>。</p>
+<p>而且，该对象中默认的只有一个叫<code>constructor</code>的属性，指向了这个函数的本身。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/proto1.png" alt></p>
+<p>如上图所示，SuperType是一个函数，右侧为它的原型。</p>
+<p>prototype原型作为一个包含在函数中的对象， 对象又是属性的集合，那么它肯定可以自定义很多属性，不仅仅只包含一个constructor,例如下面的Object，它的prototype中就包含了很多属性。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qiandian1.jpg" alt="多属性prototype"></p>
+<h3 id="3-2-给自己的函数方法的prototype添加属性"><a href="#3-2-给自己的函数方法的prototype添加属性" class="headerlink" title="3.2 给自己的函数方法的prototype添加属性"></a>3.2 给自己的函数方法的prototype添加属性</h3><p>在自己自定义的方法的prototype中新增自己的属性：</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript">        <span class="token keyword">function</span> <span class="token function">Fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+        Fn<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'王福朋'</span><span class="token punctuation">;</span>
+        Fn<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>getYear <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token number">1988</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在以上代码中，我们在函数<code>Fn</code>的<code>protorype</code>属性中添加了<code>name</code>属性和<code>getYea</code>r属性，这样就变成了：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan2.jpg" alt></p>
+<h3 id="3-3-用函数创建对象调用函数的prototype中的属性值"><a href="#3-3-用函数创建对象调用函数的prototype中的属性值" class="headerlink" title="3.3 用函数创建对象调用函数的prototype中的属性值"></a>3.3 用函数创建对象调用函数的prototype中的属性值</h3><p>我们给函数的prototype中的属性值添加属性又有什么用呢？</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript">        <span class="token keyword">function</span> <span class="token function">Fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+        Fn<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'wk'</span><span class="token punctuation">;</span>
+        Fn<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>getAge <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token number">18</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">var</span> fn <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>fn<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>fn<span class="token punctuation">.</span><span class="token function">getAge</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>从以上代码我们可以看到，<code>Fn</code>他是一个函数，还记得之前说到，对象都是由函数 <code>new</code> 出来的，即<code>fn</code>是由函数<code>Fn</code> <code>new</code>出来的一个对象，并且<code>fn</code>对象可以调用<code>Fn.prototype</code>属性值中的属性。</p>
+<p>因为每个对象都有一个隐藏的属性——“<strong>proto</strong>”，这个属性引用了创建这个对象的函数的prototype。</p>
+<p>即：fn.<strong>proto</strong> === Fn.prototype</p>
+<p>这里的”<strong>proto</strong>“成为“隐式原型”</p>
+<h3 id="3-4-总结"><a href="#3-4-总结" class="headerlink" title="3.4 总结"></a>3.4 总结</h3><ul>
+<li><strong>prototype</strong>是JavaScript给函数的一个<strong>默认属性</strong>，每一个函数都有一个属性叫做prototype。</li>
+<li><strong>prototype的属性值是一个对象</strong>，该对象默认有一个叫<code>constructor</code>的属性，指向了这个函数的<strong>本身</strong>。</li>
+<li>我们可以给函数的prototype属性值添加属性</li>
+<li>使用函数创建的对象可以调用函数中的prototype属性</li>
+</ul>
+<h2 id="四-隐式原型-proto"><a href="#四-隐式原型-proto" class="headerlink" title="四. 隐式原型__proto__"></a>四. 隐式原型<code>__proto__</code></h2><h3 id="4-1-介绍"><a href="#4-1-介绍" class="headerlink" title="4.1 介绍"></a>4.1 介绍</h3><p>每个函数function都有一个<strong>prototype</strong>，即原型。</p>
+<p>这里再加一句话——每个对象都有一个<code>__proto__</code>，可成为隐式原型。</p>
+<p>这个<code>__proto__</code>是一个隐藏的属性，JavaScript不希望开发者用到这个属性值，有的低版本浏览器甚至不支持这个属性值。</p>
+<h3 id="4-2-proto-与prototype的关系"><a href="#4-2-proto-与prototype的关系" class="headerlink" title="4.2 __proto__与prototype的关系"></a>4.2 <code>__proto__</code>与prototype的关系</h3><p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/foo4.jpg" alt></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan3.jpg" alt></p>
+<p>上面截图看</p>
+<p>​        来，<code>obj.__proto__</code>和<code>Object.prototype</code>的属性一样！这么巧！</p>
+<p>答案就是一样。</p>
+<p>obj这个对象本质上是被Object函数创建的，因此<code>obj.__proto__=== Object.prototype</code>。我们可以用一个图来表示。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan4.jpg" alt></p>
+<p>即，<strong>每个对象都有一个<code>__proto__</code>属性，指向创建该对象的函数的prototype。</strong></p>
+<h3 id="4-3-Object-prototype的-proto-指向何处？"><a href="#4-3-Object-prototype的-proto-指向何处？" class="headerlink" title="4.3 Object prototype的__proto__指向何处？"></a>4.3 Object prototype的<code>__proto__</code>指向何处？</h3><p>之前有讲到，函数的原型 Fn.prototype本质上是一个对象，是对象那么必定有<code>__proto__</code>这一个属性。</p>
+<p>那么上图中的“Object prototype”它的<code>__proto__</code>指向哪里？</p>
+<p>在说明“Object prototype”之前，先说一下自定义函数的prototype。自定义函数的prototype本质上就是和 var obj = {} 是一样的，都是被Object创建，所以它的<code>__proto__</code>指向的就是<code>Object.prototype</code>。</p>
+<p><strong>但是Object.prototype确实一个特例——它的<code>__proto__</code>指向的是<code>null</code>，切记切记！</strong></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/foo.png" alt></p>
+<h3 id="4-4-函数（function）的-proto-指向"><a href="#4-4-函数（function）的-proto-指向" class="headerlink" title="4.4  函数（function）的__proto__指向"></a>4.4  函数（function）的<code>__proto__</code>指向</h3><p>之前说过，函数（function）也是对象的一种，而对象都有隐式原型<code>__proto__</code>,那么函数也有么？</p>
+<p>答案是——<strong>当然有！</strong></p>
+<p>一个对象的<code>__proto__</code>指向创建它的函数的prototype属性，那么有时什么创建了函数(function)呢❓</p>
+<p><strong>————————</strong>是 <code>Function</code>,注意“F”是大写的。</p>
+<p>且看如下代码：</p>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">fn</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">return</span> x<span class="token operator">+</span>y<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//30</span>
+<span class="token keyword">var</span> fn1<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Function</span><span class="token punctuation">(</span><span class="token string">"x"</span><span class="token punctuation">,</span><span class="token string">"y"</span><span class="token punctuation">,</span><span class="token string">"return x+y"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">fn1</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment" spellcheck="true">//30</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上代码中，第一种方式是比较传统的函数创建方式，第二种是用<code>new Functoin</code>创建。</p>
+<p><strong>但是并不推荐用第二种方式创建。</strong></p>
+<p>这里只是向大家演示，函数是被Function创建的。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan5.jpg" alt></p>
+<p>上图中，很明显的标出了：自定义函数<code>Foo.__proto__</code>指向<code>Function.prototype</code>，<code>Object.__proto__</code>指向<code>Function.prototype</code>，唉，怎么还有一个……<code>Function.__proto__</code>指向<code>Function.prototype</code>？这不成了循环引用了？</p>
+<p>对！是一个环形结构。</p>
+<p>Function也是一个函数，函数是一种对象，也有<code>__proto__</code>属性。既然是函数，那么它一定是被Function创建。所以——<strong>Function是被自身创建的</strong>。所以它的<code>__proto__</code>指向了<strong>自身的Prototype。</strong></p>
+<p>最后一个问题：<code>Function.prototype</code>指向的对象，它的<code>__proto__</code>是不是也指向<code>Object.prototype</code>？</p>
+<p>答案是<strong>肯定的</strong>。因为<code>Function.prototype</code>指向的对象也是一个普通的被Object创建的对象，所以也遵循基本的规则。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan6.png" alt></p>
+<h3 id="4-5-总结"><a href="#4-5-总结" class="headerlink" title="4.5 总结"></a>4.5 总结</h3><ul>
+<li><strong>每个对象都有一个<code>__proto__</code>属性，指向创建该对象的函数的prototype。</strong></li>
+<li>自定义函数：<code>function Fn(){}</code>的 <code>Fn.prototype</code>也是一个对象，也是由<strong>Object</strong>创建的，所以，<code>Fn.prototype.__proto__</code>指向的是<code>Object.prototype</code>,即：</li>
+</ul>
+<pre class="line-numbers language-javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>Fn<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>__proto__<span class="token operator">===</span>Object<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span>  <span class="token comment" spellcheck="true">//true</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li><p><code>Object.prototype</code>是一个特例，它指向<code>null</code></p>
+</li>
+<li><p>Function创建了函数，例如Object、自定义函数等，<strong>函数的创建可以用以下方法</strong>👇：</p>
+</li>
+</ul>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">var</span> fn1<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Function</span><span class="token punctuation">(</span><span class="token string">"x"</span><span class="token punctuation">,</span><span class="token string">"y"</span><span class="token punctuation">,</span><span class="token string">"return x+y"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>函数也是一个对象，它的<code>__ptoto__</code>指向的是<code>Function.prototype</code></li>
+<li>Object函数也是由Function创建的，所以<code>Object.__proto__</code>也指向<code>Function.prototype</code></li>
+<li>Function是被自身所创建的，所以它的<code>__proto__</code>指向了<strong>自身的Prototype。</strong></li>
+<li><code>Function.prototype</code>指向的对象，它的<code>__proto__</code>也指向<code>Object.prototype</code></li>
+</ul>
+<h2 id="五-instanceof"><a href="#五-instanceof" class="headerlink" title="五. instanceof"></a>五. instanceof</h2><h3 id="5-1-介绍"><a href="#5-1-介绍" class="headerlink" title="5.1 介绍"></a>5.1 介绍</h3><p>对于值类型，你可以通过<code>typeo</code>f判断，string/number/boolean都很清楚，但是<code>typeof</code>在判断到<strong>引用类型</strong>的时候，<strong>返回值只有object/function</strong>，你不知道它到底是一个object对象，还是数组，还是new Number等等。</p>
+<h3 id="5-2-分析"><a href="#5-2-分析" class="headerlink" title="5.2 分析"></a>5.2 分析</h3><p>这个时候就需要用到instanceof。例如：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/foo2.jpg" alt></p>
+<p><code>f1</code>这个对象是被<code>Foo</code>创建，但是“<strong>f1 instanceof Object</strong>”为什么是<strong>true</strong>呢？</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan7.jpg" alt></p>
+<p>Instanceof运算符的第一个变量是一个<strong>对象</strong>，暂时称为A；第二个变量一般是一个<strong>函数</strong>，暂时称为B。</p>
+<p>Instanceof的判断队则是：</p>
+<p><strong>沿着A的<code>__proto__</code>这条线来找，同时沿着B的<code>prototype</code>这条线来找，如果两条线能找到同一个引用，即同一个对象，那么就返回true。如果找到终点还未重合，则返回false。</strong></p>
+<p>根据上图很容易就能看出来，就是true。</p>
+<p>通过上以规则，你可以解释很多比较怪异的现象，例如：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan8.jpg" alt></p>
+<p>这些看似很混乱的东西，答案却都是true，这是为何？</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan9.jpg" alt></p>
+<p>问题又出来了。Instanceof这样设计，到底有什么用？到底instanceof想表达什么呢？</p>
+<p>重点就这样被这位老朋友给引出来了</p>
+<p><strong>——继承——原型链。</strong></p>
+<h3 id="5-3-总结"><a href="#5-3-总结" class="headerlink" title="5.3 总结"></a>5.3 总结</h3><ul>
+<li>引用类型判断其类型时，需要使用instanceof</li>
+<li>instanceof的判断规则是：</li>
+</ul>
+<blockquote>
+<p><strong>沿着A的<code>__proto__</code>这条线来找，同时沿着B的<code>prototype</code>这条线来找，如果两条线能找到同一个引用，即同一个对象，那么就返回true。如果找到终点还未重合，则返回false。</strong></p>
+</blockquote>
+<h2 id="六-继承"><a href="#六-继承" class="headerlink" title="六. 继承"></a>六. 继承</h2><h3 id="6-1-介绍"><a href="#6-1-介绍" class="headerlink" title="6.1 介绍"></a>6.1 介绍</h3><p>“继承”是面向对象中常用的概念，但是javascript中的继承和java等强类型语言中的继承是两码事，这里把“继承”着重拿出来，就为了体现这个不同。</p>
+<h3 id="6-2-JavaScript中的继承是通过原型链来体现的"><a href="#6-2-JavaScript中的继承是通过原型链来体现的" class="headerlink" title="6.2  JavaScript中的继承是通过原型链来体现的"></a>6.2  JavaScript中的继承是通过原型链来体现的</h3><p>先看几句代码：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan10.jpg" alt></p>
+<p>分析以上代码，<code>f1</code>是<code>Foo</code>函数<code>new</code>出来的对象,<code>f1.a</code>是<code>f1</code>对象的基本属性，<strong><code>f1.b</code>是怎么来的呢？</strong></p>
+<p>——————是从<code>Foo.prototype</code>中来的，之前说过，对象都是通过函数<strong>new</strong>出来的，每个对象都有<code>__proto__</code>这个属性，并且此出现指向<strong>new</strong>它出来的函数的<strong>prototype</strong>属性，即<strong><code>f1.__proto__</code>指向的是<code>Foo.prototype</code></strong></p>
+<p><span style="background:yellow">访问一个对象的属性时，先在基本属性中查找，如果没有，再沿着<code>__proto__</code>这条链向上找，这就是原型链。</span></p>
+<p>看图说话：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan11.jpg" alt></p>
+<p>上图中，访问<code>f1.b</code>时，<code>f1</code>的基本属性中没有<code>b</code>，于是沿着<code>__proto__</code>找到了<code>Foo.prototype.b</code>。</p>
+<h3 id="6-3-如何区分对象的属性是基本的还是从原型链来的"><a href="#6-3-如何区分对象的属性是基本的还是从原型链来的" class="headerlink" title="6.3 如何区分对象的属性是基本的还是从原型链来的"></a>6.3 如何区分对象的属性是基本的还是从原型链来的</h3><p>那么我们在实际应用中如何区分一个属性到底是基本的还是从原型中找到的呢❓</p>
+<p>大家可能都知道答案了——<code>hasOwnProperty</code></p>
+<p>特别是在for…in…循环中，一定要注意。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan12.jpg" alt></p>
+<p>我们发现，<code>f1</code>竟然由<code>hasOwnProperty</code>这个属性,<code>f1</code>本身没有这个属性，<code>Foo.protytype</code>也没有这个属性，那么它的这个属性从哪来的？</p>
+<p>它是从<code>Object.prototype</code>中来的 ! 请看图：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan13.jpg" alt></p>
+<p>对象的原型链是沿着<code>__proto__</code>这条线走的，因此在查找<code>f1.hasOwnProperty</code>属性时，就会顺着原型链一直查找到<code>Object.prototype</code>。</p>
+<p>由于<strong>所有的对象的原型链都会找到<code>Object.prototype</code></strong>，因此<strong>所有的对象都会有<code>Object.prototype</code>的方法</strong>。这就是所谓的<strong>“继承”</strong>。</p>
+<p>当然这只是一个例子，你可以<strong>自定义函数和对象来实现自己的继承</strong>。</p>
+<p>来一个经常见到的继承例子👇：</p>
+<p>每个函数都有call，apply方法，都有length，arguments，caller等属性。为什么每个函数都有？这肯定是“继承”的，之前说过，函数都是由<code>Function</code>函数创建的，因此继承的都是<code>Function.prototype</code>中的方法。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan14.jpg" alt></p>
+<p>看到了吧，有call、length等这些属性。</p>
+<p>并且，我们还看到有<code>hasOwnProptrty</code>这个属性，这个属性不是在<code>Object.prototype</code>中定义的么？那怎么还会有<code>hasOwnProperty</code>呢？</p>
+<p>——那是因为<code>Function.prototype</code>继承自<code>Object.prototype</code>的方法。有疑问可以看看上一节将instanceof时候那个大图，看看<code>Function.prototype.__proto__</code>是否指<code>Object.prototype</code>。</p>
+<h3 id="6-4-总结"><a href="#6-4-总结" class="headerlink" title="6.4 总结"></a>6.4 总结</h3><ul>
+<li>Javascript中的继承是通过原型链实现的</li>
+<li>访问一个对象的属性时，先在基本属性中查找，如果没有，再沿着<code>__proto__</code>这条链向上找，这就是原型链。</li>
+<li>所有的对象的原型链都会找到<code>Object.prototype</code><strong>，因此</strong>所有的对象都会有<code>Object.prototype</code>的方法<strong>。这就是所谓的</strong>“继承”。</li>
+</ul>
+<h2 id="七-原型的灵活性"><a href="#七-原型的灵活性" class="headerlink" title="七. 原型的灵活性"></a>七. 原型的灵活性</h2><p>在Java和C#中，你可以简单的理解类class是一个模子，都有严格的规定，不能随意修改规则。</p>
+<p>而在JavaScript中，就没有模子了。</p>
+<h3 id="7-1-对象的属性可以随意改动"><a href="#7-1-对象的属性可以随意改动" class="headerlink" title="7.1 对象的属性可以随意改动"></a>7.1 对象的属性可以随意改动</h3><h4 id="7-1-1-添加属性"><a href="#7-1-1-添加属性" class="headerlink" title="7.1.1 添加属性"></a>7.1.1 添加属性</h4><p>对象或者函数在<code>new</code>出来的时候，可能什么属性都没有，但是你可以这会儿加一个，过一会儿在加两个，非常灵活。</p>
+<p>在<code>jQuery</code>的源码中，对象被创建时什么属性都没有，都是代码一步一步执行时，一个一个加上的。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan15.jpg" alt></p>
+<h4 id="7-1-2-修改继承的属性"><a href="#7-1-2-修改继承的属性" class="headerlink" title="7.1.2 修改继承的属性"></a>7.1.2 修改继承的属性</h4><p>其次，如果继承的方法不合适，<strong>可以做出修改</strong>。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/foo3.jpg" alt></p>
+<h4 id="7-1-3-自己创建属性"><a href="#7-1-3-自己创建属性" class="headerlink" title="7.1.3 自己创建属性"></a>7.1.3 自己创建属性</h4><p>例如在json2.js源码中，为Date、String、Number、Boolean方法添加一个toJSON的属性。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan16.jpg" alt></p>
+<p>如果你要添加内置方法的原型属性，最好做一步判断，<strong>如果该属性不存在，则添加。如果本来就存在，就没必要再添加了。</strong></p>
+<h3 id="7-2-总结"><a href="#7-2-总结" class="headerlink" title="7.2 总结"></a>7.2 总结</h3><ul>
+<li>在javascript中属性的添加修改创建很灵活</li>
+</ul>
+<h2 id="八-执行上下文"><a href="#八-执行上下文" class="headerlink" title="八. 执行上下文"></a>八. 执行上下文</h2><h3 id="8-1-浏览器的”准备工作”"><a href="#8-1-浏览器的”准备工作”" class="headerlink" title="8.1 浏览器的”准备工作”"></a>8.1 浏览器的”准备工作”</h3><h4 id="8-1-1-对变量的准备工作"><a href="#8-1-1-对变量的准备工作" class="headerlink" title="8.1.1 对变量的准备工作"></a>8.1.1 对变量的准备工作</h4><p>什么是“执行上下文”（也叫做“执行上下文环境”）？暂且不下定义，先看一段代码：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan17.jpg" alt></p>
+<p>第一句报错，a未定义，很正常。第二句、第三句输出都是undefined，说明浏览器在执行console.log(a)时，<strong>已经知道了a是undefined</strong>，但却不知道a是10（第三句中）。</p>
+<p>在一段js代码拿过来真正一句一句运行之前，浏览器已经做了一些<strong>“准备工作”</strong></p>
+<p>这些”准备工作”就包括<strong>对变量的声明</strong>而不是赋值。变量赋值是在<strong>赋值语句执行的时候</strong>进行的。可用下图模拟：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan18.jpg" alt></p>
+<h4 id="8-1-2-对this的准备工作"><a href="#8-1-2-对this的准备工作" class="headerlink" title="8.1.2  对this的准备工作"></a>8.1.2  对this的准备工作</h4><p>下面还有。先来个简单的。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan19.jpg" alt></p>
+<p>与第一种情况不同的是：第一种情况只是对变量进行声明（并没有赋值），而此种情况直接给this赋值。这也是“准备工作”情况要做的事情之一。</p>
+<h4 id="8-1-3-对函数的准备工作"><a href="#8-1-3-对函数的准备工作" class="headerlink" title="8.1.3 对函数的准备工作"></a>8.1.3 对函数的准备工作</h4><p>第三种情况。</p>
+<p>在第三种情况中，需要注意代码注释中的两个名词：</p>
+<p>——<strong>“函数表达式”</strong>和<strong>“函数声明”</strong>。虽然两者都很常用，但是这两者在“准备工作”时，却是两种待遇。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan20.jpg" alt></p>
+<p>看以上代码。“函数声明”时我们看到了第二种情况的影子，而“函数表达式”时我们看到了第一种情况的影子。</p>
+<p>可以推断出👇：</p>
+<p><strong>在“准备工作”中，对待函数表达式就像对待“ var a = 10 ”这样的变量一样，只是声明。而对待函数声明时，却把函数整个赋值了。</strong></p>
+<h4 id="8-1-4-“准备工作”总结"><a href="#8-1-4-“准备工作”总结" class="headerlink" title="8.1.4 “准备工作”总结"></a>8.1.4 “准备工作”总结</h4><p>我们总结一下，在“准备工作”中完成了哪些工作：</p>
+<ul>
+<li>变量、函数表达式——变量声明，默认赋值为undefined；</li>
+<li>this——赋值；</li>
+<li>函数声明——赋值；</li>
+</ul>
+<p><strong>这三种数据的准备情况我们称之为“执行上下文”或者“执行上下文环境”。</strong></p>
+<h3 id="8-2-代码段"><a href="#8-2-代码段" class="headerlink" title="8.2 代码段"></a>8.2 代码段</h3><p>细心的朋友可能会发现，我们上面所有的例子都是在<strong>全局环境</strong>下执行的。</p>
+<p>其实，javascript在执行一个<strong>代码段</strong>之前，都会进行这些<strong>“准备工作”</strong>来生成执行上下文。这个“代码段”其实分<strong>三种</strong>情况——<strong>全局代码，函数体，eval代码。</strong></p>
+<p>这里解释一下为什么代码段分为这三种。</p>
+<p>所谓“代码段”就是一段<strong>文本形式</strong>的代码。</p>
+<p><strong>Ⅰ：</strong></p>
+<p><strong>全局代码段</strong>是手写文本到<code>&lt;script&gt;</code>标签中的代码</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan21.jpg" alt="全局代码段"></p>
+<p><strong>Ⅱ：</strong></p>
+<p>其次，<strong>eval代码段</strong>接收的也是一段文本形式的代码</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan22.jpg" alt="eval代码段"></p>
+<p><strong>Ⅲ：</strong></p>
+<p>最后，<strong>函数体是代码段是因为函数在创建时，本质上是 new Function(…) 得来的</strong>，其中需要传入一个文本形式的参数作为函数体。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan23.jpg" alt="函数体代码段"></p>
+<p><span style="color:red">eval不常用，也不推荐大家用。</span></p>
+<h2 id="十-This"><a href="#十-This" class="headerlink" title="十.This"></a>十.This</h2><p><strong>在函数中this到底取何值，是在函数真正被调用执行的时候确定的，函数定义的时候确定不了。</strong></p>
+<p>this的取值，分五种情况。</p>
+<h3 id="10-1-情况1-构造函数"><a href="#10-1-情况1-构造函数" class="headerlink" title="10.1 情况1:构造函数"></a>10.1 情况1:构造函数</h3><p>所谓构造函数就是用来new对象的函数。其实严格来说，所有的函数都可以new一个对象，但是有些函数的定义是<strong>为了new一个对象</strong>，而有些函数则不是。另外注意，构造函数的函数名第一个字母<strong>大写</strong>（规则约定）。例如：Object、Array、Function等。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan24.jpg" alt></p>
+<p>以上代码中，如果函数作为构造函数用，那么其中的<code>this</code>就代表它即将<code>new</code>出来的对象。</p>
+<p>注意，以上仅限<code>new Foo()</code>的情况，即<code>Foo</code>函数作为<strong>构造函数</strong>的情况。如果<strong>直接调用</strong><code>Foo</code>函数，而不是<code>new Foo()</code>，情况就大不一样了。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan25.jpg" alt></p>
+<p>这种情况<code>this</code>指向的是<code>window</code></p>
+<h3 id="10-2-情况2：函数作为对象的一个属性"><a href="#10-2-情况2：函数作为对象的一个属性" class="headerlink" title="10.2 情况2：函数作为对象的一个属性"></a>10.2 情况2：函数作为对象的一个属性</h3><p>如果函数作为对象的一个属性时，并且作为对象的一个<strong>属性被调用</strong>时，函数中的<code>this</code>指向<strong>该对象</strong>。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan26.jpg" alt></p>
+<p>以上代码中，<code>fn</code>不仅作为一个对象的一个<strong>属性</strong>，而且的确是作为对象的一个属性<strong>被调用</strong>。结果<code>this</code>就是<code>obj</code>对象。</p>
+<p>注意，如果<code>fn</code>函数<strong>不作为</strong><code>obj</code>的一个属性被调用，会是什么结果呢？</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan27.jpg" alt></p>
+<p>以上代码中，如果<code>fn</code>函数被赋值到了另一个变量中，并没有作为<code>obj</code>的一个属性被调用，那么<code>this</code>的值就是<code>window</code>，<code>this.x</code>为<code>undefined</code>。</p>
+<h3 id="10-3-情况3：函数用call或者apply调用"><a href="#10-3-情况3：函数用call或者apply调用" class="headerlink" title="10.3 情况3：函数用call或者apply调用"></a>10.3 情况3：函数用call或者apply调用</h3><p>当一个函数被<code>call</code>和<code>apply</code>调用时，<code>this</code>的值就取<strong>传入的对象</strong>的值。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan28.jpg" alt></p>
+<h3 id="10-4-情况4-全局-amp-调用普通函数"><a href="#10-4-情况4-全局-amp-调用普通函数" class="headerlink" title="10.4 情况4: 全局 &amp;调用普通函数"></a>10.4 情况4: 全局 &amp;调用普通函数</h3><p>在<strong>全局环境</strong>下，<code>this</code>永远是<code>window</code></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan29.jpg" alt></p>
+<p><strong>普通函数</strong>在调用时，其中的<code>this</code>也都是<code>window</code>。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan30.jpg" alt></p>
+<p>不过下面的情况你需要注意一下👇：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan31.jpg" alt></p>
+<p>函数f在<code>obj.fn</code>内部定义，虽然<code>obj</code>调用了属性<code>fn</code>，但是它仍是一个普通函数，this仍然指向window。</p>
+<h3 id="10-5-情况5：构造函数的prototype"><a href="#10-5-情况5：构造函数的prototype" class="headerlink" title="10.5 情况5：构造函数的prototype"></a>10.5 情况5：构造函数的prototype</h3><p>在构造函数的prototype中，this又代表着什么❓</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan32.jpg" alt></p>
+<p>如上代码，在<code>Fn.prototype.getName</code>函数中，<code>this</code>指向的是<code>f1</code>对象。因此可以通过<code>this.name</code>获取<code>f1.name</code>的值。</p>
+<p>其实，不仅仅是构造函数的prototype，即便是在整个原型链中，this代表的也都是当前对象的值。</p>
+<h3 id="10-6-总结"><a href="#10-6-总结" class="headerlink" title="10.6 总结"></a>10.6 总结</h3><ol>
+<li>构造函数中的This：<ul>
+<li>函数作为构造函数中，则<code>this</code>代表它即将<code>new</code>出来的对象。</li>
+<li>直接调用构造函数，则<code>this</code>指向<code>window</code></li>
+</ul>
+</li>
+<li>函数作为对象的一个属性:<ul>
+<li>作为对象的一个属性被调用时，<code>this</code>指向该对象。</li>
+<li>将该属性赋值给变量时，<code>this</code>指向<code>window</code>.</li>
+</ul>
+</li>
+<li>函数用<code>call</code>或者<code>apply</code>调用时，<code>this</code>指向传入的对象的值。</li>
+<li>在全局环境中，<code>this</code>永远指向<code>window</code></li>
+<li>普通函数在调用时，<code>this</code>指向<code>window</code></li>
+</ol>
+<pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword">var</span> fn <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//window</span>
+<span class="token punctuation">}</span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ol start="6">
+<li>在对象属性函数中定义的内部函数，<code>this</code>指向<code>window</code></li>
+<li>在构造函数的<code>prototype</code>中，定义的属性函数中的<code>this</code>指向的也是当前<code>new</code>出来的对象。</li>
+</ol>
+<p><span style="color:red;">所以还是那句话总结的好，谁调用的函数，this就指向谁</span></p>
+<h2 id="十一-执行上下文栈"><a href="#十一-执行上下文栈" class="headerlink" title="十一. 执行上下文栈"></a>十一. 执行上下文栈</h2><p>执行<strong>全局代码</strong>时，会产生一个<strong>执行上下文环境</strong>，每次调用函数都又会产生执行上下文环境。当函数调用完成时，这个上下文环境以及其中的数据都会被<strong>消除</strong>，再重新回到全局上下文环境。<strong>处于活动状态的执行上下文环境只有一个。</strong></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan33.jpg" alt></p>
+<h3 id="11-1-压栈出栈过程"><a href="#11-1-压栈出栈过程" class="headerlink" title="11.1 压栈出栈过程"></a>11.1 压栈出栈过程</h3><p>举个例子：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan34.jpg" alt></p>
+<p>如上代码。</p>
+<p>在执行代码之前，首先将创建全局上下文环境。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan35.jpg" alt></p>
+<p>然后是代码执行。代码执行到第12行之前，上下文环境中的变量都在执行过程中被赋值。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan36.jpg" alt></p>
+<p>执行到第13行，调用bar函数。</p>
+<p>跳转到bar函数内部，执行函数体语句之前，会<strong>创建一个新的执行上下文环境。</strong></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan37.jpg" alt></p>
+<p>并将这个执行上下文环境压栈，设置为<strong>活动状态</strong>。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan38.jpg" alt></p>
+<p>执行到第5行，又调用了fn函数。</p>
+<p>进入fn函数，在执行函数体语句之前，会创建fn函数的执行上下文环境，并压栈，设置为活动状态。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan39.jpg" alt></p>
+<p>待第5行执行完毕，即fn函数执行完毕后，此次调用fn所生成的上下文环境出栈，并且被<strong>销毁</strong>（已经用完了，就要及时销毁，释放内存）。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan40.jpg" alt></p>
+<p>同理，待第13行执行完毕，即bar函数执行完毕后，调用bar函数所生成的上下文环境出栈，并且被销毁。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan41.jpg" alt></p>
+<p>有一种情况，而且是很常用的一种情况，无法做到这样干净利落的说销毁就销毁。这种情况就是伟大的——<strong>闭包</strong>。</p>
+<h3 id="11-2-总结"><a href="#11-2-总结" class="headerlink" title="11.2 总结"></a>11.2 总结</h3><ul>
+<li>执行<strong>全局代码</strong>时，会产生一个<strong>执行上下文环境</strong>。</li>
+<li>调用函数时，函数会创建一个属于自己的执行上下文环境，并在调用完后销毁。</li>
+<li>处于活动中的执行上下文只有一个。</li>
+</ul>
+<h2 id="十二-作用域"><a href="#十二-作用域" class="headerlink" title="十二. 作用域"></a>十二. 作用域</h2><h3 id="12-1-js中没有块级作用域"><a href="#12-1-js中没有块级作用域" class="headerlink" title="12.1 js中没有块级作用域"></a>12.1 js中没有块级作用域</h3><p><span style="background:yellow">js中没有块级作用域</span></p>
+<p>所谓“块”，就是大括号“｛｝”中间的语句。例如if语句：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan42.jpg" alt></p>
+<p>再比如for语句：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan43.jpg" alt></p>
+<p>所以，我们在编写代码的时候，不要在“块”里面声明变量，要在代码的<strong>一开始就声明</strong>好了，以避免发生歧义。</p>
+<p>如：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan44.jpg" alt></p>
+<p><span style="background:yellow">并且 javascript除了全局作用域之外，只有函数可以创建的作用域</span></p>
+<p>所以，我们在声明变量时，<strong>全局代码要在代码前端声明</strong>，函数中要在<strong>函数体一开始</strong>就声明好。除了这两个地方，其他地方都不要出现变量声明。而且建议用“单var”形式。</p>
+<h3 id="12-2-作用域解析"><a href="#12-2-作用域解析" class="headerlink" title="12.2 作用域解析"></a>12.2 作用域解析</h3><p>下面继续说作用域。作用域是一个很抽象的概念，类似于一个“地盘”</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan45.jpg" alt></p>
+<p>如上图，全局代码和<code>fn</code>、<code>bar</code>两个函数都会形成一个作用域。</p>
+<p>而且，<strong>作用域有上下级的关系，上下级关系的确定就看函数是在哪个作用域下创建的。</strong></p>
+<p>例如，<code>fn</code>作用域下创建了<code>bar</code>函数，那么<code>fn作用域</code>就是<code>bar作用域</code>的<strong>上级</strong>。</p>
+<p><span style="background:yellow">作用域最大的用处就是隔离变量，不同作用域下同名变量不会有冲突</span></p>
+<p>例如以上代码中，三个作用域下都声明了“a”这个变量，但是他们不会有冲突。各自的作用域下，用各自的“a”。</p>
+<h3 id="12-3-总结"><a href="#12-3-总结" class="headerlink" title="12.3 总结"></a>12.3 总结</h3><ul>
+<li>js中是没有块级作用域 “{   }” 的。</li>
+<li>js除了全局作用域之外，只有函数可以创建的作用域。</li>
+<li>作用域最大的用处就是隔离变量，不同作用域下同名变量不会有冲突</li>
+</ul>
+<h2 id="十三-作用域和上下文环境"><a href="#十三-作用域和上下文环境" class="headerlink" title="十三. 作用域和上下文环境"></a>十三. 作用域和上下文环境</h2><h3 id="13-1-作用域和执行上下文结合"><a href="#13-1-作用域和执行上下文结合" class="headerlink" title="13.1 作用域和执行上下文结合"></a>13.1 作用域和执行上下文结合</h3><p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan46.jpg" alt></p>
+<p>如上图，我们在上文中已经介绍了:</p>
+<p>除了全局作用域之外，每个函数都会创建自己的作用域.</p>
+<p>作用域在函数定义时就已经确定了，而不是在函数调用时确定。</p>
+<h4 id="13-1-1-第一步"><a href="#13-1-1-第一步" class="headerlink" title="13.1.1 第一步"></a>13.1.1 第一步</h4><p>第一步，在<strong>加载程序时</strong>，已经<strong>确定了全局上下文环境</strong>，并随着程序的执行而对变量就行赋值。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan47.jpg" alt></p>
+<h4 id="13-1-2-第二步"><a href="#13-1-2-第二步" class="headerlink" title="13.1.2 第二步"></a>13.1.2 第二步</h4><p>第二步，程序执行到第<code>27</code>行，调用<code>fn(10)</code>，此时生成<strong>此次调用<code>fn</code>函数时的上下文环境</strong>，压栈，并将此上下文环境设置为<strong>活动</strong>状态。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan48.jpg" alt></p>
+<h4 id="13-1-3-第三步"><a href="#13-1-3-第三步" class="headerlink" title="13.1.3 第三步"></a>13.1.3 第三步</h4><p>第三步，执行到第<code>23行</code>时，调用<code>bar(100)</code>，生成此次调用的上下文环境，压栈，并设置为活动状态。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan49.jpg" alt></p>
+<h4 id="13-1-4-第四步"><a href="#13-1-4-第四步" class="headerlink" title="13.1.4 第四步"></a>13.1.4 第四步</h4><p>第四步，执行完第<code>23</code>行，<code>bar(100)</code>调用完成。则<code>bar(100)</code>上下文环境被<strong>销毁</strong>。接着执行第<code>24</code>行，调用<code>bar(200)</code>，则又生成<code>bar(200)</code>的上下文环境，压栈，设置为<strong>活动</strong>状态。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan50.jpg" alt></p>
+<h4 id="13-1-5-第五步"><a href="#13-1-5-第五步" class="headerlink" title="13.1.5 第五步"></a>13.1.5 第五步</h4><p>第五步，执行完第<code>24</code>行，则<code>bar(200)</code>调用结束，其上下文环境被销毁。此时会回到<code>fn(10)</code>上下文环境，变为活动状态。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan51.jpg" alt></p>
+<h4 id="13-1-6-第六步"><a href="#13-1-6-第六步" class="headerlink" title="13.1.6 第六步"></a>13.1.6 第六步</h4><p>第六步，执行完第<code>27</code>行代码，<code>fn(10)</code>执行完成之后，<code>fn(10)</code>上下文环境被<strong>销毁</strong>，<strong>全局上下文环境</strong>又回到活动状态。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan52.jpg" alt></p>
+<p>连接起来看就是👇：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan53.jpg" alt></p>
+<h3 id="13-2-总结"><a href="#13-2-总结" class="headerlink" title="13.2 总结"></a>13.2 总结</h3><p><strong>作用域只是一个“地盘”</strong>，一个抽象的概念，<strong>其中没有变量</strong>。<strong>要通过作用域对应的执行上下文环境来获取变量的值</strong>。同一个作用域下，<strong>不同的调用会产生不同的执行上下文环境</strong>，继而产生不同的变量的值。</p>
+<p><span style="background:yellow">所以，<strong>作用域中变量的值是在执行过程中产生的确定的，而作用域却是在函数创建时就确定了。</strong></span></p>
+<p>所以，如果要查找一个作用域下某个变量的值，就需要找到这个作用域对应的执行上下文环境，再在其中寻找变量的值。</p>
+<h2 id="十四-从自由变量到作用域链"><a href="#十四-从自由变量到作用域链" class="headerlink" title="十四. 从自由变量到作用域链"></a>十四. 从自由变量到作用域链</h2><h3 id="14-1-自由变量"><a href="#14-1-自由变量" class="headerlink" title="14.1 自由变量"></a>14.1 自由变量</h3><p>在A作用域中使用的变量x，却没有在A作用域中声明（即在其他作用域中声明的）</p>
+<p>对于A作用域来说，x就是一个自由变量。如下图</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan54.jpg" alt></p>
+<p>在调用函数<code>fn()</code>时，函数体中的第六行，b值很好取，直接在<code>fn</code>的作用域中取，因为b就在这里定义，而取x值时，就需要到另一个作用域中取了。</p>
+<h3 id="14-2-变量的取值作用域"><a href="#14-2-变量的取值作用域" class="headerlink" title="14.2 变量的取值作用域"></a>14.2 变量的取值作用域</h3><p>那么应该到哪个作用域中取呢？</p>
+<p><span style="background:yellow">有人说过要到父作用域中取，其实有时候这种解释会产生歧义。</span>例如：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan55.jpg" alt></p>
+<p>所以这句话从严格意义上来说是错的，而应该这样描述：</p>
+<p><span style="background:yellow"><strong>要到创建这个函数的那个作用域中取值——是“创建”，而不是“调用”</strong></span></p>
+<p>其实这就是所谓的<strong>“静态作用域”</strong>。</p>
+<p>对于本文第一段代码，在<code>fn</code>函数中，取自由变量<code>x</code>的值时，要到哪个作用域中取？</p>
+<p><strong>——要到创建<code>fn</code>函数的那个作用域中取——无论<code>fn</code>函数将在哪里调用。</strong></p>
+<h3 id="14-3-作用域链"><a href="#14-3-作用域链" class="headerlink" title="14.3 作用域链"></a>14.3 作用域链</h3><p>上面描述的只是跨一步作用域去寻找。</p>
+<p>如果跨了一步，还没找到呢？——接着跨！——<strong>一直跨到全局作用域为止</strong>。要是在全局作用域中都没有找到，那就是真的没有了。</p>
+<p>这个一步一步“跨”的路线，我们称之为——<span style="background:yellow">作用域链。</span></p>
+<p><strong>我们拿文字总结一下取自由变量时的这个“作用域链”过程：（假设a是自由量）</strong></p>
+<ul>
+<li>第一步，现在当前作用域查找a，如果有则获取并结束。如果没有则继续；</li>
+<li>第二步，如果当前作用域是全局作用域，则证明a未定义，结束；否则继续；</li>
+<li>第三步，（不是全局作用域，那就是函数作用域）将创建该函数的作用域作为当前作用域；</li>
+<li>第四步，跳转到第一步。</li>
+</ul>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan56.jpg" alt></p>
+<p>以上代码中：第<code>13</code>行，<code>fn()</code>返回的是<code>bar</code>函数，赋值给<code>x</code>。执行<code>x()</code>，即执行<code>bar</code>函数代码。取<code>b</code>的值时，直接在<code>fn</code>作用域取出。取<code>a</code>的值时，试图在<code>fn</code>作用域取，但是取不到，只能<strong>转向创建<code>fn</code>的那个作用域中去查找</strong>，结果找到了。</p>
+<h3 id="14-4-总结"><a href="#14-4-总结" class="headerlink" title="14.4 总结"></a>14.4 总结</h3><ul>
+<li>在A作用域中使用的变量x，却没有在A作用域中声明，这个x就是自由变量</li>
+<li><span style="background:yellow"><strong>自由变量的取值需要到创建这个函数的那个作用域中取值——是“创建”，而不是“调用”</strong></span></li>
+<li>寻找自由变量的作用域取值过程称之为<strong>作用域链</strong></li>
+</ul>
+<h2 id="十五-闭包"><a href="#十五-闭包" class="headerlink" title="十五. 闭包"></a>十五. 闭包</h2><p>闭包——<span style="background:yellow">函数作为返回值，函数作为参数传递。</span></p>
+<h3 id="15-1-函数作为返回值"><a href="#15-1-函数作为返回值" class="headerlink" title="15.1 函数作为返回值"></a>15.1 函数作为返回值</h3><p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan57.jpg" alt></p>
+<p>如上代码，<code>bar</code>函数作为<strong>返回值</strong>，赋值给<code>f1</code>变量。执行<code>f1(15)</code>时，用到了<code>fn</code>作用域下的<code>max</code>变量的值。</p>
+<h3 id="15-2-函数作为参数被传递"><a href="#15-2-函数作为参数被传递" class="headerlink" title="15.2 函数作为参数被传递"></a>15.2 函数作为参数被传递</h3><p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan58.jpg" alt></p>
+<p>如上代码中，<code>fn</code>函数作为一个参数被传递进入另一个函数，赋值给<code>f</code>参数。执行<code>f(15)</code>时，<code>max</code>变量的取值是<strong>10</strong>，而不是100。</p>
+<h3 id="15-3-闭包会增加内容开销"><a href="#15-3-闭包会增加内容开销" class="headerlink" title="15.3 闭包会增加内容开销"></a>15.3 闭包会增加内容开销</h3><p>在前面讲执行上下文栈时，我们提到当一个函数被调用完成之后，其执行上下文环境将被销毁，其中的变量也会被同时销毁。</p>
+<p>但是在当时那篇文章中留了一个问号❓</p>
+<p><span style="background:yellow"><strong>——有些情况下，函数调用完成之后，其执行上下文环境不会接着被销毁。这就是需要理解闭包的核心内容。</strong></span></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan59.jpg" alt></p>
+<p><strong>第一步</strong>，代码执行前生成全局上下文环境，并在执行时对其中的变量进行赋值。此时全局上下文环境是活动状态。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan60.jpg" alt></p>
+<p><strong>第二步</strong>，执行第17行代码时，调用<code>fn()</code>，产生<code>fn()</code>执行上下文环境，压栈，并设置为活动状态。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan61.jpg" alt></p>
+<p><strong>第三步</strong>，执行完第17行，<code>fn()</code>调用完成，按道理说应该<strong>销毁掉</strong><code>fn()</code>的执行上下文环境，但是不能那么做！</p>
+<p><span style="background:yellow"><strong>这是因为：</strong></span></p>
+<p><span style="background:yellow"><strong>执行fn()时，返回的是一个函数。函数的特别之处在于可以创建一个独立的作用域。</strong></span></p>
+<p>而正巧合的是，<strong>返回的这个函数体中</strong>，还有一个自由变量<code>max</code>要引用<code>fn</code>作用域下的<code>fn()</code>上下文环境中的max。因此，这个<code>max</code>不能被销毁，<strong>销毁了之后bar函数中的max就找不到值了</strong>。</p>
+<p>因此，这里的<code>fn()</code>上下文环境不能被销毁，<strong>还依然存在与执行上下文栈中。</strong></p>
+<p>——即，执行到第<code>18</code>行时，全局上下文环境将变为活动状态，但是<code>fn()</code>上下文环境依然会在执行上下文栈中。另外，执行完第18行，全局上下文环境中的<code>max</code>被赋值为100。如下图：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan62.jpg" alt></p>
+<p>第四步，执行到第<code>20</code>行，执行<code>f1(15)</code>，即执行<code>bar(15)</code>，创建<code>bar(15)</code>上下文环境，并将其设置为活动状态。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/qianduan63.jpg" alt></p>
+<p>执行<code>bar(15)</code>时，<code>max</code>是自由变量，需要向创建<code>bar函数</code>的作用域中查找，找到了max的值为10。这个过程在作用域链一节已经讲过。</p>
+<p>这里的重点就在于，创建<code>bar函数</code>是在执行<code>fn()</code>时创建的。<code>fn()</code>早就执行结束了，<strong>但是<code>fn()</code>执行上下文环境还存在与栈中</strong>，因此执行<code>bar(15)</code>时，<code>max</code>可以查找到。如果<code>fn()</code>上下文环境销毁了，那么<code>max</code>就找不到了。</p>
+<p><span style="background:yellow">使用闭包会增加内容开销，现在很明显了吧</span></p>
+<h3 id="15-4-总结"><a href="#15-4-总结" class="headerlink" title="15.4 总结"></a>15.4 总结</h3><ul>
+<li>函数作为返回值，函数作为参数传递。为闭包。</li>
+<li>闭包会增加内容开销<ul>
+<li>这是因为闭包中可能会用到创建它的执行上下文环境，所有它的父执行上下文不能销毁。</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">谢谢老板请我喝冰可乐~(●'◡'●)</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《前端难点总结并扩展》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/qian-duan-nan-dian-bei-zhu.html" property="cc:attributionName"
+               rel="cc:attributionURL">
+                吴恺
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '4af46122409e8ebb4420',
+        clientSecret: '1b65d78a643c349cb27f5ecb6075a151283642c3',
+        repo: 'wukai319958.github.io',
+        owner: 'wukai319958',
+        admin: "wukai319958",
+        id: '2019-10-01T21-20-46',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments input[type=text],
+    #vcomments input[type=email],
+    #vcomments input[type=url],
+    #vcomments textarea {
+        box-sizing: border-box;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #42b983;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div id="vcomments" class="card-content"></div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XCkrwz5GdyiKyKNkxHxMLkNk-gzGzoHsz',
+        appKey: 'qCRVHNOrU0OtJh9gK12GQYei',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '没有github账号的朋友可以在这里留言哦~(●&#39;◡&#39;●)'
+    });
+</script>
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/vue-xue-xi.html">
+                    <div class="card-image">
+                        
+                        <img src="http://blog-images-wk.test.upcdn.net/Vue.jpg" class="responsive-img" alt="Vue基础篇">
+                        
+                        <span class="card-title">Vue基础篇</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Vue总结之基础篇
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-13
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/前端框架/" class="post-category" target="_blank">
+                                    前端框架
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Vue-js/" target="_blank">
+                        <span class="chip bg-color">Vue.js</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/liu-zhuang-shi-qi-mo-shi-zhi-hong-lan-buff-jia-shen.html">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="六.装饰器模式之红蓝Buff加身">
+                        
+                        <span class="card-title">六.装饰器模式之红蓝Buff加身</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            装饰器模式之红蓝BUFF加身Buff（增益效果）在游戏中非常常见，例如LOL中的红蓝Buff，英雄可以拥有红Buff，蓝Buff或者红蓝Buff加身，当然比较悲催的话，红蓝Buff一整局都拿不到🙃。
+在这里，英雄就是一个对象，我们向现有的
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-25
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/设计模式/" class="post-category" target="_blank">
+                                    设计模式
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/创建型模式/" target="_blank">
+                        <span class="chip bg-color">创建型模式</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: WK Blog<br />'
+            + '作者: Wu Kai<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+           &copy;2019 吴恺
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">102.3k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv" style='display:none'>
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv" style='display:none'>
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+				
+                
+            
+			<br>
+				<span id="sitetime"></span>
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/wukai319958" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:wukai5813@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=945546895" class="tooltipped" data-tooltip="QQ联系我: 945546895" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+<script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        var t1 = Date.UTC(2019, 09, 07, 00, 00, 00); //北京时间2018-2-13 00:00:00 
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime(); 
+	
+	<!-- var myDate=new Date(); -->
+	<!-- document.getElementById("thisYear").innerHTML=myDate.getFullYear(); -->
+	
+	
+	
+    $(document).ready(function () {
+        var int = setInterval(fixCount, 50); // 50ms周期检测函数 
+        var pvcountOffset = 0; // 初始化首次数据 
+        var uvcountOffset = 0;
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int); // 停止检测 
+            }
+        }
+    });
+
+
+</script>
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script>!function(e){var r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function t(){for(var c=0;c<r.length;c++)t=r[c],void 0,0<=(n=t.getBoundingClientRect()).top&&0<=n.left&&n.top<=(e.innerHeight||document.documentElement.clientHeight)&&function(){var t,n,e,i,o=r[c];t=o,n=function(){r=r.filter(function(t){return o!==t})},e=new Image,i=t.getAttribute("data-original"),e.onload=function(){t.src=i,n&&n()},e.src=i}();var t,n}t(),e.addEventListener("scroll",function(){!function(t,n){clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(n)},500)}(t,e)})}(this);</script></body>
+</html>

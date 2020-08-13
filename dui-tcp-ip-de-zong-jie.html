@@ -1,0 +1,1491 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="OSI分层模型和TCP/IP分层模型, WK Blog">
+    <meta name="description" content="OSI参考模型和TCP/IP分层模型
+最近看了《图解TCP/IP》这本书，于是将这本书中的精髓做一个归总，以便之后查阅。
+
+1.何为协议？1.1 介绍协议就是计算机与计算机之间通过网络实现通信事先达成的一种“约定”。这种“约定”使那些由不同">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>OSI分层模型和TCP/IP分层模型 | WK Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">WK Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">WK Blog</div>
+        <div class="logo-desc">
+            
+            Hi~我是吴恺，这是我的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/wukai319958" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/wukai319958" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('http://blog-images-wk.test.upcdn.net/tcpip分层模型.png')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        OSI分层模型和TCP/IP分层模型
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/分层模型/" target="_blank">
+                                <span class="chip bg-color">分层模型</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/网络原理/" class="post-category" target="_blank">
+                                网络原理
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-09-14
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        2.9k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        10 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="OSI参考模型和TCP-IP分层模型"><a href="#OSI参考模型和TCP-IP分层模型" class="headerlink" title="OSI参考模型和TCP/IP分层模型"></a>OSI参考模型和TCP/IP分层模型</h1><blockquote>
+<p>最近看了《图解TCP/IP》这本书，于是将这本书中的精髓做一个归总，以便之后查阅。</p>
+</blockquote>
+<h2 id="1-何为协议？"><a href="#1-何为协议？" class="headerlink" title="1.何为协议？"></a>1.何为协议？</h2><h3 id="1-1-介绍"><a href="#1-1-介绍" class="headerlink" title="1.1 介绍"></a>1.1 介绍</h3><p><strong>协议</strong>就是计算机与计算机之间通过网络实现通信事先达成的一种“约定”。这种“约定”使那些由不同厂商的设备、不同的CPU以及不同的操作系统组成的计算机之间，<strong>只要遵循相同的协议就能够实现通信</strong>。反之，如果使用的协议不同，就无法通信。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/tcpip.png" alt="协议约定"></p>
+<p style="color:red;">Windows操作系统的平板电脑和Mac操作系统的一体机电脑，虽然操作系统不同，硬件组成不同，但是只要事先达成一个详细的约定，并遵循这一约定进行处理方可建立通信。</p>
+
+
+<h2 id="2-协议分层与OSI参考模型"><a href="#2-协议分层与OSI参考模型" class="headerlink" title="2 协议分层与OSI参考模型"></a>2 协议分层与OSI参考模型</h2><h3 id="2-1-OSI参考模型"><a href="#2-1-OSI参考模型" class="headerlink" title="2.1 OSI参考模型"></a>2.1 OSI参考模型</h3><p>协议分层就如同计算机软件中的<strong>模块化开发</strong>，OSI参考模型的建议是比较理想化的一种分层模型。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/osi.png" alt="OSI七层模型"></p>
+<ul>
+<li>OSI参考模型中定义了每一层的<strong>“作用”</strong></li>
+<li>定义每一层作用的是<strong>“协议”</strong></li>
+<li>“协议”是约定，其具体内容为<strong>“规范”</strong></li>
+<li>我们日常所使用的就是遵循各个协议具体“规范”的产品和通信手段</li>
+</ul>
+<h3 id="2-2-OSI参考模型中各层作用"><a href="#2-2-OSI参考模型中各层作用" class="headerlink" title="2.2 OSI参考模型中各层作用"></a>2.2 OSI参考模型中各层作用</h3><p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/tcp%E8%A7%A3%E9%87%8A.png" alt="OSI模型各层解释"></p>
+<h4 id="2-2-1-物理层"><a href="#2-2-1-物理层" class="headerlink" title="2.2.1 物理层"></a>2.2.1 物理层</h4><p style="color:red;font-weight:800;">信号和介质</p>
+<p style="color:red;font-weight:800;">比特流与电子信号之间的切换</p>
+
+
+<p>​        物理层（Physical Layer）是计算机网络OSI模型中<strong>最低的一层</strong>。物理层规定:为传输数据所需要的物理链路创建、维持、拆除，而提供具有机械的，电子的，功能的和规范的特性。简单的说，物理层确保原始的数据可在各种<strong>物理媒体</strong>上传输。局域网与广域网皆属第1、2层。<br>​        物理层是OSI的第一层，它虽然处于最底层，却是整个开放系统的基础。物理层为设备之间的数据通信<strong>提供传输媒体及互连设备</strong>，为数据传输提供可靠的环境。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E7%89%A9%E7%90%86%E5%B1%82.png" alt="物理层"></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E7%89%A9%E7%90%86%E5%B1%821.png" alt="物理层"></p>
+<h4 id="2-2-2-数据链路层"><a href="#2-2-2-数据链路层" class="headerlink" title="2.2.2 数据链路层"></a>2.2.2 数据链路层</h4><p style="color:red;font-weight:800;">数据帧与比特流之间的转换</p>
+
+
+<p>​        数据链路层是OSI参考模型中的<strong>第二层</strong>，介乎于物理层和网络层之间。数据链路层在物理层提供的服务的基础上<strong>向网络层提供服务</strong>，其最基本的服务是将<strong>源自网络层来的数据可靠地传输到相邻节点的目标机网络层</strong>。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82.png" alt="数据链路层"></p>
+<h4 id="2-2-3-网络层"><a href="#2-2-3-网络层" class="headerlink" title="2.2.3 网络层"></a>2.2.3 网络层</h4><p style="color:red;font-weight:800;">路径选择、路由及逻辑寻址</p>
+
+
+<p>​        网络层是OSI参考模型中的<strong>第三层</strong>，介于传输层和数据链路层之间，它在数据链路层提供的两个相邻端点之间的数据帧的传送功能上，进一步管理网络中的数据通信，<strong>将数据设法从源端经过若干个中间节点传送到目的端，从而向运输层提供最基本的端到端的数据传送服务</strong>。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E7%BD%91%E7%BB%9C%E5%B1%82.png" alt="网络层"></p>
+<h4 id="2-2-4-传输层"><a href="#2-2-4-传输层" class="headerlink" title="2.2.4 传输层"></a>2.2.4 传输层</h4><p style="color:red;font-weight:800;">管理两个节点之间的数据传输</p>
+<p style="color:red;font-weight:800;">关键层次之一，TCP/UDP运行在传输层</p>
+
+
+<p>​        传输层是整个网络体系结构中的关键层次之一，主要负责向两个主机中进程之间的通信提供服务。由于一个主机同时运行多个进程，因此运输层具有有<strong>复用和分用</strong>功能。传输层在终端用户之间提供透明的数据传输，向上层提供可靠的数据传输服务。传输层在给定的链路上通过流量控制、分段/重组和差错控制来保证数据传输的可靠性。传输层的一些协议是面向链接的，这就意味着传输层能保持对分段的跟踪，并且<strong>重传</strong>那些失败的分段。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E4%BC%A0%E8%BE%93%E5%B1%82.png" alt="传输层"></p>
+<h4 id="2-2-5-会话层"><a href="#2-2-5-会话层" class="headerlink" title="2.2.5 会话层"></a>2.2.5 会话层</h4><p style="color:red;font-weight:800;">为会话实体间建立连接👉数据传输阶段👉连接释放</p>
+
+
+<p>​        会话层(Session)是建立在传输层之上，利用传输层提供的服务，使应用<strong>建立和维持会话</strong>，并能使会话获得<strong>同步</strong>。会话层使用<strong>校验点</strong>可使通信会话在通信失效时从校验点继续恢复通信。这种能力对于传送大的文件极为重要。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E4%BC%9A%E8%AF%9D%E5%B1%82.png" alt="会话层"></p>
+<h4 id="2-2-6-表示层"><a href="#2-2-6-表示层" class="headerlink" title="2.2.6 表示层"></a>2.2.6 表示层</h4><p style="color:red;font-weight:800;">数据的压缩、解压、加密、解密</p>
+<p style="color:red;font-weight:800;">语法转换、语法协商、连接管理</p>
+
+
+<p>​        表示层向上对应用层服务，向下接受来自会话层的服务。表示层为在应用过程之间传送的信息提供表示方法的服务，它只关心信息发出的语法和语义。</p>
+<p>​        表示层位于OSI分层结构的第六层，它的主要作用之一是为异种机通信提供一种<strong>公共语言</strong>，以便能进行互操作。<strong>这种类型的服务之所以需要，是因为不同的计算机体系结构使用的数据表示法不同</strong>。与第五层提供透明的数据运输不同，表示层是处理所有与数据表示及运输有关的问题，包括转换、加密和压缩。每台计算机可能有它自己的表示数据的内部方法，例如，ASCII码与EBCDIC码，所以需要表示层协定来保证不同的计算机可以彼此理解。</p>
+<p>​        通过前面的介绍,我们可以看出,会话层以下5层完成了端到端的数据传送,并且是可靠,无差错的传送.<strong>但是数据传送只是手段而不是目的,最终是要实现对数据的使用</strong>.由于各种系统对数据的定义并不完全相同,最易明白的例子是键盘,其上的某些键的含义在许多系统中都有差异.这自然给利用其它系统的数据造成了障碍.表<strong>示层和应用层就担负了消除这种障碍的任务.</strong></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E8%A1%A8%E7%A4%BA%E5%B1%82.png" alt="表示层"></p>
+<h4 id="2-2-7-应用层"><a href="#2-2-7-应用层" class="headerlink" title="2.2.7 应用层"></a>2.2.7 应用层</h4><p style="color:red;font-weight:800;">直接为应用进程提供应用服务</p>
+<p style="color:red;font-weight:800;">每个应用有不同的应用协议</p>
+
+
+<p>​        应用层直接和应用程序接口并提供常见的<strong>网络应用服务</strong>。应用层也向表示层发出请求。<br>​        应用层是开放系统的最高层,是直接为应用进程提供服务的。其作用是在实现多个系统应用进程相互通信的同时,完成一系列业务处理所需的服务.其服务元素分为两类:公共应用服务元素CASE和特定应用服务元素SASE.</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E5%BA%94%E7%94%A8%E5%B1%82.png" alt="应用层"></p>
+<h3 id="2-3-OSI-7层模型应用通信实例"><a href="#2-3-OSI-7层模型应用通信实例" class="headerlink" title="2.3 OSI 7层模型应用通信实例"></a>2.3 OSI 7层模型应用通信实例</h3><p style="color:red;font-weight:800;">至上而下和至下而上</p>
+<p style="color:red;font-weight:800;">附加首部信息</p>
+<p style="color:red;font-weight:800;">封装和解封装</p>
+
+
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E9%80%9A%E4%BF%A1%E5%AE%9E%E4%BE%8B2.jpg" alt="QQ消息"></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E9%80%9A%E4%BF%A1%E5%AE%9E%E4%BE%8B.png" alt="发送邮件实例"></p>
+<ol>
+<li><strong>发送方</strong>从模型的第七层到第一层<strong>至上而下</strong>传输数据，<strong>接收方</strong>则<strong>至下而上</strong>从第一层到第七层传输数据</li>
+<li>发送端发送信息的过程中，每个分层上，在处理上一层传过来的数据时，都会在数据中附上当前协议需要包含的<strong>“首部信息”</strong></li>
+<li>接收端对收到的数据进行数据“首部”与“内容”的<strong>分离</strong>，再转发给上一分层，并最终将发送端的数据恢复为原装。</li>
+</ol>
+<h2 id="3-TCP-IP协议"><a href="#3-TCP-IP协议" class="headerlink" title="3 TCP/IP协议"></a>3 TCP/IP协议</h2><h3 id="3-1-介绍"><a href="#3-1-介绍" class="headerlink" title="3.1 介绍"></a>3.1 介绍</h3><p style="color:red;font-weight:800;">协议“簇”</p>
+
+
+<p>​        TCP/IP（Transmission Control Protocol/Internet Protocol，传输控制协议/网际协议）是指能够在多个不同网络间实现信息传输的<strong>协议簇</strong>。TCP/IP协议不仅仅指的是TCP 和IP两个协议，而是指一个由FTP、SMTP、TCP、UDP、IP等协议构成的协议簇， <strong>只是因为在TCP/IP协议中TCP协议和IP协议最具代表性，所以被称为TCP/IP协议。</strong> </p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E5%8D%8F%E8%AE%AE%E7%B0%87.png" alt="TCP/IP协议簇"></p>
+<h3 id="3-2-TCP-IP协议分层模型"><a href="#3-2-TCP-IP协议分层模型" class="headerlink" title="3.2 TCP/IP协议分层模型"></a>3.2 TCP/IP协议分层模型</h3><p style="color:red;font-weight:800;">TCP/IP分层模型将OSI参考模型的应用程、表示层、会话层统一归为应用层</p>
+<p style="color:red;font-weight:800;">TCP/IP更强调“在计算机上实现协议应该开发哪种程序</p>
+
+
+<p>​        由于TCP/IP尽早地制定了可行性较强的协议，提出了应对技术快速革新的协议，并及时进行后期改良的方案，因此<strong>打败了OSI模型，成为了事实上的标准</strong>。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/tcpip%E5%88%86%E5%B1%82%E6%A8%A1%E5%9E%8B.png" alt="TCP/IP分层模型"></p>
+<p>​        由上图可见👆，OSI和TCP/IP在分层模块上稍有区别，TCP/IP分层模型将应用程、表示层、会话层统一划入应用层，OSI参考模型注重“通信协议必要的功能是什么”，而TCP/IP则更强调“在计算机上实现协议应该开发哪种程序”。</p>
+<h3 id="3-3-TCP-IP分层模型应用通信实例"><a href="#3-3-TCP-IP分层模型应用通信实例" class="headerlink" title="3.3 TCP/IP分层模型应用通信实例"></a>3.3 TCP/IP分层模型应用通信实例</h3><p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/TCPIP%E5%AE%9E%E4%BE%8B.png" alt="实例"></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/tcpip%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png" alt="TCP/IP体系结构"></p>
+<h3 id="3-4-通信过程数据变化"><a href="#3-4-通信过程数据变化" class="headerlink" title="3.4 通信过程数据变化"></a>3.4 通信过程数据变化</h3><p>帧和数据包都是数据的传输形式。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E9%A1%BA%E5%BA%8F.png" alt></p>
+<ul>
+<li><p>数据链路层：Frame（帧）</p>
+</li>
+<li><p>网络层：Packet（数据包）</p>
+</li>
+<li><p>传输层：</p>
+<ul>
+<li>TCP的叫做Segment（数据段）</li>
+<li>UDP的叫做Datagram（数据报）</li>
+</ul>
+</li>
+<li><p>应用层：Message（消息）</p>
+</li>
+</ul>
+<ul>
+<li><p>Frame（帧），工作在二层，数据链路层传输的是数据帧，包含数据包，并且增加相应<strong>MAC地址</strong>与二层信息；</p>
+</li>
+<li><p>Packet（数据包），工作在三层，网络层传输的是数据包，包含数据报文，并且增加传输使用的I<strong>P地址</strong>等三层信息。</p>
+</li>
+</ul>
+<p>Packet（数据包）：封装的基本单元，它穿越网络层和数据链路层的分解面。通常一个Packet映射成一个Frame，但也有例外：即当数据链路层执行拆分或将几个Packet合成一个Frame的时候。  </p>
+<p><strong>通信过程数据结构变化大致如下：</strong></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%8F%98%E5%8C%96.png" alt="数据包变化"></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E6%95%B0%E6%8D%AE%E5%8C%85%E5%8F%98%E5%8C%962.png" alt="数据包变化"></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/%E7%AE%80%E4%BB%8B.jpg" alt="数据封装过程"></p>
+<h4 id="3-4-1-传输层报头解析"><a href="#3-4-1-传输层报头解析" class="headerlink" title="3.4.1 传输层报头解析"></a>3.4.1 传输层报头解析</h4><p style="color:red;font-weight:800;">加入端口信息</p>
+<p style="color:red;font-weight:800;">TCP\UDP协议</p>
+
+
+<p>​        每台电脑都有可能同时运行着很多个应用程序，所以当数据包被发送到主机上以后，是<strong>无法确定哪个应用程序要接收这个包</strong>，所以需要在数据包中加入<strong>端口</strong>信息。</p>
+<p><strong>TCP数据报头👇：</strong></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/TCP%E5%8C%85.png" alt="TCP数据报头结构"></p>
+<p><strong>UDP数据报头👇：</strong></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/UDP%E5%8C%85.png" alt="UDP数据报头结构"></p>
+<p><strong>常见端口信息👇：</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">应用进程</th>
+<th align="left">FTP</th>
+<th align="left">TELNET</th>
+<th align="left">SMTP</th>
+<th align="left">DNS</th>
+<th align="left">TFTP</th>
+<th align="left">HTTP</th>
+<th align="left">SNMP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>端口号</strong></td>
+<td align="left"><strong>21</strong></td>
+<td align="left"><strong>23</strong></td>
+<td align="left"><strong>25</strong></td>
+<td align="left"><strong>53</strong></td>
+<td align="left"><strong>69</strong></td>
+<td align="left"><strong>80</strong></td>
+<td align="left"><strong>161</strong></td>
+</tr>
+</tbody></table>
+<p style="color:green;font-weight:800">关于TCP/UDP等协议的异同点将在另一篇博客中专门介绍</p>
+
+<h4 id="3-4-2-网络层数据报头解析"><a href="#3-4-2-网络层数据报头解析" class="headerlink" title="3.4.2 网络层数据报头解析"></a>3.4.2 网络层数据报头解析</h4><p style="color:red;font-weight:800;">IP数据报</p>
+<p style="color:red;font-weight:800;">IP协议</p>
+<p style="color:red;font-weight:800;">源IP地址、目标IP地址</p>
+
+
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/IP%E6%95%B0%E6%8D%AE%E5%8C%85.png" alt="IP数据报解析"></p>
+<p><a href="https://blog.csdn.net/xd_hebuters/article/details/79177349" target="_blank" rel="noopener">关于IP数据报相关博客（Click Me）</a></p>
+<h4 id="3-4-3-数据链路层报头解析"><a href="#3-4-3-数据链路层报头解析" class="headerlink" title="3.4.3 数据链路层报头解析"></a>3.4.3 数据链路层报头解析</h4><p style="color:red;font-weight:800;">MAC帧</p>
+<p style="color:red;font-weight:800;">LLC帧</p>
+
+
+
+
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/MAC.jpg" alt="数据帧"></p>
+<p><a href="http://m.elecfans.com/article/647662.html" target="_blank" rel="noopener">MAC和LLC子层的区别看这篇博文(Click Me)</a></p>
+<h4 id="3-4-5-数据封装过程总结"><a href="#3-4-5-数据封装过程总结" class="headerlink" title="3.4.5 数据封装过程总结"></a>3.4.5 数据封装过程总结</h4><p>​        上层数据→→在传输层添加TCP头（包含端口信息等）→→在网络层添加IP头（包含IP协议等信息）→→在数据链路层添加LLC头和MAC头（包含MAC地址等信息）→→翻译成比特流（1101101…）</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>​        以上内容是我对《TCP/IP图解》这本书中分层模型等知识点的总结，数据在传输过程中是一个不断封装和解封的过程，一个数据要传输到另一个接收端，必须经过层层封装，封装的意义在于让发送端数据能够定位接收端的位置，让数据精准的被接受端应用程序接受。</p>
+<p style="color:orange;">此篇博客并没有讲解各层具体的协议，这些内容将在下一篇博客中详细说明。</p>
+
+
+<p>参考资料：</p>
+<ul>
+<li>《图解TCP/IP》</li>
+<li><a href="https://www.cnblogs.com/edisonchou/p/5987827.html" target="_blank" rel="noopener">https://www.cnblogs.com/edisonchou/p/5987827.html</a></li>
+</ul>
+<p style="color:green">————————————————————————————————————————————</p>
+版权声明：本文为吴恺的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://www.wukailiving.cn/dui-tcp-ip-de-zong-jie.html
+
+<p>如有不足之处，欢迎指正！</p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">谢谢老板请我喝冰可乐~(●'◡'●)</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《OSI分层模型和TCP/IP分层模型》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/dui-tcp-ip-de-zong-jie.html" property="cc:attributionName"
+               rel="cc:attributionURL">
+                吴恺
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '4af46122409e8ebb4420',
+        clientSecret: '1b65d78a643c349cb27f5ecb6075a151283642c3',
+        repo: 'wukai319958.github.io',
+        owner: 'wukai319958',
+        admin: "wukai319958",
+        id: '2019-09-14T15-30-01',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments input[type=text],
+    #vcomments input[type=email],
+    #vcomments input[type=url],
+    #vcomments textarea {
+        box-sizing: border-box;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #42b983;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div id="vcomments" class="card-content"></div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XCkrwz5GdyiKyKNkxHxMLkNk-gzGzoHsz',
+        appKey: 'qCRVHNOrU0OtJh9gK12GQYei',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '没有github账号的朋友可以在这里留言哦~(●&#39;◡&#39;●)'
+    });
+</script>
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/ip-xie-yi-xiang-jie.html">
+                    <div class="card-image">
+                        
+                        <img src="http://blog-images-wk.test.upcdn.net/IP.jfif" class="responsive-img" alt="IP协议详解">
+                        
+                        <span class="card-title">IP协议详解</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            网络层协议之IP协议
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-15
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/网络原理/" class="post-category" target="_blank">
+                                    网络原理
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/网络层协议/" target="_blank">
+                        <span class="chip bg-color">网络层协议</span>
+                    </a>
+                    
+                    <a href="/tags/IP协议/" target="_blank">
+                        <span class="chip bg-color">IP协议</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/tcp-ip-xie-yi-cu.html">
+                    <div class="card-image">
+                        
+                        <img src="http://blog-images-wk.test.upcdn.net/tcp.png" class="responsive-img" alt="TCP/IP协议簇">
+                        
+                        <span class="card-title">TCP/IP协议簇</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            TCP/IP协议簇(未完成)
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-09-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/网络原理/" class="post-category" target="_blank">
+                                    网络原理
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/TCP-IP/" target="_blank">
+                        <span class="chip bg-color">TCP/IP</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: WK Blog<br />'
+            + '作者: Wu Kai<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+           &copy;2019 吴恺
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">102.3k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv" style='display:none'>
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv" style='display:none'>
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+				
+                
+            
+			<br>
+				<span id="sitetime"></span>
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/wukai319958" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:wukai5813@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=945546895" class="tooltipped" data-tooltip="QQ联系我: 945546895" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+<script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        var t1 = Date.UTC(2019, 09, 07, 00, 00, 00); //北京时间2018-2-13 00:00:00 
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime(); 
+	
+	<!-- var myDate=new Date(); -->
+	<!-- document.getElementById("thisYear").innerHTML=myDate.getFullYear(); -->
+	
+	
+	
+    $(document).ready(function () {
+        var int = setInterval(fixCount, 50); // 50ms周期检测函数 
+        var pvcountOffset = 0; // 初始化首次数据 
+        var uvcountOffset = 0;
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int); // 停止检测 
+            }
+        }
+    });
+
+
+</script>
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script>!function(e){var r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function t(){for(var c=0;c<r.length;c++)t=r[c],void 0,0<=(n=t.getBoundingClientRect()).top&&0<=n.left&&n.top<=(e.innerHeight||document.documentElement.clientHeight)&&function(){var t,n,e,i,o=r[c];t=o,n=function(){r=r.filter(function(t){return o!==t})},e=new Image,i=t.getAttribute("data-original"),e.onload=function(){t.src=i,n&&n()},e.src=i}();var t,n}t(),e.addEventListener("scroll",function(){!function(t,n){clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(n)},500)}(t,e)})}(this);</script></body>
+</html>

@@ -1,0 +1,1748 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="RabbitMQ进阶, WK Blog">
+    <meta name="description" content="RabbitMQ进阶总结一些RabbitMQ的一些高级用法。
+本片博客思维导图：
+
+1.处理未被路由的消息通过前两篇博客我们知道，消息是通过路由键routingKey、bindingKey和交换机类型这些条件进行路由的，那必定会出现消息发出">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>RabbitMQ进阶 | WK Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">WK Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">WK Blog</div>
+        <div class="logo-desc">
+            
+            Hi~我是吴恺，这是我的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/wukai319958" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/wukai319958" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('http://blog-images-wk.test.upcdn.net/rabbitlogo.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        RabbitMQ进阶
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/RabbitMQ/" target="_blank">
+                                <span class="chip bg-color">RabbitMQ</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/消息中间件/" class="post-category" target="_blank">
+                                消息中间件
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-04-04
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        6.7k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        25 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="RabbitMQ进阶"><a href="#RabbitMQ进阶" class="headerlink" title="RabbitMQ进阶"></a>RabbitMQ进阶</h1><p>总结一些RabbitMQ的一些高级用法。</p>
+<p>本片博客思维导图：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ%E8%BF%9B%E9%98%B6.png" alt="思维导图"></p>
+<h2 id="1-处理未被路由的消息"><a href="#1-处理未被路由的消息" class="headerlink" title="1.处理未被路由的消息"></a>1.处理未被路由的消息</h2><p>通过前两篇博客我们知道，消息是通过路由键<code>routingKey</code>、<code>bindingKey</code>和交换机类型这些条件进行路由的，那必定会出现消息发出后无法找到匹配队列这一情况，那么我们该如何处理这些消息呢？</p>
+<h3 id="1-1mandatory参数"><a href="#1-1mandatory参数" class="headerlink" title="1.1mandatory参数"></a>1.1mandatory参数</h3><pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">void</span> <span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token keyword">string</span> exchange<span class="token punctuation">,</span> <span class="token keyword">string</span> routingKey<span class="token punctuation">,</span> <span class="token keyword">bool</span> mandatory<span class="token punctuation">,</span> 
+                  IBasicProperties basicProperties<span class="token punctuation">,</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> body<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>在<code>BasicPublish</code>方法中有一个<code>mandatory</code>参数，当<code>mandatory</code>参数设置为<code>true</code>时，如果交换机无法根据自身类型和路由键找到一个合适的队列，那么RabbitMQ将会调用<code>Basic.Return</code>命令将消息返回给生产者，如果设置为<code>false</code>，出现上述情形，消息会被直接丢弃。</p>
+<p>那么生产者如何获取这类被返回的消息呢？</p>
+<p>我们通过订阅<code>BasicReturn</code>事件就可以获得这类消息：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_ReturnEvent.png" alt="BasicReturn"></p>
+<p>事件方法：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">Channel_BasicReturn</span><span class="token punctuation">(</span>
+        <span class="token keyword">object</span> sender<span class="token punctuation">,</span> BasicReturnEventArgs e<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"Basic.Return返回的消息内容是{0}"</span><span class="token punctuation">,</span>                                       e<span class="token punctuation">.</span>Body<span class="token punctuation">.</span><span class="token function">ToString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其中事件参数<code>BasicReturnEventArgs</code>中包含了返回的消息的内容和附加属性集等信息：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_ReturnArgs.png" alt="`BasicReturnEventArgs`"></p>
+<p>从<code>AMQP</code>层面表示如下图所示：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_ReturnAMQP.png" alt="AMQP-Return"></p>
+<h3 id="1-2备份交换机"><a href="#1-2备份交换机" class="headerlink" title="1.2备份交换机"></a>1.2备份交换机</h3><p>备份交换机，英文名称为<code>Alternate Exchange</code>，简称为<code>AE</code>，当然，可以直白的称为”备胎交换机”（哭晕在厕所）…如果我们将<code>mandatory</code>设置为<code>false</code>，那么消息没有被路由后会被<strong>丢弃</strong>，这时候我们设置一个备份交换机就可以将未被路由的消息存储在RabbitMQ中，在我们需要的时候处理这些消息。</p>
+<p>我们在声明交换机的方法<code>channel.ExchangeDeclare</code>时有一个参数<code>argument</code>，代表了交换机的附加属性：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">void</span> <span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span> 
+    <span class="token keyword">string</span> exchange<span class="token punctuation">,</span> 
+    <span class="token keyword">string</span> type<span class="token punctuation">,</span> 
+    <span class="token keyword">bool</span> durable<span class="token punctuation">,</span> 
+    <span class="token keyword">bool</span> autoDelete<span class="token punctuation">,</span> 
+    <span class="token comment" spellcheck="true">//其它一些结构化参数，指定一些扩展属性</span>
+    IDictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span> arguments<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在这扩展属性中添加<code>alternate-exchange</code>在声明的时候指定此交换机为备份交换机：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">Dictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//声明指定交换机为备份交换机</span>
+args<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"alternate-exchange"</span><span class="token punctuation">,</span> <span class="token string">"myAe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>如果我们想实现下图所示的消息功能，该如何编写代码？</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_DeclareAE.png" alt="设置备份交换机"></p>
+<p>代码：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            <span class="token comment" spellcheck="true">//给普通交换机添加备份交换机扩展属性</span>
+            Dictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            args<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"alternate-exchange"</span><span class="token punctuation">,</span> <span class="token string">"myAe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//声明普通交换机，类型为Direct</span>
+            channel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span><span class="token string">"normalExchange"</span><span class="token punctuation">,</span> ExchangeType<span class="token punctuation">.</span>Direct<span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//声明备份交换机，类型为Fanout</span>
+            channel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span><span class="token string">"myAe"</span><span class="token punctuation">,</span> ExchangeType<span class="token punctuation">.</span>Fanout<span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//声明和普通交换机绑定的队列</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"normalQueue"</span><span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//声明和备份交换机绑定的队列</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"unroutedQueue"</span><span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//普通交换机和普通队列绑定，并指定routingKey</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueBind</span><span class="token punctuation">(</span><span class="token string">"normalQueue"</span><span class="token punctuation">,</span> <span class="token string">"normalExchange"</span><span class="token punctuation">,</span> <span class="token string">"routingKey"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//备份交换机和unroutedQueue队列绑定，因为交换机类型是fanout，所以routingkey可以是任何</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueBind</span><span class="token punctuation">(</span><span class="token string">"unroutedQueue"</span><span class="token punctuation">,</span> <span class="token string">"myAe"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于备份交换机，它有以下的特点：</p>
+<ul>
+<li>即使设置的备份<strong>交换机不存在</strong>，客户端和RabbitMQ服务端也不会出现异常，此时消息将会丢失。</li>
+<li>如果备份交换机<strong>没有绑定队列</strong>，客户端和RabbitMQ服务端也不会出现异常，此时消息将会丢失。</li>
+<li>如果备份交换机<strong>没有任何匹配</strong>的队列，客户端和RabbitMQ服务端也不会出现异常，此时消息将会丢失。</li>
+<li>如果备份交换机和<code>mandatory</code>参数一起使用，那么<code>mandatory</code>参数将会失效。</li>
+</ul>
+<h2 id="2-过期时间"><a href="#2-过期时间" class="headerlink" title="2.过期时间"></a>2.过期时间</h2><p><code>TTL</code>，Time to live 的简称，代表过期时间，RabbitMQ可以对<strong>消息和队列</strong>设置TTL。</p>
+<h3 id="2-1设置消息的TTL"><a href="#2-1设置消息的TTL" class="headerlink" title="2.1设置消息的TTL"></a>2.1设置消息的TTL</h3><p>我们可以给消息设置TTL，目前有两种方法：</p>
+<ol>
+<li>通过队列的扩展属性设置，此时，队列中的所有消息都有相同的过期时间。</li>
+<li>对消息的本身设置过期时间，此时，每条消息的过期时间可以不同</li>
+</ol>
+<p>注意：如果即设置了统一的过期时间，又设置了单个的过期时间，过期时间以<strong>较小的</strong>过期时间为准。</p>
+<p>当消息存在的时间超过了过期时间，那么词条消息会变成<code>死信（Dead Message）</code></p>
+<h4 id="对队列中的消息设置统一TTL"><a href="#对队列中的消息设置统一TTL" class="headerlink" title="对队列中的消息设置统一TTL"></a>对队列中的消息设置统一TTL</h4><p>我们在声明队列的时候，可以设置队列中消息的TTL：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            Dictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span> argss <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            argss<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"x-message-ttl"</span><span class="token punctuation">,</span> <span class="token number">60000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"queueName"</span><span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> argss<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>以上代码中，我们在声明队列的时候，通过在队列的扩展属性集中加入了<code>x-message-ttl</code>这个参数，设置统一的TTL值，这个参数的单位是<strong>毫秒</strong>。</p>
+<h4 id="对每条消息设置TTL"><a href="#对每条消息设置TTL" class="headerlink" title="对每条消息设置TTL"></a>对每条消息设置TTL</h4><pre class="line-numbers language-csharp"><code class="language-csharp"> <span class="token keyword">var</span> prop <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token comment" spellcheck="true">//设置消息的TTL</span>
+ prop<span class="token punctuation">.</span>Expiration <span class="token operator">=</span> <span class="token string">"60000"</span><span class="token punctuation">;</span>            channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span><span class="token string">"exchangeName"</span><span class="token punctuation">,</span><span class="token string">"routingKey"</span><span class="token punctuation">,</span>prop<span class="token punctuation">,</span>Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2设置队列的TTL"><a href="#2-2设置队列的TTL" class="headerlink" title="2.2设置队列的TTL"></a>2.2设置队列的TTL</h3><p>在声明队列<code>channel.QueueDeclare</code>方法中，我们在队列的扩展属性集中设置<code>x-expires</code>参数可以控制队列在被自动删除前处于<strong>未使用状态</strong>的时间，未使用状态指的是该队列没有任何消费者，队列也没有被重新声明，并且在这时间段没也没有调用<code>Basic.Get</code>命令。</p>
+<p>当队列达到设置的过期时间后，队列将会被删除，但是这个删除动作不是及时的。在RabbitMQ服务重启后，队列的过期时间将会被<strong>重新计算</strong>。</p>
+<p><code>x-expires</code>的参数也是以毫秒为单位的。</p>
+<p>以下代码演示了如何在声明队列的时候给队列设置过期时间：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"> Dictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ <span class="token comment" spellcheck="true">//在扩展属性集中添加x-expires参数，并且设置为60000毫秒也就是60秒后过期</span>
+ args<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"x-expires"</span><span class="token punctuation">,</span> <span class="token number">60000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"queueName"</span><span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-死信队列"><a href="#3-死信队列" class="headerlink" title="3.死信队列"></a>3.死信队列</h2><p><code>Dead-Letter-Exchange</code>简称<code>DLX</code>，可以称之为死信交换机，也有人称为死信邮箱。</p>
+<p>当消息在队列中过期之后成为死信之后，它能重新被发送到另一个交换机，这个交换机就是<code>DLX</code>。</p>
+<p><strong>与<code>DLX</code>的绑定队列就是<code>死信队列</code>。</strong></p>
+<p>以下几种情况会导致消息成为死信：</p>
+<ul>
+<li>消息被拒绝（Basic.Reject/Basic.Nack），并且设置了<code>requeue</code>参数为<code>false</code></li>
+<li>消息过期</li>
+<li>队列达到了最长长度</li>
+</ul>
+<p>可以在任何队列上绑定<code>DLX</code>,<code>DLX</code>和普通交换机一样，当这个队列存在死信时，RabbitMQ就会自动的将这个消息重发到队列绑定的<code>DLX</code>上去，进而被路由到死信队列上去，我们可以监听这个队列，从而进行相应的处理。</p>
+<p>我们可以在声明队列的方法<code>channel.QueueDeclare</code>中在其扩展属性集<code>arguments</code>中加入<code>x-dead-letter-exchange</code>参数来为这个队列添加<code>DLX</code>：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            <span class="token comment" spellcheck="true">//声明一个名为dlx-exchange，类型为direct的交换机</span>
+            channel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span><span class="token string">"dlx-exchange"</span><span class="token punctuation">,</span>ExchangeType<span class="token punctuation">.</span>Direct<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            Dictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//添加DLX参数</span>
+            args<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"x-dead-letter-exchange"</span><span class="token punctuation">,</span> <span class="token string">"dxl_exchange"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//声明队列，并且绑定相应的交换机，此时被绑定的交换机被称为死信交换机</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"myqueue"</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> <span class="token keyword">false</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们还可以为被转发到<code>DLX</code>上的消息重新定义<code>RoutingKey</code>，设定方法是在<code>channel.QueueDeclare</code>中添加<code>x-dead-letter-routing-key</code>这个参数：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">args<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"x-dead-letter-routing-key"</span><span class="token punctuation">,</span> <span class="token string">"newRoutingKey"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果没有特殊指定，那么消息将会使用原来的路由键。</p>
+<p>我们尝试编写代码实现下图的<code>死信队列</code>功能：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_DLX.png" alt="死信队列"></p>
+<p>代码：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            <span class="token comment" spellcheck="true">//声明正常交换机</span>
+            channel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span><span class="token string">"exchange.normal"</span><span class="token punctuation">,</span> ExchangeType<span class="token punctuation">.</span>Fanout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//定义队列附加属性集</span>
+            Dictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//为队列中的消息设置过期时间（TTL）</span>
+            args<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"x-message-ttl"</span><span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//声明死信交换机（DLX）</span>
+            channel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span><span class="token string">"exchange-dlx"</span><span class="token punctuation">,</span> ExchangeType<span class="token punctuation">.</span>Direct<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//为队列绑定DLX,并且为路由到DLX的消息设定新的RoutingKey</span>
+            args<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"x-dead-letter-exchange"</span><span class="token punctuation">,</span> <span class="token string">"exchange-dlx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            args<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"x-dead-letter-routing-key"</span><span class="token punctuation">,</span> <span class="token string">"routingKey-dlx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"queue.normal"</span><span class="token punctuation">,</span> <span class="token keyword">true</span><span class="token punctuation">,</span><span class="token keyword">false</span><span class="token punctuation">,</span><span class="token keyword">false</span><span class="token punctuation">,</span>args<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//正常队列声明完毕</span>
+            <span class="token comment" spellcheck="true">//声明正常交换机</span>
+            channel<span class="token punctuation">.</span><span class="token function">ExchangeDeclare</span><span class="token punctuation">(</span><span class="token string">"exhcange.normal"</span><span class="token punctuation">,</span> ExchangeType<span class="token punctuation">.</span>Fanout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//正常交换机和正常队列绑定</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueBind</span><span class="token punctuation">(</span><span class="token string">"queue.normal"</span><span class="token punctuation">,</span> <span class="token string">"exhcange.normal"</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//声明死信队列</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"queue.dlx"</span><span class="token punctuation">,</span><span class="token keyword">true</span><span class="token punctuation">,</span><span class="token keyword">false</span><span class="token punctuation">,</span><span class="token keyword">false</span><span class="token punctuation">,</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//死信队列和死信交换机绑定</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueBind</span><span class="token punctuation">(</span><span class="token string">"queue.dlx"</span><span class="token punctuation">,</span> <span class="token string">"exchange-dlx"</span><span class="token punctuation">,</span> <span class="token string">"routingKey-dlx"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//发布消息</span>
+            channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>
+                <span class="token string">"exchange.normal"</span><span class="token punctuation">,</span> 
+                <span class="token string">"rk"</span><span class="token punctuation">,</span> 
+                channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+                Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token string">"Message"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里创建了两个交换机：<code>exchange.normal</code>和<code>exchange-dlx</code>，一个为正常交换机，一个为死信交换机，并且为转发到死信交换机上的信息设置了新的<code>RoutingKey</code></p>
+<p>随之也声明了两个队列：<code>queue.normal</code>和<code>queue.dlx</code>，一个为正常队列，一个为死信队列。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_DLXWeb.png" alt="队列属性Web展示"></p>
+<p>在<code>RabbitMQ Web</code>管理界面中，我们可以在<code>Features</code>状态栏中看这两个队列都被标记了<code>D</code>，这个时<code>durable</code>的缩写，即设置了队列持久化，在<code>queue.normal</code>中我们还可以看到<code>TTL DLX DLK</code>这三个标记，其中<code>DLX</code>指的是队列设置了死信交换机，<code>DLX</code>指的是为被路由到私信交换机上的信息设置了新的<code>RoutingKey</code>。</p>
+<p>生产者发送了一条路由键为<code>rk</code>的消息，此消息可以顺利地被路由到<code>queue.normal</code>队列上。因为该队列设置了过期时间为<code>10s</code>，如果<code>10s</code>之内没有消费者消费这条消息，那么该消息被判定为过期，成为死信，随之该消息被转发到死信交换机<code>exchange.dlx</code>上，并且其路由键变为<code>routingKey-dlx</code>，根据路由键和交换机类型，该消息被路由到死信队列<code>queue.dlx</code>上，我们可以监听此队列，对上面的消息进行进一步的处理。</p>
+<p><strong>DLX是一个非常有用的特性，它可以处理异常情况，当消费者对消息调用了<code>Basic.Nack或者Basic.Reject</code>时，消息将会被置入死新队列，这时候我们就可以消费此队列的信息，从而分析当时所遇到的异常情况，从而改善和优化系统。</strong></p>
+<h2 id="4-延迟队列"><a href="#4-延迟队列" class="headerlink" title="4.延迟队列"></a>4.延迟队列</h2><p>试想一下以下两种情景：</p>
+<ul>
+<li>用户通过手机远程操控家里的智能设备在指定时间进行工作。</li>
+<li>在订单系统中，用户有30分钟的时间进行支付，超过三十分钟之后这个订单将进行异常处理。</li>
+</ul>
+<p>可以使用<code>延迟队列</code>来实现这两种情景。</p>
+<p><code>延迟队列</code>指的是消息被发送以后，并不是立刻被消费的，而是等待指定时间后才能拿到这个消息进行消费。</p>
+<p>在<code>AMQP</code>协议中，或者RabbitMQ本身并没有支持延迟队列的功能，但是可以通过之前介绍的<code>DLX</code>和<code>TTL</code>模拟出延迟队列的功能。</p>
+<p>例如之前实现死信队列的那张图，消费者实际订阅的是<code>queue.dlx</code>队列而不是<code>queue.normal</code>，我们给队列消息设置不同的过期时间，当消息过期时，就会被转入死信队列，消费者消费死信队列中的消息，这样就模拟出了延迟队列的功能，这里的死信队列<code>queue.dlx</code>也可以称之为延迟队列。</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_DelayQueue.png" alt="延迟队列"></p>
+<p>上图中，我们将延迟时间作为<code>RoutingKey</code>，消费者订阅的都是延迟队列，这样就可以做到分不同延迟等级进行消费了。</p>
+<h2 id="5-优先级队列"><a href="#5-优先级队列" class="headerlink" title="5.优先级队列"></a>5.优先级队列</h2><p>顾名思义，<code>优先级队列</code>就是具有不同优先级的队列，优先级高的队列中的消息具有优先被消费的特权。</p>
+<p>我们可以在声明队列<code>channel.DeclareQueue</code>方法的附加属性集参数<code>arguments</code>中设置<code>x-max-priority</code>来实现优先级队列：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            Dictionary<span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span> args <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dictionary</span><span class="token operator">&lt;</span><span class="token keyword">string</span><span class="token punctuation">,</span> <span class="token keyword">object</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            args<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span><span class="token string">"x-max-priority"</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token string">"queue.priority"</span><span class="token punctuation">,</span><span class="token keyword">true</span><span class="token punctuation">,</span><span class="token keyword">false</span><span class="token punctuation">,</span><span class="token keyword">false</span><span class="token punctuation">,</span>args<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>一个队列如果设置了<code>x-max-priority</code>，那么我们可以在<code>RabbitMQ Web</code>看到相应的标记<code>Pri</code></p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_PriWeb.png" alt="优先级队列标记"></p>
+<p>在设置完队列优先级之后，我们需要给发送至此队列的消息设置优先级，默认最低为0，最高为消息设置的优先级：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            <span class="token keyword">var</span> props <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            props<span class="token punctuation">.</span>Priority <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+            channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>
+                <span class="token string">"exchange-priority"</span><span class="token punctuation">,</span>
+                <span class="token string">"rk_Priority"</span><span class="token punctuation">,</span> 
+                props<span class="token punctuation">,</span>Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token string">"Message"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当然，优先级消息也是有前提的：</p>
+<ul>
+<li>Broker中有消息堆积</li>
+<li>生产者生产消息的速度要大于消费者消费消息的速度</li>
+</ul>
+<h2 id="6-实现RPC"><a href="#6-实现RPC" class="headerlink" title="6.实现RPC"></a>6.实现RPC</h2><p><code>RPC</code>是<code>Remote Procedure Call</code>的简称，即本地应用可以调用远程应用提供的函数或者方法的一种技术，由于两个应用不在一个内存空间中，不能直接调用，需要通过网络表达调用的语义和传达调用的数据。</p>
+<p>实现RPC的协议有很多，例如<code>CORBA</code>、<code>Java RMI</code>、<code>WebService的RPC风格</code>、<code>Hessian</code>、<code>Thrift</code>甚至可以是<code>Restful API</code>。</p>
+<p>一般我们在RabbitMQ中实现RPC是很容易的。</p>
+<p>客户端发送请求消息，服务端回应响应的消息。为了接受响应的消息，我们需要在请求消息中发送一个<code>回调队列</code>（参考下面代码中的ReplayTo属性），回调队列可以使用默认的队列：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            <span class="token comment" spellcheck="true">//声明一个默认队列（非持久化的、排他的、自动删除的），并且保存队列名</span>
+            <span class="token keyword">string</span> callbackQueueName <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">QueueDeclare</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>QueueName<span class="token punctuation">;</span>
+            <span class="token keyword">var</span> props <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//在请求消息附加属性中设置回调队列</span>
+            props<span class="token punctuation">.</span>ReplyTo <span class="token operator">=</span> callbackQueueName<span class="token punctuation">;</span>
+            channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>
+              exchange<span class="token punctuation">:</span> <span class="token string">"exchangeName"</span><span class="token punctuation">,</span> 
+              routingKey<span class="token punctuation">:</span> <span class="token string">"rpc_queue"</span><span class="token punctuation">,</span> 
+              props<span class="token punctuation">,</span> 
+              Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token string">"Message"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上代码中，我们为每条消息都设定了一个回调队列，这样的做法是十分<strong>低效</strong>的，这时候我们有一个通用的解决方案：</p>
+<ul>
+<li>为每个客户端创建一个单一的回调队列</li>
+</ul>
+<p>那么这样就产生了一个问题：<strong>对于回调队列而言，在其收到一条回复的消息之后，如何知道此条消息和哪个请求匹配？</strong></p>
+<p>这时候就可以用到<code>CorrelationId</code>这个属性了，我们因该为每一个请求设置一个唯一的<code>CorrectionId</code>：</p>
+<ul>
+<li>CorrectionId：用来关联请求和其调用RPC之后的回复</li>
+</ul>
+<p>在回调队列接受到回调消息时，可以根据这个属性匹配到响应的请求，如果回调消息接收到了一条未知的<code>CorrectionId</code>，我们可以简单地将其丢弃。</p>
+<p>参考如下流程图：</p>
+<p><img src="./medias/loading.gif" data-original="C:%5CUsers%5CTony%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20200405165626119.png" alt="RPC流程"></p>
+<p>根据上图，RPC地处理流程如下：</p>
+<ol>
+<li>客户端启动时，创建一个单一的回调队列，例如图中所示的<code>amq.gen-U....</code></li>
+<li>当发送一条RPC请求之时，为请求设置<code>ReplayTo</code>和<code>CorrelationId</code>这两个属性值，告知服务端回复请求时的回调队列，并且标记一个请求</li>
+<li>请求被发送到了回调队列<code>rpc_queue</code></li>
+<li>服务端监听<code>rpc_queue</code>这个队列，当收到请求后，服务端处理请求，处理完毕之后将带有处理结果的消息发送至客户端，接受回复的队列就是之前<code>ReplayTo</code>属性设置的回调队列。</li>
+<li>客户端监听回调队列，当有消息时，检查<code>CorrelationId</code>这个属性值，如果属性值匹配，那么得到结果。</li>
+</ol>
+<p>通过以下例子，创建一个客户端和一个可扩展的 RPC 服务器。由于我们没有什么耗时任务值得分发，那干脆就创建一个返回<strong>斐波那契数列</strong>的虚拟 RPC 服务吧。</p>
+<p>具体看下面这个博客：</p>
+<p><a href="https://www.cnblogs.com/esofar/p/rabbitmq-rpc.html" target="_blank" rel="noopener">[译]RabbitMQ教程C#版 - 远程过程调用(RPC)</a></p>
+<p>有一个很坑的地方是，使用using方式时，消费者的回调事件注册需要放在队列声明之前：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_fib.png" alt="fib"></p>
+<h2 id="7-持久化"><a href="#7-持久化" class="headerlink" title="7.持久化"></a>7.持久化</h2><p>持久化可以提高RabbitMQ的可靠性，以访在异常情况（重启、关闭、宕机）下的数据丢失。</p>
+<p>RabbitMQ的持久化分为三个部分：</p>
+<ul>
+<li>消息持久化</li>
+<li>队列持久化</li>
+<li>交换机持久化</li>
+</ul>
+<h4 id="交换机的持久化"><a href="#交换机的持久化" class="headerlink" title="交换机的持久化"></a>交换机的持久化</h4><p>在声明交换机的方法<code>channel.DeclareExchange</code>中。将参数<code>durable</code>设置为<code>true</code>可以实现交换机持久化。</p>
+<p>需要注意的是，如果交换机不设置为持久化，当服务器重启时，相关交换机的元素会丢失，但是消息不会丢失，只是不能把消息发送至这个交换机中了，如果交换机长期使用，建议将其设置为持久化。</p>
+<h3 id="队列持久化"><a href="#队列持久化" class="headerlink" title="队列持久化"></a>队列持久化</h3><p>在声明队列的方法<code>channel.DelcareQueue</code>中，将参数<code>durable</code>设置为<code>true</code>可以实现队列的持久化，如果队列不设置持久化，那么服务器重启后，队列和队列中的消息都会消失。</p>
+<h3 id="消息持久化"><a href="#消息持久化" class="headerlink" title="消息持久化"></a>消息持久化</h3><p>仅仅将队列设置为持久化，并不能保证队列中存储的消息不会丢失。要确保消息不会丢失，需要将其设置为持久化。</p>
+<p>通过将消息的<strong>投递模式</strong>设置为<code>2</code>，即可实现消息持久化：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            <span class="token keyword">var</span> prop <span class="token operator">=</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            prop<span class="token punctuation">.</span>DeliveryMode <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>需要注意的是，保证消息持久化需要一个前提，那就是<strong>队列也需要设置为持久化</strong>。</p>
+<p>如果单单只设置消息持久化，那么服务器重启之时，队列消失，继而消息也会丢失。</p>
+<h3 id="注意要点"><a href="#注意要点" class="headerlink" title="注意要点"></a>注意要点</h3><p>将所有消息设置为持久化将会影响RabbitMQ的吞吐量，对于那些可靠性要求不那么高的消息可以不采用持久化处理以提高吞吐量。</p>
+<p>在选择是或否要将消息持久化时，需要在<strong>可靠性和吞吐量之间做一个权衡</strong></p>
+<p>持久化并不能百分之百保证数据不丢失，可以引入<code>镜像队列</code>机制保证高可用性。</p>
+<p>还可以在发送端引入<code>事务机制</code>或者<code>发送方确认</code>机制来保证消息已经正确地发送并存储至RabbitMQ中。</p>
+<h2 id="8-生产者确认"><a href="#8-生产者确认" class="headerlink" title="8.生产者确认"></a>8.生产者确认</h2><p>当生产者将消息发送出去之后，我们怎么知道消息有没有正确地到达服务器呢？如果连消息都没正确到达服务器，那又谈何持久化？</p>
+<p>RabbitMQ针对这个问题，提供了两种解决方案：</p>
+<ol>
+<li>事务机制</li>
+<li>发送方确认机制</li>
+</ol>
+<h3 id="事务机制"><a href="#事务机制" class="headerlink" title="事务机制"></a>事务机制</h3><p>RabbitMQ客户端中与事务有关的方法有三个：</p>
+<ol>
+<li><code>channel.TxSelect</code>：开启一个事务</li>
+<li><code>channel.TxCommit</code>：事务提交</li>
+<li><code>channel.TxRollback</code>：事务回滚</li>
+</ol>
+<p>参考以下核心代码：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            <span class="token keyword">try</span>
+            <span class="token punctuation">{</span>
+                channel<span class="token punctuation">.</span><span class="token function">TxSelect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//开启事务</span>
+                channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>
+                     <span class="token string">"exchangeName"</span><span class="token punctuation">,</span>
+                     <span class="token string">"routingKey"</span><span class="token punctuation">,</span>
+                     channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                     Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token string">"transaction messages"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                channel<span class="token punctuation">.</span><span class="token function">TxCommit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//事务提交</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>Message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                channel<span class="token punctuation">.</span><span class="token function">TxRollback</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//发送出错事务回滚</span>
+            <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>手动开启事务之后，如果在事务提交之前捕获到了异常，显示提交事务回滚，之后进行消息重发。</p>
+<p>对应的<code>AMQP</code>的运转流程如下图所示：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_Transaction.png" alt="Transaction"></p>
+<ul>
+<li>客户端发送<code>Tx.Select</code>，将信道置为事务模式；</li>
+<li>Broker回复<code>Tx.Select-OK</code>，确认已经将信道置于事务模式；</li>
+<li>客户端发送消息</li>
+<li>发送出错，客户端发送<code>Tx.Rollback</code>命令给Broker，告知需要进行回滚</li>
+<li>Broker发送<code>Tx.Rollback-Ok</code>确认回滚</li>
+</ul>
+<p>如果需要发送多条消息，只要把<code>channel.txCommit</code>方法包裹在循环内。而<code>channe.TxSelect</code>只要执行一次就行。</p>
+<p>事务机制会严重影响RabbitMQ的性能，使用发送方确认机制可以更好的改进方案。</p>
+<h3 id="发送方确认机制"><a href="#发送方确认机制" class="headerlink" title="发送方确认机制"></a>发送方确认机制</h3><p>生产者可以将使用<code>channel.ConfirmSelect()</code>方法将信道设置成<code>confirm</code>模式，一旦信道进入<code>confirm</code>模式，所有在该信道上面发布的消息都会被指派一个唯一的<code>ID</code>(从1开始)，该<code>ID</code>将会包含在RabbitMQ回传给生产者的确认消息的<code>deliveryTag</code>中。</p>
+<p>当消息被投递到所匹配的队列之后，RabbitMQ就会发送一个确认<code>Basic.Ack</code>给生产者（其中包含消息的唯一ID），这样生产者就可以知道消息已经正确到达了目的地了，如果消息和队列是可持久化了，那么当消息写入磁盘后才会发送确认。</p>
+<p><code>publisher confirm</code>运作机制看以下简要代码：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            <span class="token keyword">try</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">//将信道置为confirm模式</span>
+                channel<span class="token punctuation">.</span><span class="token function">ConfirmSelect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>
+                    <span class="token string">"exchangeName"</span><span class="token punctuation">,</span> 
+                    <span class="token string">"routingKey"</span><span class="token punctuation">,</span> 
+                    <span class="token keyword">null</span><span class="token punctuation">,</span> 
+                    Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token string">"publicher confirm test"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>channel<span class="token punctuation">.</span><span class="token function">WaitForConfirms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//没有被确认，即消息未被RabbitMQ接受</span>
+                <span class="token punctuation">{</span>
+                    Console<span class="token punctuation">.</span><span class="token function">WriteLine</span><span class="token punctuation">(</span><span class="token string">"send message filed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token comment" spellcheck="true">//do something else</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+
+                <span class="token keyword">throw</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>channel.ConfirmSelect()</code>指示信道开启<code>confirm</code>模式</p>
+<p>对于<code>channel.WaitForConfirms()</code>方法：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">bool</span> <span class="token function">WaitForConfirms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">bool</span> <span class="token function">WaitForConfirms</span><span class="token punctuation">(</span>TimeSpan timeout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">bool</span> <span class="token function">WaitForConfirms</span><span class="token punctuation">(</span>TimeSpan timeout<span class="token punctuation">,</span> <span class="token keyword">out</span> <span class="token keyword">bool</span> timedOut<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>对于没有参数的<code>WaitForConfirms</code>方法来说，当消息被<code>Ack</code>了就返回<code>True</code>，如果消息被<code>Nack</code>或者中断了就返回<code>False</code></p>
+<p>参数<code>TimeSpan timeout</code>表示等待返回最多等待时间，在等待RabbitMQ的过程中超过规定回复时间，那么就会抛出错误。</p>
+<p>参数<code>out bool timedOut</code>代表如果超时原因是因为超时过期而不是消息被<code>Nack</code>，则值为<code>True</code></p>
+<p>下图是发送消息时的AMQP流转过程图：</p>
+<p><img src="./medias/loading.gif" data-original="http://blog-images-wk.test.upcdn.net/RabbitMQ/RabbitMQ_Confirm.png" alt="Confirm"></p>
+<p>我们可以看到，客户端每发送一条消息，Broker都会回应一条<code>Basic.Ack</code>来确认成功收到消息。</p>
+<p>之前代码展示的是一种<strong>串行同步等待</strong>的方式，它和事务机制一样，都需要服务端确认之后才能执行下一步操作，而<code>publisher confirm</code>的优势在于并不一定需要<strong>同步确认</strong>，它还可以是以下两种方式：</p>
+<ul>
+<li>批量confirm：每发送<strong>一批</strong>消息之后，调用<code>channel.WaitForConfirms</code>方法，等待服务器确认返回</li>
+<li>异步confirm：通过一个回调方法，当服务器确认了一条或者多条消息后客户端会调用这个回调方法。</li>
+</ul>
+<h4 id="批量confirm"><a href="#批量confirm" class="headerlink" title="批量confirm"></a>批量confirm</h4><p>在批量confirm方法中，客户端程序需要<strong>定期</strong>或者<strong>定量</strong>或者两种方式结合调用<code>channel.WaitForConfirm</code>方法来等待RabbitMQ确认返回。相比于每条消息都confirm，效率大大提升。</p>
+<p>问题在于，出现返回<code>Basic.Nack</code>或者超时情况，那么客户端需要将这段时间积累的消息一次性都重发，这回带来明显的重复消息数量，并且如果消息经常丢失，批量confirm的性能不升返降。</p>
+<p>以下代码演示了定量方式的批量confirm方法：</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp">            <span class="token comment" spellcheck="true">//设定批量的消息为60条</span>
+            <span class="token keyword">int</span> BATCH_COUNT <span class="token operator">=</span> <span class="token number">60</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//开启 punlisher confirm</span>
+            channel<span class="token punctuation">.</span><span class="token function">ConfirmSelect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//初始化消息数量</span>
+            <span class="token keyword">int</span> MsgCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">//发送消息</span>
+                channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>
+                    <span class="token string">"exchangeName"</span><span class="token punctuation">,</span> 
+                    <span class="token string">"routingKey"</span><span class="token punctuation">,</span> 
+                    <span class="token keyword">null</span><span class="token punctuation">,</span> 
+                    Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token string">"batch confirm test"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment" spellcheck="true">//TODO:将消息进行缓存</span>
+                <span class="token comment" spellcheck="true">//如果积累的消息数量大于设定的数量</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">++</span>MsgCount <span class="token operator">></span> BATCH_COUNT<span class="token punctuation">)</span>
+                <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">//归零</span>
+                    MsgCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+                    <span class="token keyword">try</span>
+                    <span class="token punctuation">{</span>
+                        <span class="token keyword">if</span> <span class="token punctuation">(</span>channel<span class="token punctuation">.</span><span class="token function">WaitForConfirms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//如果被确认</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token comment" spellcheck="true">//TODO：将缓存中的消息清空</span>
+                        <span class="token punctuation">}</span>
+                        <span class="token keyword">else</span>
+                        <span class="token punctuation">{</span>
+                            <span class="token comment" spellcheck="true">//TODO: 重新发送缓存中的消息</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                    <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">{</span>
+                        <span class="token comment" spellcheck="true">//重新发送缓存中的消息</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对于上面的代码：</p>
+<ul>
+<li>首先设定了一个定量最大消息值（60条）</li>
+<li>开启 punlisher confirm</li>
+<li>每发送一条消息就将消息进行缓存，并且将消息数加1</li>
+<li>如果消息条数到达最大消息数量，就调用<code>channel.WaitForConfirms</code>方法等待服务器确认返回，并且将消息数置0</li>
+<li>如果之前消息都正确到达Broker，那么缓存中的消息清空</li>
+<li>如果出现回复超时或者<code>Nack</code>的情况，则重新发送缓存中的消息</li>
+</ul>
+<h4 id="异步confirm"><a href="#异步confirm" class="headerlink" title="异步confirm"></a>异步confirm</h4><pre class="line-numbers language-csharp"><code class="language-csharp">         <span class="token comment" spellcheck="true">/// &lt;summary></span>
+        <span class="token comment" spellcheck="true">/// 存放未被确认的消息序列号的集合</span>
+        <span class="token comment" spellcheck="true">/// &lt;/summary></span>
+        SortedSet<span class="token operator">&lt;</span><span class="token keyword">ulong</span><span class="token operator">></span> unconfirmSet <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SortedSet</span><span class="token operator">&lt;</span><span class="token keyword">ulong</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+              ConnectionFactory factory <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ConnectionFactory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">using</span> <span class="token keyword">var</span> connection <span class="token operator">=</span> factory<span class="token punctuation">.</span><span class="token function">CreateConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">using</span> <span class="token keyword">var</span> channel <span class="token operator">=</span> connection<span class="token punctuation">.</span><span class="token function">CreateModel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//开启确认模式</span>
+            channel<span class="token punctuation">.</span><span class="token function">ConfirmSelect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//没有被确认时触发</span>
+            channel<span class="token punctuation">.</span>BasicNacks <span class="token operator">+</span><span class="token operator">=</span> <span class="token punctuation">(</span>model<span class="token punctuation">,</span> ea<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">//Broker未确认后触发此事件</span>
+                <span class="token keyword">var</span> multiple <span class="token operator">=</span> ea<span class="token punctuation">.</span>Multiple<span class="token punctuation">;</span>
+                <span class="token keyword">var</span> deliveryTag <span class="token operator">=</span> ea<span class="token punctuation">.</span>DeliveryTag<span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>multiple<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//如果开启了批量确认</span>
+                <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">//移除序列号小于此消息序列号的所有序列号（比此条消息早的）</span>
+                    unconfirmSet<span class="token punctuation">.</span><span class="token function">RemoveWhere</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">&lt;</span> deliveryTag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">else</span>
+                <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">//移除此序列号</span>
+                    unconfirmSet<span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span>deliveryTag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token comment" spellcheck="true">//将消息进行重发</span>
+            <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+            <span class="token comment" spellcheck="true">//被确认时触发</span>
+            channel<span class="token punctuation">.</span>BasicAcks <span class="token operator">+</span><span class="token operator">=</span> <span class="token punctuation">(</span>model<span class="token punctuation">,</span> ea<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+            <span class="token punctuation">{</span>
+                <span class="token comment" spellcheck="true">//生产者发送消息至broker后失败，触发此事件</span>
+                <span class="token keyword">var</span> multiple <span class="token operator">=</span> ea<span class="token punctuation">.</span>Multiple<span class="token punctuation">;</span>
+                <span class="token keyword">var</span> deliveryTag <span class="token operator">=</span> ea<span class="token punctuation">.</span>DeliveryTag<span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>multiple<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">//如果开启了批量确认</span>
+                <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">//移除序列号小于此消息序列号的所有序列号（比此条消息早的）</span>
+                    unconfirmSet<span class="token punctuation">.</span><span class="token function">RemoveWhere</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">&lt;</span> deliveryTag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">else</span>
+                <span class="token punctuation">{</span>
+                    <span class="token comment" spellcheck="true">//移除此序列号</span>
+                    unconfirmSet<span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span>deliveryTag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">;</span>
+            <span class="token comment" spellcheck="true">//模拟一直发消息的情景</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token keyword">ulong</span> nextSeqNo <span class="token operator">=</span> channel<span class="token punctuation">.</span>NextPublishSeqNo<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">//获取下一条将要发布消息的的seqno（序列号）</span>
+                <span class="token keyword">var</span> bytesMessage <span class="token operator">=</span> Encoding<span class="token punctuation">.</span>UTF8<span class="token punctuation">.</span><span class="token function">GetBytes</span><span class="token punctuation">(</span><span class="token string">"confirm message"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                channel<span class="token punctuation">.</span><span class="token function">BasicPublish</span><span class="token punctuation">(</span>
+                    exchange<span class="token punctuation">:</span> <span class="token string">"confirmExchange"</span><span class="token punctuation">,</span>
+                    routingKey<span class="token punctuation">:</span> <span class="token string">"confirmRoutingKey"</span><span class="token punctuation">,</span>
+                    basicProperties<span class="token punctuation">:</span> channel<span class="token punctuation">.</span><span class="token function">CreateBasicProperties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    body<span class="token punctuation">:</span> bytesMessage<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token comment" spellcheck="true">//未确认序列号集合添加这条消息的序列号</span>
+                unconfirmSet<span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>nextSeqNo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>确认模式和事务模式不可同时存在</p>
+<h2 id="9-消费端要点介绍"><a href="#9-消费端要点介绍" class="headerlink" title="9.消费端要点介绍"></a>9.消费端要点介绍</h2><p>消费端可以通过拉模式和推模式的方式进行消费，消费者处理完业务逻辑后需要手动确认消息已被接受，这样RabbitMQ才能把消息从队列中标记删除，消费者还能拒绝消息<code>BasicNack</code>或者<code>BasicReject</code></p>
+<h3 id="消息分发"><a href="#消息分发" class="headerlink" title="消息分发"></a>消息分发</h3><p>当队列拥有多个消费者时，队列收到的消息将以<code>轮询（round-robin）</code>的分发方式发送给消费者，<strong>每条消息只会发送个一个消费者</strong>。</p>
+<p>这种方式非常适合扩展，如果扩展加重，只需要增加消费者就行。</p>
+<p>但是这一分发方式有时候并不是十分优雅：默认情况下，如果有n个消费者，那么RabbitMQ将会把第m条消息分发给第<code>m%n</code>（取余）个消费者，不管该消费者是否消费并且确认积累的消息，这样就会出现有些消费者任务繁重，而有些消费者很空闲的情况。</p>
+<p>这时候就需要使用<code>channel.BasicQos</code>这个方法解决这个问题：</p>
+<ul>
+<li>channel.BasicQos：现指消费者所能保持的最大未确认消息的数量</li>
+</ul>
+<p>如果一个消费者达到未确认消息数量最大值，那么RabbitMQ将不会再给这个消费者分发消息了。</p>
+<pre class="line-numbers language-csharp"><code class="language-csharp"><span class="token keyword">void</span> <span class="token function">BasicQos</span><span class="token punctuation">(</span><span class="token keyword">uint</span> prefetchSize<span class="token punctuation">,</span> <span class="token keyword">ushort</span> prefetchCount<span class="token punctuation">,</span> <span class="token keyword">bool</span> <span class="token keyword">global</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>该方法参数：</p>
+<ul>
+<li>prefetchSize：表示消费者所能接受未确认消息的总体大小，单位为B，设置0为没有上限</li>
+<li>prefetchCount：表示允许消费者所能接受的最大未确认消息</li>
+<li>global：当设置为true的时候，信道上所有的消费者都需要遵从prefetchCount的限定值，当设置为false的时候，信道上<strong>新的</strong>消费者需要遵从prefetchCount的限定值</li>
+</ul>
+<p>为了性能，最好将global设置为false</p>
+<p><strong>注意：</strong></p>
+<p>Basic.Qos的使用对拉模式的消费方式无效</p>
+<h3 id="消息顺序性"><a href="#消息顺序性" class="headerlink" title="消息顺序性"></a>消息顺序性</h3><p>如果生产者发布的消息分别为<code>msg1</code>、<code>msg2</code>、<code>msg3</code>，那么消费者必然也是按照<code>msg1</code>、<code>msg2</code>、<code>msg3</code>进行消费的，RabbitMQ在大多数情况下都能保障顺序性，但是在某些情况下：</p>
+<ul>
+<li>消息发送失败，重发逻辑在另一个线程中实现，那么在源头就出现了消息错序</li>
+<li>生产者为发送的消息设置了<strong>不同的</strong>超时时间，并且也设置了死信队列，整体上来说相当于一个延迟队列，那么消费者在消费这个延迟队列的时候，消息的顺序必然不会和生产者发送消息的顺序一致</li>
+</ul>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">谢谢老板请我喝冰可乐~(●'◡'●)</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《RabbitMQ进阶》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/rabbitmq-jin-jie.html" property="cc:attributionName"
+               rel="cc:attributionURL">
+                Wukai
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '4af46122409e8ebb4420',
+        clientSecret: '1b65d78a643c349cb27f5ecb6075a151283642c3',
+        repo: 'wukai319958.github.io',
+        owner: 'wukai319958',
+        admin: "wukai319958",
+        id: '2020-04-04T23-45-36',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments input[type=text],
+    #vcomments input[type=email],
+    #vcomments input[type=url],
+    #vcomments textarea {
+        box-sizing: border-box;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #42b983;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div id="vcomments" class="card-content"></div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XCkrwz5GdyiKyKNkxHxMLkNk-gzGzoHsz',
+        appKey: 'qCRVHNOrU0OtJh9gK12GQYei',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '没有github账号的朋友可以在这里留言哦~(●&#39;◡&#39;●)'
+    });
+</script>
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/wen-jian-xi-tong.html">
+                    <div class="card-image">
+                        
+                        <img src="http://blog-images-wk.test.upcdn.net/asp.net%20core.png" class="responsive-img" alt="ASP.NET Core文件系统">
+                        
+                        <span class="card-title">ASP.NET Core文件系统</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            ASP.NET Core框架揭秘之文件系统的实现
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-09
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/ASP-NET-Core/" class="post-category" target="_blank">
+                                    ASP.NET Core
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/框架揭秘/" target="_blank">
+                        <span class="chip bg-color">框架揭秘</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/kai-fa-rabbitmq-ke-hu-duan.html">
+                    <div class="card-image">
+                        
+                        <img src="http://blog-images-wk.test.upcdn.net/rabbitlogo.jpg" class="responsive-img" alt="RabbitMQ客户端的开发">
+                        
+                        <span class="card-title">RabbitMQ客户端的开发</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            如何开发RabbitMQ客户端
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2020-04-01
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/消息中间件/" class="post-category" target="_blank">
+                                    消息中间件
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/RabbitMQ/" target="_blank">
+                        <span class="chip bg-color">RabbitMQ</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: WK Blog<br />'
+            + '作者: Wu Kai<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+           &copy;2019 吴恺
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">102.3k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv" style='display:none'>
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv" style='display:none'>
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+				
+                
+            
+			<br>
+				<span id="sitetime"></span>
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/wukai319958" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:wukai5813@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=945546895" class="tooltipped" data-tooltip="QQ联系我: 945546895" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+<script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        var t1 = Date.UTC(2019, 09, 07, 00, 00, 00); //北京时间2018-2-13 00:00:00 
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime(); 
+	
+	<!-- var myDate=new Date(); -->
+	<!-- document.getElementById("thisYear").innerHTML=myDate.getFullYear(); -->
+	
+	
+	
+    $(document).ready(function () {
+        var int = setInterval(fixCount, 50); // 50ms周期检测函数 
+        var pvcountOffset = 0; // 初始化首次数据 
+        var uvcountOffset = 0;
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int); // 停止检测 
+            }
+        }
+    });
+
+
+</script>
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script>!function(e){var r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function t(){for(var c=0;c<r.length;c++)t=r[c],void 0,0<=(n=t.getBoundingClientRect()).top&&0<=n.left&&n.top<=(e.innerHeight||document.documentElement.clientHeight)&&function(){var t,n,e,i,o=r[c];t=o,n=function(){r=r.filter(function(t){return o!==t})},e=new Image,i=t.getAttribute("data-original"),e.onload=function(){t.src=i,n&&n()},e.src=i}();var t,n}t(),e.addEventListener("scroll",function(){!function(t,n){clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(n)},500)}(t,e)})}(this);</script></body>
+</html>

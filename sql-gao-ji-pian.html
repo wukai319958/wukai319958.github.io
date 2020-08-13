@@ -1,0 +1,2306 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="SQL语法高级篇, WK Blog">
+    <meta name="description" content="SQL高级篇1. TOP 子句 TOP 子句用于规定要返回的记录的数目。 
+ 对于拥有数千条记录的大型表来说，TOP 子句是非常有用的。 
+语法：
+SQL Server 的语法：
+SELECT TOP number|percent colu">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>SQL语法高级篇 | WK Blog</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <style type="text/css">
+        
+        code[class*="language-"], pre[class*="language-"] {
+            white-space: pre !important;
+        }
+        
+    </style>
+
+    <script src="/libs/jquery/jquery-2.2.0.min.js"></script>
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+
+<header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">WK Blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fa fa-navicon"></i></a>
+<ul class="right">
+    
+    <li class="hide-on-med-and-down">
+        <a href="/" class="waves-effect waves-light">
+            
+            <i class="fa fa-home"></i>
+            
+            <span>首页</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/tags" class="waves-effect waves-light">
+            
+            <i class="fa fa-tags"></i>
+            
+            <span>标签</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/categories" class="waves-effect waves-light">
+            
+            <i class="fa fa-bookmark"></i>
+            
+            <span>分类</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/archives" class="waves-effect waves-light">
+            
+            <i class="fa fa-archive"></i>
+            
+            <span>归档</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/about" class="waves-effect waves-light">
+            
+            <i class="fa fa-user-circle-o"></i>
+            
+            <span>关于</span>
+        </a>
+    </li>
+    
+    <li class="hide-on-med-and-down">
+        <a href="/friends" class="waves-effect waves-light">
+            
+            <i class="fa fa-address-book"></i>
+            
+            <span>友情链接</span>
+        </a>
+    </li>
+    
+    <li>
+        <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+            <i id="searchIcon" class="fa fa-search" title="搜索"></i>
+        </a>
+    </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">WK Blog</div>
+        <div class="logo-desc">
+            
+            Hi~我是吴恺，这是我的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li>
+            <a href="/" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-home"></i>
+                
+                首页
+            </a>
+        </li>
+        
+        <li>
+            <a href="/tags" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-tags"></i>
+                
+                标签
+            </a>
+        </li>
+        
+        <li>
+            <a href="/categories" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-bookmark"></i>
+                
+                分类
+            </a>
+        </li>
+        
+        <li>
+            <a href="/archives" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-archive"></i>
+                
+                归档
+            </a>
+        </li>
+        
+        <li>
+            <a href="/about" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-user-circle-o"></i>
+                
+                关于
+            </a>
+        </li>
+        
+        <li>
+            <a href="/friends" class="waves-effect waves-light">
+                
+                <i class="fa fa-fw fa-address-book"></i>
+                
+                友情链接
+            </a>
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/wukai319958" class="waves-effect waves-light" target="_blank">
+                <i class="fa fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/wukai319958" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('http://blog-images-wk.test.upcdn.net/sql.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <div class="description center-align post-title">
+                        SQL语法高级篇
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 20px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/SQL语法/" target="_blank">
+                                <span class="chip bg-color">SQL语法</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fa fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/数据库/" class="post-category" target="_blank">
+                                数据库
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                <div class="post-date info-break-policy">
+                    <i class="fa fa-calendar-minus-o fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-11-02
+                </div>
+
+                
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-file-word-o fa-fw"></i>文章字数:&nbsp;&nbsp;
+                        3.6k
+                    </div>
+                    
+
+                    
+                    <div class="info-break-policy">
+                        <i class="fa fa-clock-o fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                        16 分
+                    </div>
+                    
+                
+				
+				
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="fa fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="SQL高级篇"><a href="#SQL高级篇" class="headerlink" title="SQL高级篇"></a>SQL高级篇</h2><h3 id="1-TOP-子句"><a href="#1-TOP-子句" class="headerlink" title="1. TOP 子句"></a>1. TOP 子句</h3><p> TOP 子句用于规定要返回的记录的数目。 </p>
+<p> 对于拥有<strong>数千条</strong>记录的大型表来说，TOP 子句是非常有用的。 </p>
+<p><strong><em>语法：</em></strong></p>
+<p><strong><em>SQL Server 的语法：</em></strong></p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token keyword">TOP</span> number<span class="token operator">|</span><span class="token keyword">percent</span> column_name<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> table_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong><em>例子：</em></strong></p>
+<p>从 “Persons” 表中选取头两条记录。 </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token keyword">TOP</span> <span class="token number">2</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> Persons<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>从 “Persons” 表中选取 50% 的记录。 </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token keyword">TOP</span> <span class="token number">50</span> <span class="token keyword">PERCENT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> Persons<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+<h3 id="2-LIKE-操作符"><a href="#2-LIKE-操作符" class="headerlink" title="2. LIKE 操作符"></a>2. LIKE 操作符</h3><p>LIKE 操作符用于在 <strong>WHERE</strong> 子句中搜索列中的指定模式。 </p>
+<p><strong><em>语法：</em></strong></p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> column_name<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> table_name
+<span class="token keyword">WHERE</span> column_name <span class="token operator">LIKE</span> pattern<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p> <strong><em>Persons 表</em></strong>： </p>
+<table>
+<thead>
+<tr>
+<th align="left">Id</th>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">Address</th>
+<th align="left">City</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">Oxford Street</td>
+<td align="left">London</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Bush</td>
+<td align="left">George</td>
+<td align="left">Fifth Avenue</td>
+<td align="left">New York</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">Changan Street</td>
+<td align="left">Beijing</td>
+</tr>
+</tbody></table>
+<p><strong><em>例子1：</em></strong></p>
+<p> 从上面的 “Persons” 表中选取居住在以 “N” 开始的城市里的人： </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> Persons
+<span class="token keyword">WHERE</span> City <span class="token operator">LIKE</span> <span class="token string">'N%'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p> <strong>提示：</strong><code>&quot;%&quot;</code> 可用于定义<strong>通配符</strong>（模式中缺少的字母）。 </p>
+<p><strong><em>结果集：</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Id</th>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">Address</th>
+<th align="left">City</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">2</td>
+<td align="left">Bush</td>
+<td align="left">George</td>
+<td align="left">Fifth Avenue</td>
+<td align="left">New York</td>
+</tr>
+</tbody></table>
+<p><strong><em>例子2：</em></strong></p>
+<p> 从 “Persons” 表中选取居住在以 “g” 结尾的城市里的人： </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> Persons
+<span class="token keyword">WHERE</span> City <span class="token operator">LIKE</span> <span class="token string">'%g'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong><em>结果集：</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Id</th>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">Address</th>
+<th align="left">City</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">3</td>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">Changan Street</td>
+<td align="left">Beijing</td>
+</tr>
+</tbody></table>
+<p><strong><em>例子3：</em></strong></p>
+<p> 从 “Persons” 表中选取居住在包含 “lon” 的城市里的人： </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> Persons
+<span class="token keyword">WHERE</span> City <span class="token operator">LIKE</span> <span class="token string">'%lon%'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong><em>结果集：</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Id</th>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">Address</th>
+<th align="left">City</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">Oxford Street</td>
+<td align="left">London</td>
+</tr>
+</tbody></table>
+<p><strong><em>例子4：</em></strong></p>
+<p> 通过使用 <code>NOT</code> 关键字，我们可以从 “Persons” 表中选取居住在<em>不包含</em> “lon” 的城市里的人： </p>
+<pre class="line-numbers language-sql"><code class="language-sql">SELSCT <span class="token operator">*</span> <span class="token keyword">FROM</span> Persons
+<span class="token keyword">WHERE</span> City <span class="token operator">NOT</span> <span class="token operator">LIKE</span> <span class="token string">'%lon%'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<hr>
+<h3 id="3-通配符"><a href="#3-通配符" class="headerlink" title="3. 通配符"></a>3. 通配符</h3><p> SQL 通配符<strong>必须</strong>与 LIKE 运算符一起使用。 </p>
+<p> 在 SQL 中，可使用以下通配符： </p>
+<table>
+<thead>
+<tr>
+<th align="left">通配符</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">%</td>
+<td align="left">替代一个或多个字符</td>
+</tr>
+<tr>
+<td align="left">_</td>
+<td align="left">仅替代一个字符</td>
+</tr>
+<tr>
+<td align="left">[charlist]</td>
+<td align="left">字符列中的任何单一字符</td>
+</tr>
+<tr>
+<td align="left">[^charlist]或者[!charlist]</td>
+<td align="left">不在字符列中的任何单一字符</td>
+</tr>
+</tbody></table>
+<p>%和_使用方法省略…</p>
+<p><strong>使用[charlist]通配符：</strong></p>
+<p><strong><em>Persons 表:</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Id</th>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">Address</th>
+<th align="left">City</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">Oxford Street</td>
+<td align="left">London</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Bush</td>
+<td align="left">George</td>
+<td align="left">Fifth Avenue</td>
+<td align="left">New York</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">Changan Street</td>
+<td align="left">Beijing</td>
+</tr>
+</tbody></table>
+<p> 从上面的 “Persons” 表中选取居住的城市以 “A” 或 “L” 或 “N” 开头的人： </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> Persons 
+<span class="token keyword">WHERE</span> City <span class="token operator">LIKE</span> <span class="token string">'[ALN]%'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<hr>
+<h3 id="4-IN-操作符"><a href="#4-IN-操作符" class="headerlink" title="4. IN 操作符"></a>4. IN 操作符</h3><p> IN 操作符允许我们在 WHERE 子句中规定<strong>多个值</strong>。 </p>
+<p><strong><em>语法：</em></strong></p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> column_name<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> table_name
+<span class="token keyword">WHERE</span> column_name <span class="token operator">IN</span> <span class="token punctuation">(</span>value1<span class="token punctuation">,</span>value2<span class="token punctuation">,</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>Persons 表:</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Id</th>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">Address</th>
+<th align="left">City</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">Oxford Street</td>
+<td align="left">London</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Bush</td>
+<td align="left">George</td>
+<td align="left">Fifth Avenue</td>
+<td align="left">New York</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">Changan Street</td>
+<td align="left">Beijing</td>
+</tr>
+</tbody></table>
+<p><strong><em>例子：</em></strong></p>
+<p> 从上表中选取姓氏为 Adams 和 Carter 的人： </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> Persons
+<span class="token keyword">WHERE</span> FirstName <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token string">'Adams'</span><span class="token punctuation">,</span><span class="token string">'Carter'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<hr>
+<h3 id="5-BETWEEN-操作符"><a href="#5-BETWEEN-操作符" class="headerlink" title="5. BETWEEN 操作符"></a>5. BETWEEN 操作符</h3><p> 操作符 BETWEEN … AND 会选取<strong>介于两个值之间的数据范围</strong>。这些值可以是数值、文本或者日期。 </p>
+<p><strong><em>语法：</em></strong></p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> column_name<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> table_name
+<span class="token keyword">WHERE</span> column_name
+<span class="token operator">BETWEEN</span> value1 <span class="token operator">AND</span> value2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>Persons 表:</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Id</th>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">Address</th>
+<th align="left">City</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">Oxford Street</td>
+<td align="left">London</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Bush</td>
+<td align="left">George</td>
+<td align="left">Fifth Avenue</td>
+<td align="left">New York</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">Changan Street</td>
+<td align="left">Beijing</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">Gates</td>
+<td align="left">Bill</td>
+<td align="left">Xuanwumen 10</td>
+<td align="left">Beijing</td>
+</tr>
+</tbody></table>
+<p><strong><em>例1：</em></strong></p>
+<p>查询 Id在1和3之间的人（在SQL Server 中包含1和3）：</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> Person
+<span class="token keyword">WHERE</span> Id
+<span class="token operator">BETWEEN</span> <span class="token number">1</span> <span class="token operator">AND</span> <span class="token number">3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例2：</em></strong></p>
+<p>使用上面的例子，显示范围之外的人，使用NOT 操作符</p>
+<pre><code>SELECT * FROM Person
+WHERE Id
+NOT BETWEEN 1 AND 3</code></pre><hr>
+<h3 id="6-JOIN-关键字"><a href="#6-JOIN-关键字" class="headerlink" title="6. JOIN 关键字"></a>6. JOIN 关键字</h3><p> <strong>SQL join 用于根据两个或多个表中的列之间的关系，从这些表中查询数据。</strong> </p>
+<p>有时为了得到完整的结果，我们需要从<strong>两个或更多</strong>的表中获取结果。我们就需要执行 join。</p>
+<p>数据库中的表可通过键将彼此联系起来。主键（Primary Key）是一个列，在这个列中的每一行的值都是唯一的。在表中，每个主键的值都是唯一的。这样做的目的是在不重复每个表中的所有数据的情况下，把表间的数据交叉捆绑在一起。</p>
+<p> <strong>*”Persons” 表：*</strong>主键为<code>Id_P</code></p>
+<table>
+<thead>
+<tr>
+<th align="left">Id_P</th>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">Address</th>
+<th align="left">City</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">Oxford Street</td>
+<td align="left">London</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Bush</td>
+<td align="left">George</td>
+<td align="left">Fifth Avenue</td>
+<td align="left">New York</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">Changan Street</td>
+<td align="left">Beijing</td>
+</tr>
+</tbody></table>
+<p> <strong>*”Orders” 表：*</strong> 主键为<code>Id_O</code>外键为Id_P</p>
+<table>
+<thead>
+<tr>
+<th align="left">Id_O</th>
+<th align="left">OrderNo</th>
+<th align="left">Id_P</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">77895</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">44678</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">22456</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">24562</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">34764</td>
+<td align="left">65</td>
+</tr>
+</tbody></table>
+<h4 id="6-1-使用引用的方式"><a href="#6-1-使用引用的方式" class="headerlink" title="6.1 使用引用的方式"></a>6.1 使用引用的方式</h4><p><strong><em>例子1：</em></strong></p>
+<p> 从两个表中查出谁订购了产品，并且他们订购了什么产品？ </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> p<span class="token punctuation">.</span>LastName<span class="token punctuation">,</span>p<span class="token punctuation">.</span>FirstName<span class="token punctuation">,</span>o<span class="token punctuation">.</span>OrderNo
+<span class="token keyword">FROM</span> Person <span class="token keyword">AS</span> p<span class="token punctuation">,</span>Orders <span class="token keyword">AS</span> o
+<span class="token keyword">WHERE</span> p<span class="token punctuation">.</span>Id_P<span class="token operator">=</span>o<span class="token punctuation">.</span>Id_P
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> p<span class="token punctuation">.</span>LastName<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="6-2-使用INNER-JOIN-关键字"><a href="#6-2-使用INNER-JOIN-关键字" class="headerlink" title="6.2 使用INNER JOIN 关键字"></a>6.2 使用INNER JOIN 关键字</h4><p> 在表中存在至少一个匹配时，INNER JOIN 关键字返回行。 </p>
+<p><code>INNER JOIN</code> 也可以写作 <code>JOIN</code>，两者相同。</p>
+<p><strong><em>语法：</em></strong></p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> column_name<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> table_name1
+<span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> table_name2 
+<span class="token keyword">ON</span> table_name1<span class="token punctuation">.</span>column_name<span class="token operator">=</span>table_name2<span class="token punctuation">.</span>column_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> p<span class="token punctuation">.</span>LastName<span class="token punctuation">,</span>p<span class="token punctuation">.</span>FirstName<span class="token punctuation">,</span>o<span class="token punctuation">.</span>OrderNo
+<span class="token keyword">FROM</span> Persons <span class="token keyword">AS</span> p
+<span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> Orders <span class="token keyword">AS</span> o
+<span class="token keyword">ON</span> p<span class="token punctuation">.</span>Id_P<span class="token operator">=</span>o<span class="token punctuation">.</span>Id_P
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> p<span class="token punctuation">.</span>LastName<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>两种方式的结果都是：</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">OrderNo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">22456</td>
+</tr>
+<tr>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">24562</td>
+</tr>
+<tr>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">77895</td>
+</tr>
+<tr>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">44678</td>
+</tr>
+</tbody></table>
+<h4 id="6-3-LEFT-JOIN-关键字"><a href="#6-3-LEFT-JOIN-关键字" class="headerlink" title="6.3 LEFT JOIN 关键字"></a>6.3 LEFT JOIN 关键字</h4><p>LEFT JOIN 关键字会从左表 (table_name1) 那里返回所有的行，<strong>即使在右表 (table_name2) 中没有匹配的行。</strong> </p>
+<p><strong>“左表为主”</strong></p>
+<p><strong><em>语法：</em></strong>把 <code>INNER</code> 改成了 <code>LEFT</code></p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> column_name<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> table_name1
+<span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> table_name2 
+<span class="token keyword">ON</span> table_name1<span class="token punctuation">.</span>column_name<span class="token operator">=</span>table_name2<span class="token punctuation">.</span>column_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p> <strong>注释：</strong>在某些数据库中， LEFT JOIN 称为 LEFT OUTER JOIN。 </p>
+<p><strong><em>例子：</em></strong></p>
+<p> 列出<strong>所有</strong>的人，以及他们的定购 - <strong>如果有的话。</strong> </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> p<span class="token punctuation">.</span>LastName<span class="token punctuation">,</span> p<span class="token punctuation">.</span>FirstName<span class="token punctuation">,</span> o<span class="token punctuation">.</span>OrderNo
+<span class="token keyword">FROM</span> Persons <span class="token keyword">AS</span> p
+<span class="token keyword">LEFT</span> <span class="token keyword">JOIN</span> Orders <span class="token keyword">AS</span> o
+<span class="token keyword">ON</span> p<span class="token punctuation">.</span>Id_P<span class="token operator">=</span>o<span class="token punctuation">.</span>Id_P
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> p<span class="token punctuation">.</span>LastName<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>结果：</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">OrderNo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">22456</td>
+</tr>
+<tr>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">24562</td>
+</tr>
+<tr>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">77895</td>
+</tr>
+<tr>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">44678</td>
+</tr>
+<tr>
+<td align="left">Bush</td>
+<td align="left">George</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>可以看到，LastName为Bush的这一行，OrderNo为空，这是因为我们使用的时LEFT JOIN 以左表为主，而左表为Persons表，所以就算某一个人没有订单，他也会被列出来。</p>
+<h4 id="6-4-RIGHT-JOIN"><a href="#6-4-RIGHT-JOIN" class="headerlink" title="6.4 RIGHT JOIN"></a>6.4 RIGHT JOIN</h4><p> RIGHT JOIN 关键字会右表 (table_name2) 那里返回所有的行，即使在左表 (table_name1) 中没有匹配的行。</p>
+<p><strong><em>语法：</em></strong>相较于INNER JOIN ，将<code>INNER</code>改成了<code>RIGHT</code> </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> column_name<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> table_name1
+<span class="token keyword">RIGHT</span> <span class="token keyword">JOIN</span> table_name2 
+<span class="token keyword">ON</span> table_name1<span class="token punctuation">.</span>column_name<span class="token operator">=</span>table_name2<span class="token punctuation">.</span>column_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p> <strong>注释：</strong>在某些数据库中， RIGHT JOIN 称为 RIGHT OUTER JOIN。 </p>
+<p><strong><em>例子：</em></strong></p>
+<p> 列出所有的定单，以及定购它们的人 - 如果有的话。 </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> p<span class="token punctuation">.</span>LastName<span class="token punctuation">,</span> p<span class="token punctuation">.</span>FirstName<span class="token punctuation">,</span> o<span class="token punctuation">.</span>OrderNo
+<span class="token keyword">FROM</span> Persons <span class="token keyword">AS</span> p
+<span class="token keyword">RIGHT</span> <span class="token keyword">JOIN</span> Orders <span class="token keyword">AS</span> o
+<span class="token keyword">ON</span> p<span class="token punctuation">.</span>Id_P<span class="token operator">=</span>o<span class="token punctuation">.</span>Id_P
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> p<span class="token punctuation">.</span>LastName<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>结果：</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">OrderNo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">22456</td>
+</tr>
+<tr>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">24562</td>
+</tr>
+<tr>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">77895</td>
+</tr>
+<tr>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">44678</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">34764</td>
+</tr>
+</tbody></table>
+<p>其实可以将RIGHT JOIN 中的Persons表和Order表换个位置也可以得到相同的结果集。</p>
+<h4 id="6-5-FULL-JOIN"><a href="#6-5-FULL-JOIN" class="headerlink" title="6.5 FULL JOIN"></a>6.5 FULL JOIN</h4><p>只要其中某个表存在匹配，FULL JOIN 关键字就会返回行。 </p>
+<p><strong><em>语法：</em></strong></p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> column_name<span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> table_name1
+<span class="token keyword">FULL</span> <span class="token keyword">JOIN</span> table_name2 
+<span class="token keyword">ON</span> table_name1<span class="token punctuation">.</span>column_name<span class="token operator">=</span>table_name2<span class="token punctuation">.</span>column_name<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子：</em></strong></p>
+<p> 列出所有的人，以及他们的定单，以及所有的定单，以及定购它们的人。 </p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> p<span class="token punctuation">.</span>LastName<span class="token punctuation">,</span> p<span class="token punctuation">.</span>FirstName<span class="token punctuation">,</span> o<span class="token punctuation">.</span>OrderNo
+<span class="token keyword">FROM</span> Persons <span class="token keyword">AS</span> p
+<span class="token keyword">RIGHT</span> <span class="token keyword">JOIN</span> Orders <span class="token keyword">AS</span> o
+<span class="token keyword">ON</span> p<span class="token punctuation">.</span>Id_P<span class="token operator">=</span>o<span class="token punctuation">.</span>Id_P
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> p<span class="token punctuation">.</span>LastName<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>结果：</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">OrderNo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">22456</td>
+</tr>
+<tr>
+<td align="left">Adams</td>
+<td align="left">John</td>
+<td align="left">24562</td>
+</tr>
+<tr>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">77895</td>
+</tr>
+<tr>
+<td align="left">Carter</td>
+<td align="left">Thomas</td>
+<td align="left">44678</td>
+</tr>
+<tr>
+<td align="left">Bush</td>
+<td align="left">George</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">34764</td>
+</tr>
+</tbody></table>
+<p> FULL JOIN 关键字会从左表 (Persons) 和右表 (Orders) 那里返回所有的行。如果 “Persons” 中的行在表 “Orders” 中没有匹配，或者如果 “Orders” 中的行在表 “Persons” 中没有匹配，这些行同样会列出。 </p>
+<h3 id="7-UNION和UNION-ALL操作符"><a href="#7-UNION和UNION-ALL操作符" class="headerlink" title="7. UNION和UNION ALL操作符"></a>7. UNION和UNION ALL操作符</h3><h4 id="7-1-UNION-操作符"><a href="#7-1-UNION-操作符" class="headerlink" title="7.1  UNION 操作符"></a>7.1  UNION 操作符</h4><p> UNION 操作符用于合并两个或多个 <strong>SELECT 语句</strong>的结果集。 </p>
+<p> <strong>注意：</strong></p>
+<ol>
+<li>UNION内部的SELECT语句必须拥有相同数量的列</li>
+<li>列必须拥有相似的数据类型</li>
+<li>每条SELECT语句中的列的顺序必须相同</li>
+</ol>
+<p><strong><em>语法：</em></strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">SELECT column_name(s) FROM table_name1
+UNION
+SELECT column_name(s) FROM table_name2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>执行之后， UNION 结果集中的列名总是等于 UNION 中第一个 SELECT 语句中的列名。 </p>
+<p><strong><em>例子：</em></strong></p>
+<p><strong><em>Employees_China:</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">E_ID</th>
+<th align="left">E_Name</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">01</td>
+<td align="left">Zhang, Hua</td>
+</tr>
+<tr>
+<td align="left">02</td>
+<td align="left">Wang, Wei</td>
+</tr>
+<tr>
+<td align="left">03</td>
+<td align="left">Carter, Thomas</td>
+</tr>
+<tr>
+<td align="left">04</td>
+<td align="left">Yang, Ming</td>
+</tr>
+</tbody></table>
+<p><strong><em>Employees_USA:</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">E_ID</th>
+<th align="left">E_Name</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">01</td>
+<td align="left">Adams, John</td>
+</tr>
+<tr>
+<td align="left">02</td>
+<td align="left">Bush, George</td>
+</tr>
+<tr>
+<td align="left">03</td>
+<td align="left">Carter, Thomas</td>
+</tr>
+<tr>
+<td align="left">04</td>
+<td align="left">Gates, Bill</td>
+</tr>
+</tbody></table>
+<p> 列出所有在中国和美国的不同的雇员名： </p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">SELECT E_Name FROM Employees_China
+UNION
+SELECT E_Name FROM Employees_USA<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>结果：</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">E_Name</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Zhang, Hua</td>
+</tr>
+<tr>
+<td align="left">Wang, Wei</td>
+</tr>
+<tr>
+<td align="left">Carter, Thomas</td>
+</tr>
+<tr>
+<td align="left">Yang, Ming</td>
+</tr>
+<tr>
+<td align="left">Adams, John</td>
+</tr>
+<tr>
+<td align="left">Bush, George</td>
+</tr>
+<tr>
+<td align="left">Gates, Bill</td>
+</tr>
+</tbody></table>
+<p><strong>注意：</strong></p>
+<p>使用UNION命令之后，重名的雇员仅仅只列出了一位， <strong>UNION 命令只会选取不同的值。</strong> </p>
+<h4 id="7-2-UNION-ALL操作符"><a href="#7-2-UNION-ALL操作符" class="headerlink" title="7.2 UNION ALL操作符"></a>7.2 UNION ALL操作符</h4><p> UNION ALL 命令和 UNION 命令几乎是等效的，不过 UNION ALL 命令会列出所有的值。 </p>
+<hr>
+<h3 id="8-SELECT-INTO-语句"><a href="#8-SELECT-INTO-语句" class="headerlink" title="8. SELECT  INTO 语句"></a>8. SELECT  INTO 语句</h3><p>SELECT INTO 语句从一个表中选取数据，然后把数据插入另一个表中。</p>
+<p>SELECT INTO 语句常用于创建表的备份复件或者用于对记录进行存档。</p>
+<p><strong><em>语法：</em></strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">SELECT column_name(s)
+INTO new_table_name [IN externaldatabase] 
+FROM old_tablename<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子1：</em></strong></p>
+<p>制作备份附件</p>
+<p>制作Persons表的备份附件Persons_backup</p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">SELECT *
+INTO Persons_backup
+FROM Persons<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p> IN 子句可用于向<strong>另一个</strong>数据库中拷贝表： </p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">SELECT *
+INTO Persons IN 'Backup.mdb'
+FROM Persons<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子2：</em></strong></p>
+<p> 从一个以上的表中选取数据 </p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">SELECT Persons.LastName,Orders.OrderNo
+INTO Persons_Order_Backup
+FROM Persons
+INNER JOIN Orders
+ON Persons.Id_P=Orders.Id_P<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<hr>
+<h3 id="9-CREATE-DATABASE-语句"><a href="#9-CREATE-DATABASE-语句" class="headerlink" title="9. CREATE DATABASE 语句"></a>9. CREATE DATABASE 语句</h3><p> CREATE DATABASE 用于创建数据库。 </p>
+<p><strong><em>语法：</em></strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE DATABASE database_name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<hr>
+<h3 id="10-CREATE-TABLE-语句"><a href="#10-CREATE-TABLE-语句" class="headerlink" title="10.  CREATE TABLE 语句"></a>10.  CREATE TABLE 语句</h3><p> CREATE TABLE 语句用于创建数据库中的表。 </p>
+<p><strong><em>语法：</em></strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE 表名称
+(
+列名称1 数据类型,
+列名称2 数据类型,
+列名称3 数据类型,
+....
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子：</em></strong></p>
+<p>创建Persons表， 该表包含 5 个列，列名分别是：</p>
+<ul>
+<li>“Id_P”</li>
+<li>“LastName”</li>
+<li>“FirstName”</li>
+<li>“Address” </li>
+<li>“City”：</li>
+</ul>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Persons
+(
+Id_P int,
+LastName varchar(255),
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255)
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>结果：</em></strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Id_P</th>
+<th align="left">LastName</th>
+<th align="left">FirstName</th>
+<th align="left">Address</th>
+<th align="left">City</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="11-SQL-约束（Constraints）⭐"><a href="#11-SQL-约束（Constraints）⭐" class="headerlink" title="11. SQL 约束（Constraints）⭐"></a>11. SQL 约束（Constraints）⭐</h3><p>约束用于限制加入表的数据的类型。</p>
+<p>可以在创建表时规定约束（通过 <code>CREATE TABLE</code> 语句），或者在表创建之后也可以（通过 <code>ALTER TABLE</code> 语句）。</p>
+<p>有以下几种约束：</p>
+<ul>
+<li>NOT NULL (不接受NULL)</li>
+<li>UNIQUE （唯一标识）</li>
+<li>PRIMARY KEY （主键）</li>
+<li>FOREIGN KEY （外键）</li>
+<li>CHECK  （值范围）</li>
+<li>DEFAULT （默认值）</li>
+</ul>
+<h4 id="11-1-NOT-NULL约束"><a href="#11-1-NOT-NULL约束" class="headerlink" title="11.1 NOT NULL约束"></a>11.1 NOT NULL约束</h4><p> NOT NULL 约束强制列不接受 NULL 值。 </p>
+<p> NOT NULL 约束强制字段始终包含值。这意味着，如果不向字段添加值，就无法插入新记录或者更新记录。 </p>
+<p><strong><em>例子：</em></strong></p>
+<p> 强制 “Id_P” 列和 “LastName” 列不接受 NULL 值： </p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Persons
+(
+Id_P int NOT NULL,
+LastName varchar(255) NOT NULL,
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255)
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="11-2-UNIQUE-约束"><a href="#11-2-UNIQUE-约束" class="headerlink" title="11.2 UNIQUE 约束"></a>11.2 UNIQUE 约束</h4><p> UNIQUE 约束<strong>唯一标识</strong>数据库表中的每条记录。 </p>
+<p> UNIQUE 和 PRIMARY KEY 约束均为列或列集合提供了唯一性的保证。</p>
+<p> PRIMARY KEY 拥有自动定义的 UNIQUE 约束。</p>
+<p><strong><em>注意：</em></strong></p>
+<p> 每个表可以有多个 UNIQUE 约束，但是每个表只能有一个 PRIMARY KEY 约束。 </p>
+<p><strong><em>例子1：在数据表创建时，给列创建UNIQUE约束</em></strong></p>
+<p> 在 “Persons” 表创建时在 “Id_P” 列创建 UNIQUE 约束： </p>
+<p><strong><em>MySQL：</em></strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Persons
+(
+Id_P int NOT NULL,
+LastName varchar(255) NOT NULL,
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255),    
+UNIQUE (Id_P)
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>SQL Server / Oracle / MS Access:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Persons
+(
+Id_P int NOT NULL UNIQUE,
+LastName varchar(255) NOT NULL,
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255),    
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>给多个列添加UNIQUE约束，并且给UNIQUE约束命名：</em></strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Persons
+(
+Id_P int NOT NULL,
+LastName varchar(255) NOT NULL,
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255),
+CONSTRAINT uc_PersonId UNIQUE (Id_P,LastName)
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>uc_PersonId</code>为UNIQUE名称。</p>
+<p><strong><em>例子2：当表以被创建之后，创建UNIQUE约束</em></strong></p>
+<p> 当表已被创建时，如需在 “Id_P” 列创建 UNIQUE 约束，请使用下列 SQL： </p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+ADD UNIQUE (Id_P)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p> 如需命名 UNIQUE 约束，并定义多个列的 UNIQUE 约束，请使用下面的 SQL 语法： </p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+ADD CONSTRAINT uc_PersonID UNIQUE (Id_P,LastName)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong><em>例子3：撤销UNIQUE约束</em></strong></p>
+<p><strong>MySQL:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+DROP INDEX uc_PersonID<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>SQL Server / Oracle / MS Access:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+DROP CONSTRAINT uc_PersonID<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="11-3-Primary-Key-约束"><a href="#11-3-Primary-Key-约束" class="headerlink" title="11.3 Primary Key 约束"></a>11.3 Primary Key 约束</h4><p> PRIMARY KEY 约束唯一标识数据库表中的每条记录。 </p>
+<ul>
+<li>主键必须包含唯一的值。 </li>
+<li>主键列不能包含 NULL 值。 </li>
+<li>每个表都应该有一个主键，并且每个表只能有一个主键。 </li>
+</ul>
+<p><strong><em>例子1：在创建表时给列添加主键</em></strong></p>
+<p><strong>MySQL:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Persons
+(
+Id_P int NOT NULL,
+LastName varchar(255) NOT NULL,
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255),
+PRIMARY KEY (Id_P)
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>SQL Server / Oracle / MS Access:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Persons
+(
+Id_P int NOT NULL PRIMARY KEY,
+LastName varchar(255) NOT NULL,
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255)
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子2：定义联合主键并且给键命名</em></strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Persons
+(
+Id_P int NOT NULL,
+LastName varchar(255) NOT NULL,
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255),
+CONSTRAINT pk_PersonID PRIMARY KEY (Id_P,LastName)
+)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子3：表被创建好之后添加主键</em></strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+ADD PRIMARY KEY (Id_P)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>给主键命名：</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+ADD CONSTRAINT pk_PersonID PRIMARY KEY (Id_P,LastName)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong><em>例子4：撤销主键</em></strong></p>
+<p><strong>MySQL:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+DROP PRIMARY KEY
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>SQL Server / Oracle / MS Access:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+DROP CONSTRAINT pk_PersonID
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h4 id="11-4-FOREIGN-KEY-约束"><a href="#11-4-FOREIGN-KEY-约束" class="headerlink" title="11.4  FOREIGN KEY 约束"></a>11.4  FOREIGN KEY 约束</h4><p> 一个表中的 FOREIGN KEY 指向另一个表中的 PRIMARY KEY。 </p>
+<p><strong><em>例子1：创建外键</em></strong></p>
+<p><strong>MySQL:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Orders
+(
+Id_O int NOT NULL,
+OrderNo int NOT NULL,
+Id_P int,
+PRIMARY KEY (Id_O),
+FOREIGN KEY (Id_P) REFERENCES Persons(Id_P)
+)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>SQL Server / Oracle / MS Access:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Orders
+(
+Id_O int NOT NULL PRIMARY KEY,
+OrderNo int NOT NULL,
+Id_P int FOREIGN KEY REFERENCES Persons(Id_P)
+)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子2：多个列定义外键约束，并且命名</em></strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Orders
+(
+Id_O int NOT NULL,
+OrderNo int NOT NULL,
+Id_P int,
+PRIMARY KEY (Id_O),
+CONSTRAINT fk_PerOrders FOREIGN KEY (Id_P)
+REFERENCES Persons(Id_P)
+)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子3：表存在情况下，增加约束</em></strong></p>
+<p><strong>MySQL / SQL Server / Oracle / MS Access:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Orders
+ADD FOREIGN KEY (Id_P)
+REFERENCES Persons(Id_P)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>如果需要命名 FOREIGN KEY 约束，以及为多个列定义 FOREIGN KEY 约束，请使用下面的 SQL 语法：</p>
+<p><strong>MySQL / SQL Server / Oracle / MS Access:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Orders
+ADD CONSTRAINT fk_PerOrders
+FOREIGN KEY (Id_P)
+REFERENCES Persons(Id_P)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子4：撤销外键约束</em></strong></p>
+<p><strong>MySQL:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Orders
+DROP FOREIGN KEY fk_PerOrders
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>SQL Server / Oracle / MS Access:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Orders
+DROP CONSTRAINT fk_PerOrders
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<hr>
+<h4 id="11-5-CHECK-约束"><a href="#11-5-CHECK-约束" class="headerlink" title="11.5 CHECK 约束"></a>11.5 CHECK 约束</h4><p> CHECK 约束用于限制列中的值的范围。 </p>
+<ul>
+<li>如果对单个列定义 CHECK 约束，那么该列只允许特定的值。 </li>
+<li>如果对一个表定义 CHECK 约束，那么此约束会在特定的列中对值进行限制。 </li>
+</ul>
+<p><strong><em>例子1：在表创建时添加CHECK约束</em></strong></p>
+<p><strong>SQL Server / Oracle / MS Access:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Persons
+(
+Id_P int NOT NULL CHECK (Id_P>0),
+LastName varchar(255) NOT NULL,
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255)
+)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子2：多个列定义CHECK约束并且命名</em></strong></p>
+<p><strong>MySQL / SQL Server / Oracle / MS Access:</strong></p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE TABLE Persons
+(
+Id_P int NOT NULL,
+LastName varchar(255) NOT NULL,
+FirstName varchar(255),
+Address varchar(255),
+City varchar(255),
+CONSTRAINT chk_Person CHECK (Id_P>0 AND City='Sandnes')
+)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong><em>例子3：ALTER TABLE</em></strong></p>
+<p>MySQL / SQL Server / Oracle / MS Access:</p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+ADD CHECK (Id_P>0)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>命名：</p>
+<p>MySQL / SQL Server / Oracle / MS Access:</p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+ADD CONSTRAINT chk_Person CHECK (Id_P>0 AND City='Sandnes')
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong><em>例子4：撤销</em></strong></p>
+<p>如需撤销 CHECK 约束，请使用下面的 SQL：</p>
+<p>SQL Server / Oracle / MS Access:</p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+DROP CONSTRAINT chk_Person
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>MySQL:</p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+DROP CHECK chk_Person
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<hr>
+<h4 id="11-6-Default"><a href="#11-6-Default" class="headerlink" title="11.6 Default"></a>11.6 Default</h4><p>DEFAULT 约束用于向列中插入默认值。</p>
+<p>如果没有规定其他的值，那么会将默认值添加到所有的新记录。</p>
+<p><strong><em>例子1:ALTER TABLE 下的DEFAULT</em></strong></p>
+<p>MySQL:</p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+ALTER City SET DEFAULT 'SANDNES'
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>SQL Server / Oracle / MS Access:</p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">ALTER TABLE Persons
+ALTER COLUMN City SET DEFAULT 'SANDNES'
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong><em>例子2：撤销</em></strong></p>
+<p>如需撤销 DEFAULT 约束，请使用下面的 SQL：</p>
+<p>MySQL:</p>
+<pre><code>ALTER TABLE Persons
+ALTER City DROP DEFAULT
+</code></pre><p>SQL Server / Oracle / MS Access:</p>
+<pre><code>ALTER TABLE Persons
+ALTER COLUMN City DROP DEFAULT
+</code></pre><h3 id="12-CREATE-INDEX-语句"><a href="#12-CREATE-INDEX-语句" class="headerlink" title="12. CREATE INDEX 语句"></a>12. CREATE INDEX 语句</h3><p>您可以在表中创建索引，以便更加快速高效地查询数据。</p>
+<p>用户无法看到索引，它们只能被用来加速搜索/查询。</p>
+<p><strong>注释：</strong>更新一个包含索引的表需要比更新一个没有索引的表更多的时间，这是由于索引本身也需要更新。因此，理想的做法是仅仅在常常被<strong>搜索的列</strong>（以及表）上面创建索引。</p>
+<p><strong><em>语法：</em></strong></p>
+<p>CREATE INDEX</p>
+<pre class="line-numbers language-mysql"><code class="language-mysql">CREATE INDEX index_name
+ON table_name (column_name)
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>CREATE UNIQUE INDEX 唯一索引</p>
+<p> 唯一的索引意味着两个行不能拥有相同的索引值。 </p>
+
+            </div>
+            <hr/>
+
+            
+            <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.88rem;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-large waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fa fa-close"></i></a>
+            <h4 class="reward-title">谢谢老板请我喝冰可乐~(●'◡'●)</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+            
+
+            <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    <div class="social-share" data-disabled="qzone" data-wechat-qrcode-helper="<p>微信里点“发现”->“扫一扫”二维码便可查看分享。</p>"></div>
+    
+</div>
+
+<script src="/libs/share/js/social-share.min.js"></script>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        <p class="reprint-tip">
+            <i class="fa fa-exclamation-triangle"></i>&nbsp;&nbsp;
+            <span>转载规则</span>
+        </p>
+        
+            <div class="center-align">
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                    <img alt=""
+                         style="border-width:0"
+                         src="https://i.creativecommons.org/l/by/4.0/88x31.png"/>
+                </a>
+            </div>
+            <br/>
+            <span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text"
+                  property="dct:title" rel="dct:type">
+                    《SQL语法高级篇》
+                </span> 由
+            <a xmlns:cc="http://creativecommons.org/ns#" href="/sql-gao-ji-pian.html" property="cc:attributionName"
+               rel="cc:attributionURL">
+                Wukai
+            </a> 采用
+            <a rel="license" href="https://creativecommons.org/licenses/by/4.0/deed.zh">
+                知识共享署名 4.0 国际许可协议
+            </a>进行许可。
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+        </div>
+    </div>
+
+    
+        <link rel="stylesheet" href="/libs/gitalk/gitalk.css">
+<link rel="stylesheet" href="/css/my-gitalk.css">
+
+<div class="card gitalk-card" data-aos="fade-up">
+    <div id="gitalk-container" class="card-content"></div>
+</div>
+
+<script src="/libs/gitalk/gitalk.min.js"></script>
+<script>
+    let gitalk = new Gitalk({
+        clientID: '4af46122409e8ebb4420',
+        clientSecret: '1b65d78a643c349cb27f5ecb6075a151283642c3',
+        repo: 'wukai319958.github.io',
+        owner: 'wukai319958',
+        admin: "wukai319958",
+        id: '2019-11-02T22-05-23',
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    });
+
+    gitalk.render('gitalk-container');
+</script>
+    
+
+    
+
+    
+
+    
+
+    
+        <style>
+    .valine-card {
+        margin: 1.5rem auto;
+    }
+
+    .valine-card .card-content {
+        padding: 20px 20px 5px 20px;
+    }
+
+    #vcomments input[type=text],
+    #vcomments input[type=email],
+    #vcomments input[type=url],
+    #vcomments textarea {
+        box-sizing: border-box;
+    }
+
+    #vcomments p {
+        margin: 2px 2px 10px;
+        font-size: 1.05rem;
+        line-height: 1.78rem;
+    }
+
+    #vcomments blockquote p {
+        text-indent: 0.2rem;
+    }
+
+    #vcomments a {
+        padding: 0 2px;
+        color: #42b983;
+        font-weight: 500;
+        text-decoration: underline;
+    }
+
+    #vcomments img {
+        max-width: 100%;
+        height: auto;
+        cursor: pointer;
+    }
+
+    #vcomments ol li {
+        list-style-type: decimal;
+    }
+
+    #vcomments ol,
+    ul {
+        display: block;
+        padding-left: 2em;
+        word-spacing: 0.05rem;
+    }
+
+    #vcomments ul li,
+    ol li {
+        display: list-item;
+        line-height: 1.8rem;
+        font-size: 1rem;
+    }
+
+    #vcomments ul li {
+        list-style-type: disc;
+    }
+
+    #vcomments ul ul li {
+        list-style-type: circle;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    #vcomments table, th, td {
+        border: 0;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments h1 {
+        font-size: 1.85rem;
+        font-weight: bold;
+        line-height: 2.2rem;
+    }
+
+    #vcomments h2 {
+        font-size: 1.65rem;
+        font-weight: bold;
+        line-height: 1.9rem;
+    }
+
+    #vcomments h3 {
+        font-size: 1.45rem;
+        font-weight: bold;
+        line-height: 1.7rem;
+    }
+
+    #vcomments h4 {
+        font-size: 1.25rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    #vcomments h5 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: 1.4rem;
+    }
+
+    #vcomments h6 {
+        font-size: 1rem;
+        line-height: 1.3rem;
+    }
+
+    #vcomments p {
+        font-size: 1rem;
+        line-height: 1.5rem;
+    }
+
+    #vcomments hr {
+        margin: 12px 0;
+        border: 0;
+        border-top: 1px solid #ccc;
+    }
+
+    #vcomments blockquote {
+        margin: 15px 0;
+        border-left: 5px solid #42b983;
+        padding: 1rem 0.8rem 0.3rem 0.8rem;
+        color: #666;
+        background-color: rgba(66, 185, 131, .1);
+    }
+
+    #vcomments pre {
+        font-family: monospace, monospace;
+        padding: 1.2em;
+        margin: .5em 0;
+        background: #272822;
+        overflow: auto;
+        border-radius: 0.3em;
+        tab-size: 4;
+    }
+
+    #vcomments code {
+        font-family: monospace, monospace;
+        padding: 1px 3px;
+        font-size: 0.92rem;
+        color: #e96900;
+        background-color: #f8f8f8;
+        border-radius: 2px;
+    }
+
+    #vcomments pre code {
+        font-family: monospace, monospace;
+        padding: 0;
+        color: #e8eaf6;
+        background-color: #272822;
+    }
+
+    #vcomments pre[class*="language-"] {
+        padding: 1.2em;
+        margin: .5em 0;
+    }
+
+    #vcomments code[class*="language-"],
+    pre[class*="language-"] {
+        color: #e8eaf6;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+
+    #vcomments b,
+    strong {
+        font-weight: bold;
+    }
+
+    #vcomments dfn {
+        font-style: italic;
+    }
+
+    #vcomments small {
+        font-size: 85%;
+    }
+
+    #vcomments cite {
+        font-style: normal;
+    }
+
+    #vcomments mark {
+        background-color: #fcf8e3;
+        padding: .2em;
+    }
+
+    #vcomments table, th, td {
+        padding: 12px 13px;
+        border: 1px solid #dfe2e5;
+    }
+
+    table tr:nth-child(2n), thead {
+        background-color: #fafafa;
+    }
+
+    #vcomments table th {
+        background-color: #f2f2f2;
+        min-width: 80px;
+    }
+
+    #vcomments table td {
+        min-width: 80px;
+    }
+
+    #vcomments [type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+        position: inherit;
+        margin-left: -1.3rem;
+        margin-right: 0.4rem;
+        margin-top: -1px;
+        vertical-align: middle;
+        left: unset;
+        visibility: visible;
+    }
+</style>
+
+<div class="card valine-card" data-aos="fade-up">
+    <div id="vcomments" class="card-content"></div>
+</div>
+
+<script src="/libs/valine/av-min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        appId: 'XCkrwz5GdyiKyKNkxHxMLkNk-gzGzoHsz',
+        appKey: 'qCRVHNOrU0OtJh9gK12GQYei',
+        notify: 'true' === 'true',
+        verify: 'true' === 'true',
+        visitor: 'true' === 'true',
+        avatar: 'mm',
+        pageSize: '10',
+        lang: 'zh-cn',
+        placeholder: '没有github账号的朋友可以在这里留言哦~(●&#39;◡&#39;●)'
+    });
+</script>
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fa fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/c-gc-ji-zhi.html">
+                    <div class="card-image">
+                        
+                        <img src="http://blog-images-wk.test.upcdn.net/logo.jpg" class="responsive-img" alt="C#GC机制">
+                        
+                        <span class="card-title">C#GC机制</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            C#GC资源回收机制详解。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="fa fa-clock-o fa-fw icon-date"></i>2019-11-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/C-基础/" class="post-category" target="_blank">
+                                    C#基础
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/GC垃圾回收机制/" target="_blank">
+                        <span class="chip bg-color">GC垃圾回收机制</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fa fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/sql-kuo-zhan-pian.html">
+                    <div class="card-image">
+                        
+                        <img src="http://blog-images-wk.test.upcdn.net/sql.jpg" class="responsive-img" alt="SQL语法扩展篇">
+                        
+                        <span class="card-title">SQL语法扩展篇</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            SQL语法之扩展篇
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="fa fa-clock-o fa-fw icon-date"></i>2019-10-31
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fa fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/数据库/" class="post-category" target="_blank">
+                                    数据库
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/SQL语法/" target="_blank">
+                        <span class="chip bg-color">SQL语法</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: WK Blog<br />'
+            + '作者: Wu Kai<br />'
+            + '链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fa fa-list"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            // headingsOffset: -205,
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).slideUp(500);
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).slideDown(500);
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+    
+
+</main>
+
+
+<footer class="page-footer bg-color">
+    <div class="container row center-align">
+        <div class="col s12 m8 l8 copy-right">
+           &copy;2019 吴恺
+            
+                &nbsp;<i class="fa fa-area-chart"></i>&nbsp;站点总字数:&nbsp;
+                <span class="white-color">102.3k</span>
+            
+
+            
+			
+                <br>
+                
+                <span id="busuanzi_container_site_pv" style='display:none'>
+                    <i class="fa fa-heart-o"></i>
+                    本站总访问量 <span id="busuanzi_value_site_pv" class="white-color"></span>
+                </span>
+                
+                
+                <span id="busuanzi_container_site_uv" style='display:none'>
+                    <i class="fa fa-users"></i>
+                    次,&nbsp;访客数 <span id="busuanzi_value_site_uv" class="white-color"></span> 人.
+                </span>
+				
+                
+            
+			<br>
+				<span id="sitetime"></span>
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/wukai319958" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fa fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:wukai5813@163.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fa fa-envelope-open"></i>
+    </a>
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=945546895" class="tooltipped" data-tooltip="QQ联系我: 945546895" data-position="top" data-delay="50">
+        <i class="fa fa-qq"></i>
+    </a>
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fa fa-rss"></i>
+    </a>
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+<script language=javascript>
+    function siteTime() {
+        window.setTimeout("siteTime()", 1000);
+        var seconds = 1000;
+        var minutes = seconds * 60;
+        var hours = minutes * 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var today = new Date();
+        var todayYear = today.getFullYear();
+        var todayMonth = today.getMonth() + 1;
+        var todayDate = today.getDate();
+        var todayHour = today.getHours();
+        var todayMinute = today.getMinutes();
+        var todaySecond = today.getSeconds();
+        var t1 = Date.UTC(2019, 09, 07, 00, 00, 00); //北京时间2018-2-13 00:00:00 
+        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+        var diff = t2 - t1;
+        var diffYears = Math.floor(diff / years);
+        var diffDays = Math.floor((diff / days) - diffYears * 365);
+        var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+        var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) / minutes);
+        var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours - diffMinutes * minutes) / seconds);
+        document.getElementById("sitetime").innerHTML = "本站已运行 " + diffYears + " 年 " + diffDays + " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+    }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+    siteTime(); 
+	
+	<!-- var myDate=new Date(); -->
+	<!-- document.getElementById("thisYear").innerHTML=myDate.getFullYear(); -->
+	
+	
+	
+    $(document).ready(function () {
+        var int = setInterval(fixCount, 50); // 50ms周期检测函数 
+        var pvcountOffset = 0; // 初始化首次数据 
+        var uvcountOffset = 0;
+        function fixCount() {
+            if (document.getElementById("busuanzi_container_site_pv").style.display != "none") {
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + pvcountOffset);
+                clearInterval(int);
+            }
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                $("#busuanzi_value_site_uv").html(parseInt($("#busuanzi_value_site_uv").html()) + uvcountOffset); // 加上初始数据 
+                clearInterval(int); // 停止检测 
+            }
+        }
+    });
+
+
+</script>
+
+<!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fa fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+<!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</div>
+
+
+<script src="/libs/materialize/materialize.min.js"></script>
+<script src="/libs/masonry/masonry.pkgd.min.js"></script>
+<script src="/libs/aos/aos.js"></script>
+<script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+<script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+<script src="/js/matery.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+
+    <script src="/libs/others/clicklove.js"></script>
+
+
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+
+
+<script>!function(e){var r=Array.prototype.slice.call(document.querySelectorAll("img[data-original]"));function t(){for(var c=0;c<r.length;c++)t=r[c],void 0,0<=(n=t.getBoundingClientRect()).top&&0<=n.left&&n.top<=(e.innerHeight||document.documentElement.clientHeight)&&function(){var t,n,e,i,o=r[c];t=o,n=function(){r=r.filter(function(t){return o!==t})},e=new Image,i=t.getAttribute("data-original"),e.onload=function(){t.src=i,n&&n()},e.src=i}();var t,n}t(),e.addEventListener("scroll",function(){!function(t,n){clearTimeout(t.tId),t.tId=setTimeout(function(){t.call(n)},500)}(t,e)})}(this);</script></body>
+</html>
